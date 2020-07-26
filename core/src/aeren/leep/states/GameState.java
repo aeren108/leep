@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import aeren.leep.Settings;
+import aeren.leep.input.GestureHandler;
 import aeren.leep.level.Level;
 import aeren.leep.level.LevelData;
 
@@ -19,20 +19,18 @@ public class GameState extends State {
   
   public GameState() {
     super(new FitViewport(Settings.WIDTH, Settings.HEIGHT));
-    this.level = level;
   }
 
   @Override
   public void show() {
     data = new LevelData("levels/forestlevel.json");
     level = new Level(data);
-    
     mapRenderer = new OrthogonalTiledMapRenderer(data.getMap());
-  
-    Gdx.app.log("CAM", getCamera().position.toString());
     
-    getCamera().position.x = Settings.WIDTH / 2;
-    getCamera().position.y = Settings.HEIGHT / 2;
+    getCamera().position.set(Settings.WIDTH / 2, Settings.HEIGHT / 2, 0);
+    Gdx.input.setInputProcessor(new GestureHandler(level.getPlayer()));
+    
+    addActor(level);
   }
   
   @Override

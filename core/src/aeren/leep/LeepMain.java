@@ -15,8 +15,18 @@ public class LeepMain extends Game {
 	
 	@Override
 	public void create () {
+		Assets.loadAssets();
+		Assets.manager.finishLoading();
+		
 		stateManager = StateManager.getInstance();
 		stateManager.setGame(this);
 		stateManager.setState(new GameState());
+	}
+
+	@Override
+	public void dispose() {
+		Assets.dispose();
+		
+		super.dispose();
 	}
 }
