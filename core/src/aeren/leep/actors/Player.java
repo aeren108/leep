@@ -2,8 +2,11 @@ package aeren.leep.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -16,8 +19,13 @@ import aeren.leep.Assets;
 import aeren.leep.input.SwipeListener;
 
 public class Player extends Actor implements SwipeListener {
-  private Sprite sprite;
+  private Texture sheet;
   private Rectangle bounds;
+  
+  private Animation<TextureRegion> idleLeft;
+  private Animation<TextureRegion> idleRight;
+  private Animation<TextureRegion> curAnim;
+  private float elapsed = 0;
   
   private Sound swipe;
   
@@ -25,32 +33,39 @@ public class Player extends Actor implements SwipeListener {
   public MoveToAction respawn;
   
   public Player() {
-    sprite = new Sprite(Assets.manager.get(Assets.player));
     bounds = new Rectangle();
-    
     swipe = Assets.manager.get(Assets.swipe);
     
-    initActions();
-    setPosition(16 * 5, 16 * 3);
+    init();
   }
   
-  private void initActions() {
+  private void init() {
     flicker = new SequenceAction(Actions.fadeOut(0.20f), Actions.fadeIn(0.20f));
     respawn = Actions.moveTo(16 * 5, 16 * 3, .25f);
+    
+    sheet = Assets.manager.get(Assets.dinoIdle);
+    TextureRegion[][] frames = TextureRegion.split(sheet, 16, 19);
+    
+    idleRight = new Animation<TextureRegion>(.15f, frames[0]);
+    idleLeft = new Animation<TextureRegion>(.15f, frames[1]);
+    
+    curAnim = idleLeft;
+    setPosition(16 * 5, 16 * 3);
   }
 
   @Override
   public void act(float delta) {
-    sprite.setColor(getColor());
-    sprite.setPosition(this.getX(), this.getY());
-    bounds.set(this.getX(), this.getY(), sprite.getWidth(), sprite.getHeight());
+    elapsed += delta;
+
+    bounds.set(this.getX(), this.getY(), idleLeft.getKeyFrames()[0].getRegionWidth(), idleLeft.getKeyFrames()[0].getRegionHeight() - 4);
     
     super.act(delta);
   }
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
-    sprite.draw(batch, parentAlpha);
+    batch.setColor(getColor());
+    batch.draw(curAnim.getKeyFrame(elapsed, true), getX(), getY());
     
     super.draw(batch, parentAlpha);
   }
@@ -63,13 +78,15 @@ public class Player extends Actor implements SwipeListener {
       return;
     
     if (dir.y + dir.x < 0 && dir.y - dir.x < 0) {
-      addAction(Actions.moveBy(0, -16, .05f));
+      addAction(Actions.moveBy(0, -16, .025f));
     } else if (dir.y + dir.x > 0 && dir.y - dir.x > 0) {
-      addAction(Actions.moveBy(0, 16, .05f));
+      addAction(Actions.moveBy(0, 16, .025f));
     } else if (dir.y + dir.x < 0 && dir.y - dir.x > 0) {
-      addAction(Actions.moveBy(-16, 0, .05f));
+      curAnim = idleLeft;
+      addAction(Actions.moveBy(-16, 0, .025f));
     } else if (dir.y + dir.x > 0 && dir.y - dir.x < 0) {
-      addAction(Actions.moveBy(16, 0, .05f));
+      curAnim = idleRight;
+      addAction(Actions.moveBy(16, 0, .025f));
     }
     
     swipe.play();
