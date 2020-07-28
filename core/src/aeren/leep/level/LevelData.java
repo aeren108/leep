@@ -23,6 +23,7 @@ public class LevelData {
 
   public float fireballCooldown;
   public float fireballSpeed;
+  public float fireballAlert;
   
   private LevelData() {
     availableCells = new ArrayList<>();
@@ -41,6 +42,7 @@ public class LevelData {
     data.availableTiles = json.get("availableTiles").asIntArray();
     data.fireballCooldown = fireball.getFloat("cooldown");
     data.fireballSpeed = fireball.getFloat("speed");
+    data.fireballAlert = fireball.getFloat("alert");
     
     data.findAvailableCells();
     

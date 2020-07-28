@@ -25,6 +25,8 @@ public class Level extends Group {
   private Fruit fruit;
   
   private Sound pickup;
+  private Sound hurt;
+  private Sound fall;
   
   private Random random;
   private boolean respawning = false;
@@ -46,6 +48,8 @@ public class Level extends Group {
     fruit = new Fruit();
     
     pickup = Assets.manager.get(Assets.pickup);
+    hurt = Assets.manager.get(Assets.hurt);
+    fall = Assets.manager.get(Assets.fall);
   
     addActor(fruit);
     addActor(player);
@@ -102,6 +106,8 @@ public class Level extends Group {
         removeActor(f);
         fireballFactory.destroyFireball(f);
         
+        hurt.play();
+        
         gameOver();
         i--;
       }
@@ -118,7 +124,10 @@ public class Level extends Group {
     
     for (int id : data.deadlyTiles) {
       if (tileId == id) {
+        fall.play();
         gameOver();
+        
+        break;
       }
     }
   }
@@ -138,6 +147,7 @@ public class Level extends Group {
         f.setVelocity((f.getType() == Fireball.FireballType.VERTICAL) ? Fireball.VEL_UP : Fireball.VEL_RIGHT);
         f.setLinage((f.getType() == Fireball.FireballType.VERTICAL) ? random.nextInt(9) : random.nextInt(16));
         f.setVelocity(f.getVelocity().cpy().scl(data.fireballSpeed));
+        f.setAlertTreshold(data.fireballAlert);
         f.flip();
     
         activeFireballs.add(f);

@@ -25,6 +25,7 @@ public abstract class Fireball extends Actor implements Pool.Poolable {
   
   protected float elapsed = 0;
   protected float alertTimer = 0;
+  protected float alertTreshold = 0.5f;
   protected boolean alerted = false;
   
   public boolean alive = true;
@@ -46,7 +47,7 @@ public abstract class Fireball extends Actor implements Pool.Poolable {
     if (!alerted) {
       alertTimer += delta;
       
-      if (alertTimer >= .5f) {
+      if (alertTimer >= alertTreshold) {
         alerted = true;
         alertTimer = 0;
       }
@@ -90,7 +91,11 @@ public abstract class Fireball extends Actor implements Pool.Poolable {
   public FireballType getType() {
     return type;
   }
-  
+
+  public void setAlertTreshold(float alertTreshold) {
+    this.alertTreshold = alertTreshold;
+  }
+
   public enum FireballType {
     VERTICAL, HORIZONTAL
   }
