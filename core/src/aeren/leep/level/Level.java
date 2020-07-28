@@ -109,14 +109,14 @@ public class Level extends Group {
   }
   
   private void checkTileCollisions() {
-    TiledMapTileLayer layer = (TiledMapTileLayer) data.getMap().getLayers().get("ground");
+    TiledMapTileLayer layer = (TiledMapTileLayer) data.map.getLayers().get("ground");
     TiledMapTileLayer.Cell cell = layer.getCell((int)((player.getX() + 8) / 16), (int)((player.getY() + 8) / 16));
     if (cell == null)
       return;
     
     int tileId = cell.getTile().getId();
     
-    for (int id : data.getDeadlyTiles()) {
+    for (int id : data.deadlyTiles) {
       if (tileId == id) {
         gameOver();
       }
@@ -124,19 +124,20 @@ public class Level extends Group {
   }
   
   private void placeFruit() {
-    Vector2 pos = data.getAvailableCells().get(random.nextInt(data.getAvailableCells().size() - 1));
+    Vector2 pos = data.availableCells.get(random.nextInt(data.availableCells.size() - 1));
     
     fruit.setPosition(pos.x, pos.y);
     fruit.respawn();
   }
   
   private void generateFireballs() {
-    if (fireballTimer > 1f) {
+    if (fireballTimer >= data.fireballCooldown) {
       
       for (int i = 0; i < 2; i++) {
         Fireball f = fireballFactory.createFireball(Fireball.FireballType.values()[i]);
         f.setVelocity((f.getType() == Fireball.FireballType.VERTICAL) ? Fireball.VEL_UP : Fireball.VEL_RIGHT);
         f.setLinage((f.getType() == Fireball.FireballType.VERTICAL) ? random.nextInt(9) : random.nextInt(16));
+        f.setVelocity(f.getVelocity().cpy().scl(data.fireballSpeed));
         f.flip();
     
         activeFireballs.add(f);

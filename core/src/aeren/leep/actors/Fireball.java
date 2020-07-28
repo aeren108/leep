@@ -29,10 +29,10 @@ public abstract class Fireball extends Actor implements Pool.Poolable {
   
   public boolean alive = true;
   
-  public static final Vector2 VEL_UP = new Vector2(0f, 1.75f);
-  public static final Vector2 VEL_DOWN = new Vector2(0f, -1.75f);
-  public static final Vector2 VEL_RIGHT = new Vector2(1.75f, 0f);
-  public static final Vector2 VEL_LEFT = new Vector2(-1.75f, 0f);
+  public static final Vector2 VEL_UP = new Vector2(0f, 1f);
+  public static final Vector2 VEL_DOWN = new Vector2(0f, -1f);
+  public static final Vector2 VEL_RIGHT = new Vector2(1f, 0f);
+  public static final Vector2 VEL_LEFT = new Vector2(-1f, 0f);
   
   public Fireball() {
     bounds = new Rectangle(0, 0, 16, 16);

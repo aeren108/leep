@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.JsonWriter;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -15,26 +16,35 @@ import java.util.List;
 public class LevelData {
   private String levelPath;
   
-  private TiledMap map;
-  private int[] deadlyTiles;
+  public TiledMap map;
+  public int[] deadlyTiles;
   private int[] availableTiles;
-  private List<Vector2> availableCells;
+  public List<Vector2> availableCells;
+
+  public float fireballCooldown;
+  public float fireballSpeed;
   
-  public LevelData(String levelPath) {
-    this.levelPath = levelPath;
+  private LevelData() {
     availableCells = new ArrayList<>();
-    
-    parseData();
-    findAvailableCells();
   }
   
-  private void parseData() {
-    JsonReader reader = new JsonReader();
-    JsonValue data = reader.parse(Gdx.files.internal(levelPath));
+  public static LevelData getLevelDataFromJson(String path) {
+    LevelData data = new LevelData();
     
-    map = new TmxMapLoader().load("levels/" + data.getString("tmxFile"));
-    deadlyTiles = data.get("deadlyTiles").asIntArray();
-    availableTiles = data.get("availableTiles").asIntArray();
+    JsonReader reader = new JsonReader();
+    JsonValue json = reader.parse(Gdx.files.internal(path));
+    JsonValue fireball = json.get("fireball");
+    Gdx.app.log("DBG", fireball.toJson(JsonWriter.OutputType.json));
+  
+    data.map = new TmxMapLoader().load("levels/" + json.getString("tmxFile"));
+    data.deadlyTiles = json.get("deadlyTiles").asIntArray();
+    data.availableTiles = json.get("availableTiles").asIntArray();
+    data.fireballCooldown = fireball.getFloat("cooldown");
+    data.fireballSpeed = fireball.getFloat("speed");
+    
+    data.findAvailableCells();
+    
+    return data;
   }
   
   private void findAvailableCells() {
@@ -52,17 +62,5 @@ public class LevelData {
         }
       }
     }
-  }
-  
-  public TiledMap getMap() {
-    return map;
-  }
-
-  public int[] getDeadlyTiles() {
-    return deadlyTiles;
-  }
-  
-  public List<Vector2> getAvailableCells() {
-    return availableCells;
   }
 }

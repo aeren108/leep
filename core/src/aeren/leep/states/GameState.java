@@ -21,8 +21,6 @@ import aeren.leep.level.LevelData;
 
 public class GameState extends State {
   private Level level;
-  private LevelData data;
-  
   private OrthogonalTiledMapRenderer mapRenderer;
   
   private Stage ui;
@@ -40,7 +38,7 @@ public class GameState extends State {
   private void initUi() {
     style = new Label.LabelStyle();
     style.font = new BitmapFont(Gdx.files.internal("fonts/retro_gaming.fnt"));
-    style.fontColor = Color.NAVY;
+    style.fontColor = Color.DARK_GRAY;
     
     scoreLabel = new Label("SKOR: ", style);
     highscoreLabel = new Label("HS: ", style);
@@ -51,9 +49,8 @@ public class GameState extends State {
 
   @Override
   public void show() {
-    data = new LevelData("levels/forestlevel.json");
-    level = new Level(data);
-    mapRenderer = new OrthogonalTiledMapRenderer(data.getMap());
+    level = new Level(LevelData.getLevelDataFromJson("levels/forestlevel.json"));
+    mapRenderer = new OrthogonalTiledMapRenderer(level.getData().map);
     
     getCamera().position.set(Settings.WIDTH / 2, Settings.HEIGHT / 2, 0);
     Gdx.input.setInputProcessor(new GestureHandler(level.getPlayer()));
@@ -72,9 +69,9 @@ public class GameState extends State {
     
     scoreLabel.setText("SKOR: " + level.getScore());
     highscoreLabel.setText("HS: " + level.getHighscore());
-    
-    super.render(delta);
   
+    super.render(delta);
+    
     ui.getViewport().apply();
     ui.act();
     ui.draw();
@@ -98,8 +95,8 @@ public class GameState extends State {
   @Override
   public void resize(int width, int height) {
     ui.getViewport().update(width, height);
-    scoreLabel.setPosition(2f, ui.getHeight() - 14);
-    highscoreLabel.setPosition(ui.getWidth() - highscoreLabel.getWidth() - 16, ui.getHeight() - 14);
+    scoreLabel.setPosition(2f, ui.getHeight() - 12);
+    highscoreLabel.setPosition(ui.getWidth() - highscoreLabel.getWidth() - 16, ui.getHeight() - 12);
     super.resize(width, height);
   }
 }
