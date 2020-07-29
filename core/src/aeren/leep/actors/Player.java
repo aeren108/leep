@@ -1,17 +1,14 @@
 package aeren.leep.actors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
@@ -19,7 +16,6 @@ import aeren.leep.Assets;
 import aeren.leep.input.SwipeListener;
 
 public class Player extends Actor implements SwipeListener {
-  private Texture sheet;
   private Rectangle bounds;
   
   private Animation<TextureRegion> idleLeft;
@@ -40,14 +36,14 @@ public class Player extends Actor implements SwipeListener {
   }
   
   private void init() {
-    flicker = new SequenceAction(Actions.fadeOut(0.20f), Actions.fadeIn(0.20f));
-    respawn = Actions.moveTo(16 * 5, 16 * 3, .25f);
-    
-    sheet = Assets.manager.get(Assets.dinoIdle);
+    flicker = new SequenceAction(Actions.fadeOut(0.15f), Actions.fadeIn(0.15f));
+    respawn = Actions.moveTo(16 * 5, 16 * 3, .2f);
+  
+    Texture sheet = Assets.manager.get(Assets.dinoIdle);
     TextureRegion[][] frames = TextureRegion.split(sheet, 16, 19);
     
-    idleRight = new Animation<TextureRegion>(.15f, frames[0]);
-    idleLeft = new Animation<TextureRegion>(.15f, frames[1]);
+    idleRight = new Animation<>(.15f, frames[0]);
+    idleLeft = new Animation<>(.15f, frames[1]);
     
     curAnim = idleLeft;
     setPosition(16 * 5, 16 * 3);

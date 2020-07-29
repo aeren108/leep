@@ -25,7 +25,7 @@ public class FireballFactory {
       case HORIZONTAL:
         return hfp.obtain();
       default:
-        return vfp.obtain();
+        return null;
     }
   }
   

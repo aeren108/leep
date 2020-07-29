@@ -4,9 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import java.nio.channels.SeekableByteChannel;
-
-import aeren.leep.Assets;
 import aeren.leep.Settings;
 
 class VerticalFireball extends Fireball {
@@ -14,9 +11,7 @@ class VerticalFireball extends Fireball {
   public VerticalFireball() {
     type = FireballType.VERTICAL;
     
-    sheet = Assets.manager.get(Assets.verticalFireball);
-    TextureRegion[][] frames = TextureRegion.split(sheet, 16, 16);
-    anim = new Animation<TextureRegion>(.1f, frames[0]);
+    anim = new Animation<>(.1f, frames[0]);
     
     xOffset = 4; yOffset = 4;
     bounds.setSize(8f, 9f);
@@ -40,20 +35,19 @@ class VerticalFireball extends Fireball {
     if (linage < 0 || linage > Settings.WIDTH / 16)
       throw new IndexOutOfBoundsException("Linage should be between 0-" + Settings.WIDTH / 16 + ".");
     
-    if (velocity.y < 0) {
+    if (velocity.y < 0)
       setPosition(linage * 16, Settings.HEIGHT);
-    } else {
+    else
       setPosition(linage * 16, -16f);
-    }
   }
   
   @Override
   public void flip() {
-    if (velocity.y < 0)
+    if (velocity.y < 0 || flipped)
       return;
     
-    for (TextureRegion tr : anim.getKeyFrames()) {
+    flipped = true;
+    for (TextureRegion tr : anim.getKeyFrames())
       tr.flip(false, true);
-    }
   }
 }

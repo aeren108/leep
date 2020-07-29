@@ -11,9 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import java.util.Set;
-
-import aeren.leep.Assets;
 import aeren.leep.Settings;
 import aeren.leep.input.GestureHandler;
 import aeren.leep.level.Level;
@@ -26,8 +23,7 @@ public class GameState extends State {
   private Stage ui;
   private Label scoreLabel;
   private Label highscoreLabel;
-  private Label.LabelStyle style;
-  
+
   public GameState() {
     super(new FitViewport(Settings.WIDTH, Settings.HEIGHT));
     ui = new Stage(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
@@ -36,7 +32,7 @@ public class GameState extends State {
   }
   
   private void initUi() {
-    style = new Label.LabelStyle();
+    Label.LabelStyle style = new Label.LabelStyle();
     style.font = new BitmapFont(Gdx.files.internal("fonts/retro_gaming.fnt"));
     style.fontColor = Color.DARK_GRAY;
     

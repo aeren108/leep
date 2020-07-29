@@ -36,7 +36,7 @@ public class Level extends Group {
   private float fireballTimer = 0;
   
   private int score = 0;
-  private int highscore = 0;
+  private int highscore;
   
   private Preferences prefs;
   
@@ -50,7 +50,7 @@ public class Level extends Group {
     pickup = Assets.manager.get(Assets.pickup);
     hurt = Assets.manager.get(Assets.hurt);
     fall = Assets.manager.get(Assets.fall);
-  
+    
     addActor(fruit);
     addActor(player);
     
@@ -61,6 +61,10 @@ public class Level extends Group {
   
     prefs = Gdx.app.getPreferences("leep");
     highscore = prefs.getInteger("hs");
+    
+    data.music.setLooping(true);
+    data.music.setVolume(.3f);
+    data.music.play();
   }
   
   @Override
@@ -90,7 +94,7 @@ public class Level extends Group {
   
   private void checkActorCollisions() {
     if (fruit.getBounds().overlaps(player.getBounds())) {
-      pickup.play(.8f);
+      pickup.play(.35f);
       
       score++;
       placeFruit();
@@ -106,7 +110,7 @@ public class Level extends Group {
         removeActor(f);
         fireballFactory.destroyFireball(f);
         
-        hurt.play();
+        hurt.play(.5f);
         
         gameOver();
         i--;
@@ -144,7 +148,7 @@ public class Level extends Group {
       
       for (int i = 0; i < 2; i++) {
         Fireball f = fireballFactory.createFireball(Fireball.FireballType.values()[i]);
-        f.setVelocity((f.getType() == Fireball.FireballType.VERTICAL) ? Fireball.VEL_UP : Fireball.VEL_RIGHT);
+        f.setVelocity((f.getType() == Fireball.FireballType.VERTICAL) ? Fireball.VEL_UP : Fireball.VEL_LEFT);
         f.setLinage((f.getType() == Fireball.FireballType.VERTICAL) ? random.nextInt(9) : random.nextInt(16));
         f.setVelocity(f.getVelocity().cpy().scl(data.fireballSpeed));
         f.setAlertTreshold(data.fireballAlert);
@@ -160,13 +164,16 @@ public class Level extends Group {
   
   private void gameOver() {
     respawning = true;
-  
+    
     player.clearActions();
     activeFireballs.clear();
+    data.music.setVolume(.15f);
     
     player.addAction(Actions.sequence(Actions.repeat(3, player.flicker), player.respawn, Actions.run(() -> {
-      respawning = false;
       placeFruit();
+      
+      respawning = false;
+      data.music.setVolume(.3f);
     })));
   
     if (score > highscore)

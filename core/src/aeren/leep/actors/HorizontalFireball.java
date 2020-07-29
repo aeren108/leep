@@ -4,22 +4,16 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import aeren.leep.Assets;
 import aeren.leep.Settings;
 
 class HorizontalFireball extends Fireball {
   
   public HorizontalFireball() {
     type = FireballType.HORIZONTAL;
-    
-    sheet = Assets.manager.get(Assets.horizontalFireball);
-    TextureRegion[][] frames = TextureRegion.split(sheet, 16, 16);
-    anim = new Animation<TextureRegion>(.1f, frames[0]);
+    anim = new Animation<>(.1f, frames[1]);
     
     xOffset = 3; yOffset = 4;
     bounds.setSize(9f, 8f);
-    
-    
   }
   
   @Override
@@ -39,20 +33,19 @@ class HorizontalFireball extends Fireball {
     if (linage < 0 || linage > Settings.HEIGHT / 16)
       throw new IndexOutOfBoundsException("Linage should be between 0-" + Settings.HEIGHT / 16 + ".");
     
-    if (velocity.x < 0) {
+    if (velocity.x < 0)
       setPosition(Settings.WIDTH, linage * 16);
-    } else {
+    else
       setPosition(-16, linage * 16);
-    }
   }
   
   @Override
   public void flip() {
-    if (velocity.x > 0)
+    if (velocity.x > 0 || flipped)
       return;
     
-    for (TextureRegion tr : anim.getKeyFrames()) {
+    flipped = true;
+    for (TextureRegion tr : anim.getKeyFrames())
       tr.flip(true, false);
-    }
   }
 }

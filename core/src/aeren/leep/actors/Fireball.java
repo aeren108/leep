@@ -1,6 +1,5 @@
 package aeren.leep.actors;
 
-import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -15,8 +14,8 @@ import aeren.leep.Settings;
 
 public abstract class Fireball extends Actor implements Pool.Poolable {
   protected FireballType type;
-  protected Texture sheet;
   protected Texture alert;
+  protected TextureRegion[][] frames;
   protected Animation<TextureRegion> anim;
   
   protected Vector2 velocity;
@@ -29,6 +28,7 @@ public abstract class Fireball extends Actor implements Pool.Poolable {
   protected boolean alerted = false;
   
   public boolean alive = true;
+  protected boolean flipped = false;
   
   public static final Vector2 VEL_UP = new Vector2(0f, 1f);
   public static final Vector2 VEL_DOWN = new Vector2(0f, -1f);
@@ -37,6 +37,7 @@ public abstract class Fireball extends Actor implements Pool.Poolable {
   
   public Fireball() {
     bounds = new Rectangle(0, 0, 16, 16);
+    frames = TextureRegion.split(Assets.manager.get(Assets.fireball), 16, 16);
     alert = Assets.manager.get(Assets.alert);
   }
 
