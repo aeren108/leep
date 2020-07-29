@@ -56,7 +56,7 @@ public class GameState extends State {
   
   @Override
   public void render(float delta) {
-    Gdx.gl.glClearColor(100f/255f, 173f/255f, 234f/255f, 1f);
+    Gdx.gl.glClearColor(100f / 255f, 173f / 255f, 234f / 255f, 1f);
     Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
   
     getViewport().apply();

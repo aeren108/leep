@@ -23,8 +23,13 @@ public class LevelData {
   public Music music;
 
   public float fireballCooldown;
-  public float fireballSpeed;
-  public float fireballAlert;
+  public float fireballSpeed, fireballSpeedTemp;
+  public float fireballAlert, fireballCooldownTemp;
+  
+  public float difficultyThreshold;
+  
+  public float fireballSpeedInc;
+  public float fireballCooldownDec;
   
   private LevelData() {
     availableCells = new ArrayList<>();
@@ -44,6 +49,12 @@ public class LevelData {
     data.fireballCooldown = fireball.getFloat("cooldown");
     data.fireballSpeed = fireball.getFloat("speed");
     data.fireballAlert = fireball.getFloat("alert");
+    data.difficultyThreshold = json.getFloat("difficultyThreshold");
+    data.fireballSpeedInc = fireball.getFloat("speedInc");
+    data.fireballCooldownDec = fireball.getFloat("cooldownDec");
+    
+    data.fireballSpeedTemp = data.fireballSpeed;
+    data.fireballCooldownTemp = data.fireballCooldown;
     
     data.findAvailableCells();
     

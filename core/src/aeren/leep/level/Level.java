@@ -34,6 +34,7 @@ public class Level extends Group {
   private List<Fireball> activeFireballs;
   private FireballFactory fireballFactory;
   private float fireballTimer = 0;
+  private float difficultyTimer = 0;
   
   private int score = 0;
   private int highscore;
@@ -70,11 +71,13 @@ public class Level extends Group {
   @Override
   public void act(float delta) {
     fireballTimer += delta;
+    difficultyTimer += delta;
     
     if (!respawning) {
       checkActorCollisions();
       checkTileCollisions();
       generateFireballs();
+      handleDifficulty();
     }
     
     for (int i = 0; i < activeFireballs.size(); i++) {
@@ -144,13 +147,13 @@ public class Level extends Group {
   }
   
   private void generateFireballs() {
-    if (fireballTimer >= data.fireballCooldown) {
+    if (fireballTimer >= data.fireballCooldownTemp) {
       
       for (int i = 0; i < 2; i++) {
         Fireball f = fireballFactory.createFireball(Fireball.FireballType.values()[i]);
         f.setVelocity((f.getType() == Fireball.FireballType.VERTICAL) ? Fireball.VEL_UP : Fireball.VEL_LEFT);
         f.setLinage((f.getType() == Fireball.FireballType.VERTICAL) ? random.nextInt(9) : random.nextInt(16));
-        f.setVelocity(f.getVelocity().cpy().scl(data.fireballSpeed));
+        f.setVelocity(f.getVelocity().cpy().scl(data.fireballSpeedTemp));
         f.setAlertTreshold(data.fireballAlert);
         f.flip();
     
@@ -162,12 +165,24 @@ public class Level extends Group {
     }
   }
   
+  private void handleDifficulty() {
+    if (difficultyTimer >= data.difficultyThreshold) {
+      data.fireballSpeedTemp += data.fireballSpeedInc;
+      data.fireballCooldownTemp -= data.fireballCooldownDec;
+      
+      difficultyTimer = 0;
+    }
+  }
+  
   private void gameOver() {
     respawning = true;
     
     player.clearActions();
     activeFireballs.clear();
     data.music.setVolume(.15f);
+  
+    data.fireballSpeedTemp = data.fireballSpeed;
+    data.fireballCooldownTemp = data.fireballCooldown;
     
     player.addAction(Actions.sequence(Actions.repeat(3, player.flicker), player.respawn, Actions.run(() -> {
       placeFruit();
