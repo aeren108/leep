@@ -23,8 +23,8 @@ public class LevelData {
   public Music music;
 
   public float fireballCooldown;
-  public float fireballSpeed, fireballSpeedTemp;
-  public float fireballAlert, fireballCooldownTemp;
+  public float fireballSpeed, fireballMaxSpeed, fireballSpeedTemp;
+  public float fireballAlert, fireballMinCooldown, fireballCooldownTemp;
   
   public float difficultyThreshold;
   
@@ -48,6 +48,8 @@ public class LevelData {
     data.availableTiles = json.get("availableTiles").asIntArray();
     data.fireballCooldown = fireball.getFloat("cooldown");
     data.fireballSpeed = fireball.getFloat("speed");
+    data.fireballMaxSpeed = fireball.getFloat("maxSpeed");
+    data.fireballMinCooldown = fireball.getFloat("minCooldown");
     data.fireballAlert = fireball.getFloat("alert");
     data.difficultyThreshold = json.getFloat("difficultyThreshold");
     data.fireballSpeedInc = fireball.getFloat("speedInc");

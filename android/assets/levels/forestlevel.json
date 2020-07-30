@@ -2,16 +2,19 @@
   "tmxFile": "levels/forestlevel.tmx",
   "music": "sfx/level1_theme.ogg",
 
-  "difficultyThreshold": 5,
+  "difficultyThreshold": 5.0,
 
   "fireball": {
     "speed": 1.75,
     "cooldown": 1.0,
+    "maxSpeed": 2.5,
+    "minCooldown": 0.5,
     "alert": 0.5,
 
-    "speedInc": 0.1,
-    "cooldownDec": 0.1
+    "speedInc": 0.05,
+    "cooldownDec": 0.05
   },
+
   "laser": {},
 
   "availableTiles": [1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19],

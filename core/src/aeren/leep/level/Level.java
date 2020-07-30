@@ -167,8 +167,10 @@ public class Level extends Group {
   
   private void handleDifficulty() {
     if (difficultyTimer >= data.difficultyThreshold) {
-      data.fireballSpeedTemp += data.fireballSpeedInc;
-      data.fireballCooldownTemp -= data.fireballCooldownDec;
+      if (data.fireballSpeedTemp < data.fireballMaxSpeed)
+        data.fireballSpeedTemp += data.fireballSpeedInc;
+      if (data.fireballCooldownTemp > data.fireballMinCooldown)
+        data.fireballCooldownTemp -= data.fireballCooldownDec;
       
       difficultyTimer = 0;
     }
