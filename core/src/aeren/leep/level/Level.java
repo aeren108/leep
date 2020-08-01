@@ -101,8 +101,6 @@ public class Level extends Group {
       
       score++;
       placeFruit();
-  
-      Gdx.app.log("SCORE", "SCORE: " + score);
     }
     
     for (int i = 0; i < activeFireballs.size(); i++) {
@@ -141,6 +139,11 @@ public class Level extends Group {
   
   private void placeFruit() {
     Vector2 pos = data.availableCells.get(random.nextInt(data.availableCells.size() - 1));
+    
+    if ((pos.x == player.getX() && pos.y == player.getY()) || (pos.x == fruit.getX() && pos.y == fruit.getY())) {
+      placeFruit();
+      return;
+    }
     
     fruit.setPosition(pos.x, pos.y);
     fruit.respawn();
@@ -222,7 +225,7 @@ public class Level extends Group {
     prefs.flush();
   }
 
-/* TODO: generateLasers() */
+  /* TODO: generateLasers() */
   
   
 }

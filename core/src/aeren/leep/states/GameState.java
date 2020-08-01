@@ -23,7 +23,8 @@ public class GameState extends State {
   private Stage ui;
   private Label scoreLabel;
   private Label highscoreLabel;
-
+  
+  //TODO: Constructor with the Level parameter
   public GameState() {
     super(new FitViewport(Settings.WIDTH, Settings.HEIGHT));
     ui = new Stage(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));

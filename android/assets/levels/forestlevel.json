@@ -2,13 +2,13 @@
   "tmxFile": "levels/forestlevel.tmx",
   "music": "sfx/level1_theme.ogg",
 
-  "difficultyThreshold": 5.0,
+  "difficultyThreshold": 7.5,
 
   "fireball": {
     "speed": 1.75,
     "cooldown": 1.0,
-    "maxSpeed": 2.5,
-    "minCooldown": 0.5,
+    "maxSpeed": 2.75,
+    "minCooldown": 0.4,
     "alert": 0.5,
 
     "speedInc": 0.05,
