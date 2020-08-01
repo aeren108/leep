@@ -1,5 +1,5 @@
 # Leep
-Leep is a mobile game developed with libGDX.
+Leep is a mobile game I'm developing with libGDX for fun.
 
 ## About Game
 Your aim is basically collecting fruits while trying to not get shot by anything. You move character by swiping to direction you want.<br>
