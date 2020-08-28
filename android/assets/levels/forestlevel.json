@@ -7,11 +7,11 @@
   "fireball": {
     "speed": 1.75,
     "cooldown": 1.0,
-    "maxSpeed": 2.75,
+    "maxSpeed": 3.0,
     "minCooldown": 0.4,
     "alert": 0.5,
 
-    "speedInc": 0.05,
+    "speedInc": 0.1,
     "cooldownDec": 0.05
   },
 

@@ -8,9 +8,16 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import java.util.Set;
+
+import aeren.leep.Assets;
 import aeren.leep.Settings;
 import aeren.leep.input.GestureHandler;
 import aeren.leep.level.Level;
@@ -21,27 +28,28 @@ public class GameState extends State {
   private OrthogonalTiledMapRenderer mapRenderer;
   
   private Stage ui;
+  private Skin skin;
+  
+  private Table table;
   private Label scoreLabel;
   private Label highscoreLabel;
   
   //TODO: Constructor with the Level parameter
   public GameState() {
-    super(new FitViewport(Settings.WIDTH, Settings.HEIGHT));
+    super(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
     ui = new Stage(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
-    
-    initUi();
   }
   
   private void initUi() {
-    Label.LabelStyle style = new Label.LabelStyle();
-    style.font = new BitmapFont(Gdx.files.internal("fonts/retro_gaming.fnt"));
-    style.fontColor = Color.DARK_GRAY;
+    skin = Assets.manager.get(Assets.skin);
     
-    scoreLabel = new Label("SKOR: ", style);
-    highscoreLabel = new Label("HS: ", style);
+    table = new Table();
+    table.setPosition(Settings.WIDTH / 2, Settings.HEIGHT - 8, Align.center);
     
-    ui.addActor(scoreLabel);
-    ui.addActor(highscoreLabel);
+    scoreLabel = new Label("SKOR: ", skin);
+    
+    table.add(scoreLabel);
+    ui.addActor(table);
   }
 
   @Override
@@ -53,6 +61,7 @@ public class GameState extends State {
     Gdx.input.setInputProcessor(new GestureHandler(level.getPlayer()));
     
     addActor(level);
+    initUi();
   }
   
   @Override
@@ -64,9 +73,14 @@ public class GameState extends State {
     mapRenderer.setView((OrthographicCamera) this.getCamera());
     mapRenderer.render();
     
-    scoreLabel.setText("SKOR: " + level.getScore());
-    highscoreLabel.setText("HS: " + level.getHighscore());
-  
+    if (level.isNewRecord()) {
+      scoreLabel.getStyle().fontColor = Color.SCARLET;
+      scoreLabel.setText("HIGHSCORE: " + level.getScore());
+    } else {
+      scoreLabel.getStyle().fontColor = Color.BLACK;
+      scoreLabel.setText("SCORE: " + level.getScore());
+    }
+    
     super.render(delta);
     
     ui.getViewport().apply();
@@ -92,8 +106,7 @@ public class GameState extends State {
   @Override
   public void resize(int width, int height) {
     ui.getViewport().update(width, height);
-    scoreLabel.setPosition(2f, ui.getHeight() - 12);
-    highscoreLabel.setPosition(ui.getWidth() - highscoreLabel.getWidth() - 16, ui.getHeight() - 12);
+    
     super.resize(width, height);
   }
 }

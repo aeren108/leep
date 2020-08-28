@@ -1,0 +1,70 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	orange-kid: {
+		file: orange-kid.fnt
+	}
+	orange-kid-title: {
+		file: orange-kid-title.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	black: {
+		r: 0.08666656
+		g: 0.08666656
+		b: 0.08666656
+		a: 1
+	}
+	title: {
+		r: 1
+		g: 0.52240986
+		b: 0.1490196
+		a: 1
+	}
+	white: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	backgrounded: {
+		up: button
+		down: button-down
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
+	default: {
+		font: orange-kid
+		fontColor: white
+		downFontColor: black
+		up: button
+		down: button-down
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: orange-kid
+		fontColor: black
+	}
+	title: {
+		font: orange-kid-title
+		fontColor: title
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: orange-kid
+		fontColor: black
+		downFontColor: white
+		overFontColor: white
+		up: button
+		down: button-down
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+}

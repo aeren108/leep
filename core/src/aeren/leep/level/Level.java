@@ -37,7 +37,8 @@ public class Level extends Group {
   private float difficultyTimer = 0;
   
   private int score = 0;
-  private int highscore;
+  private int highscore = 0;
+  private boolean isNewRecord = false;
   
   private Preferences prefs;
   
@@ -101,6 +102,9 @@ public class Level extends Group {
       
       score++;
       placeFruit();
+      
+      if (score > highscore)
+        isNewRecord = true;
     }
     
     for (int i = 0; i < activeFireballs.size(); i++) {
@@ -200,6 +204,7 @@ public class Level extends Group {
       setHighscore(score);
     
     score = 0;
+    isNewRecord = false;
   }
   
   public LevelData getData() {
@@ -213,7 +218,11 @@ public class Level extends Group {
   public int getScore() {
     return score;
   }
-  
+
+  public boolean isNewRecord() {
+    return isNewRecord;
+  }
+
   public int getHighscore() {
     return highscore;
   }
@@ -226,6 +235,5 @@ public class Level extends Group {
   }
 
   /* TODO: generateLasers() */
-  
-  
+
 }

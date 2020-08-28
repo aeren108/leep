@@ -3,6 +3,7 @@ package aeren.leep;
 import com.badlogic.gdx.Game;
 
 import aeren.leep.states.GameState;
+import aeren.leep.states.MenuState;
 import aeren.leep.states.StateManager;
 
 public class LeepMain extends Game {
@@ -14,7 +15,7 @@ public class LeepMain extends Game {
 	
 		StateManager stateManager = StateManager.getInstance();
 		stateManager.setGame(this);
-		stateManager.setState(new GameState());
+		stateManager.setState(new MenuState());
 	}
 
 	@Override

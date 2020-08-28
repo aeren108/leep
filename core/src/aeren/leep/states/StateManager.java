@@ -18,6 +18,7 @@ public class StateManager {
   }
 
   public void setState(State state) {
+    state.dispose();
     this.state = state;
     
     if (game == null)
