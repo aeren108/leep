@@ -1,6 +1,10 @@
 package aeren.leep.states;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+
+import java.lang.reflect.Constructor;
+import java.util.Stack;
 
 public class StateManager {
 
@@ -8,9 +12,10 @@ public class StateManager {
 
   private Game game;
   private State state;
+  private Stack<State> stateStack;
 
   private StateManager() {
-
+    stateStack = new Stack();
   }
 
   public void setGame(Game game) {
@@ -18,12 +23,27 @@ public class StateManager {
   }
 
   public void setState(State state) {
-    state.dispose();
+    //if (this.state != null) this.state.dispose();
     this.state = state;
     
     if (game == null)
       throw new NullPointerException("StateManager: game is null");
     
+    game.setScreen(state);
+    stateStack.push(state);
+  }
+
+  public void popState() {
+    if (stateStack.size() == 1)
+      return;
+
+    state.dispose();
+    stateStack.pop();
+
+    if (game == null)
+      throw new NullPointerException("StateManager: game is null");
+
+    state = stateStack.peek();
     game.setScreen(state);
   }
 
