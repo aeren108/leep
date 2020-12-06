@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import aeren.leep.Assets;
 import aeren.leep.Settings;
+import aeren.leep.actors.Player;
 
 public class MenuState extends State {
   private Skin skin;
@@ -25,18 +26,18 @@ public class MenuState extends State {
   private TextButton settings;
   
   public MenuState() {
-    super(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
+    super(new ExtendViewport(Settings.WIDTH * 4, Settings.HEIGHT * 4));
   }
 
   @Override
-  public void show() {
+  void init() {
     skin = Assets.manager.get(Assets.skin);
-    
+
     table = new Table();
     table.align(Align.center);
-    
-    title = new Label("LEEP", skin, "title");
-    
+
+    title = new Label("[#FFA64D]LEEP", skin, "title");
+
     play = new TextButton("PLAY", skin);
     play.addListener(new ChangeListener() {
       @Override
@@ -44,25 +45,30 @@ public class MenuState extends State {
         StateManager.getInstance().setState(new GameState());
       }
     });
-    
+
     stats = new TextButton("STATS", skin);
     settings = new TextButton("SETTINGS", skin);
-    
-    table.padTop(-48);
+
+    table.padTop(-192);
     table.add(title).row();
-    table.add(play).minWidth(54).spaceTop(8).row();
-    table.add(stats).minWidth(54).spaceTop(4).row();
-    table.add(settings).minWidth(54).spaceTop(4);
-    
+    table.add(play).minWidth(216).spaceTop(32).row();
+    table.add(stats).minWidth(216).spaceTop(8).row();
+    table.add(settings).minWidth(216).spaceTop(8);
+
     this.addActor(table);
+  }
+
+  @Override
+  public void show() {
     Gdx.input.setInputProcessor(this);
   }
 
   @Override
   public void render(float delta) {
-    Gdx.gl.glClearColor(255f / 255f, 245f / 255f, 214f / 255f, 1f);
+    Gdx.gl.glClearColor(181f / 255f, 234f / 255f, 255f / 255f, 1f);
     Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
-    
+
+    getViewport().apply();
     super.render(delta);
   }
 

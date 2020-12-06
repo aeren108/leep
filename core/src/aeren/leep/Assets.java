@@ -21,8 +21,8 @@ public class Assets {
   public static final AssetDescriptor<Sound> hurt = new AssetDescriptor<>("sfx/hurt.wav", Sound.class);
   public static final AssetDescriptor<Sound> fall = new AssetDescriptor<>("sfx/fall.wav", Sound.class);
   
-  public static final AssetDescriptor<Texture> menubg = new AssetDescriptor<Texture>("ui/menu-back.png", Texture.class);
-  public static final AssetDescriptor<Skin> skin = new AssetDescriptor<Skin>("ui/uiskin.json", Skin.class, new SkinLoader.SkinParameter("ui/uiskin.atlas"));
+  //public static final AssetDescriptor<Texture> menubg = new AssetDescriptor<Texture>("ui/menu-back.png", Texture.class);
+  public static final AssetDescriptor<Skin> skin = new AssetDescriptor<Skin>("ui/ui-skin.json", Skin.class, new SkinLoader.SkinParameter("ui/ui-skin.atlas"));
   
   public static void loadAssets() {
     manager.load(dinoIdle);
@@ -37,7 +37,7 @@ public class Assets {
     
     manager.load("sfx/level1_theme.ogg", Music.class);
     
-    manager.load(menubg);
+    //manager.load(menubg);
     manager.load(skin);
   }
   

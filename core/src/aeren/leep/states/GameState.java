@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -37,18 +38,23 @@ public class GameState extends State {
   //TODO: Constructor with the Level parameter
   public GameState() {
     super(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
-    ui = new Stage(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
   }
-  
-  private void initUi() {
+
+  @Override
+  void init() {
+    ui = new Stage(new ExtendViewport(Settings.WIDTH * 4, Settings.HEIGHT * 4));
     skin = Assets.manager.get(Assets.skin);
-    
+
     table = new Table();
-    table.setPosition(Settings.WIDTH / 2, Settings.HEIGHT - 8, Align.center);
-    
-    scoreLabel = new Label("SKOR: ", skin);
-    
-    table.add(scoreLabel);
+    table.setPosition(Settings.WIDTH * 2, Settings.HEIGHT * 4, Align.center);
+
+    scoreLabel = new Label("SCORE: [RED]00", skin);
+    highscoreLabel = new Label("HIGHSCORE: 00", skin);
+
+
+    float padAmount = Settings.WIDTH * 4 - (highscoreLabel.getPrefWidth() + scoreLabel.getPrefWidth());
+    table.add(scoreLabel).padTop(scoreLabel.getPrefHeight());
+    table.add(highscoreLabel).padTop(highscoreLabel.getPrefHeight()).padLeft(padAmount);
     ui.addActor(table);
   }
 
@@ -61,7 +67,6 @@ public class GameState extends State {
     Gdx.input.setInputProcessor(new GestureHandler(level.getPlayer()));
     
     addActor(level);
-    initUi();
   }
   
   @Override
@@ -74,17 +79,18 @@ public class GameState extends State {
     mapRenderer.render();
     
     if (level.isNewRecord()) {
-      scoreLabel.getStyle().fontColor = Color.SCARLET;
-      scoreLabel.setText("HIGHSCORE: " + level.getScore());
+      highscoreLabel.setText("[MAROON]HIGHSCORE: [GOLD]" + level.getScore());
     } else {
-      scoreLabel.getStyle().fontColor = Color.BLACK;
-      scoreLabel.setText("SCORE: " + level.getScore());
+      //highscoreLabel.getStyle().fontColor = Color.BLACK;
+      highscoreLabel.setText("[BLACK]HIGHSCORE: [GOLD]" + level.getHighscore());
     }
-    
+
+    scoreLabel.setText("[BLACK]SCORE: [GOLD]" + level.getScore());
+
     super.render(delta);
     
     ui.getViewport().apply();
-    ui.act();
+    ui.act(delta);
     ui.draw();
   }
   
@@ -106,7 +112,13 @@ public class GameState extends State {
   @Override
   public void resize(int width, int height) {
     ui.getViewport().update(width, height);
-    
+    table.setPosition(ui.getWidth() / 2, ui.getHeight(), Align.center);
     super.resize(width, height);
+  }
+
+  @Override
+  public void dispose() {
+    level.dispose();
+    super.dispose();
   }
 }

@@ -13,7 +13,8 @@ public class GestureHandler extends GestureDetector {
     
     private SwipeListener listener;
     private Vector2 swipeDirection;
-    
+    //TODO: List<SwipeListener> listeners;
+
     public GestureManager(SwipeListener listener) {
       this.listener = listener;
       swipeDirection = Vector2.Zero;

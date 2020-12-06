@@ -158,7 +158,7 @@ public class Level extends Group {
       
       for (int i = 0; i < 2; i++) {
         Fireball f = fireballFactory.createFireball(Fireball.FireballType.values()[i]);
-        f.setVelocity((f.getType() == Fireball.FireballType.VERTICAL) ? Fireball.VEL_UP : Fireball.VEL_LEFT);
+        f.setVelocity((f.getType() == Fireball.FireballType.VERTICAL) ? Fireball.VEL_DOWN : Fireball.VEL_RIGHT);
         f.setLinage((f.getType() == Fireball.FireballType.VERTICAL) ? random.nextInt(9) : random.nextInt(16));
         f.setVelocity(f.getVelocity().cpy().scl(data.fireballSpeedTemp));
         f.setAlertTreshold(data.fireballAlert);
@@ -205,6 +205,13 @@ public class Level extends Group {
     
     score = 0;
     isNewRecord = false;
+  }
+
+  public void dispose() {
+    pickup.stop();
+    fall.stop();
+    hurt.stop();
+    data.music.stop();
   }
   
   public LevelData getData() {
