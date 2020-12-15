@@ -16,79 +16,79 @@ import aeren.leep.Assets;
 import aeren.leep.input.SwipeListener;
 
 public class Player extends Actor implements SwipeListener {
-  private Rectangle bounds;
-  
-  private Animation<TextureRegion> idleLeft;
-  private Animation<TextureRegion> idleRight;
-  private Animation<TextureRegion> curAnim;
-  private float elapsed = 0;
-  
-  private Sound swipe;
-  
-  public SequenceAction flicker;
-  public MoveToAction respawn;
-  
-  public Player() {
-    bounds = new Rectangle();
-    swipe = Assets.manager.get(Assets.swipe);
-    
-    init();
-  }
-  
-  private void init() {
-    flicker = new SequenceAction(Actions.fadeOut(0.15f), Actions.fadeIn(0.15f));
-    respawn = Actions.moveTo(16 * 5, 16 * 3, .2f);
-  
-    Texture sheet = Assets.manager.get(Assets.dinoIdle);
-    TextureRegion[][] frames = TextureRegion.split(sheet, 16, 19);
-    
-    idleRight = new Animation<>(.15f, frames[0]);
-    idleLeft = new Animation<>(.15f, frames[1]);
-    
-    curAnim = idleLeft;
-    setPosition(16 * 5, 16 * 3);
-  }
+    private Rectangle bounds;
 
-  @Override
-  public void act(float delta) {
-    elapsed += delta;
+    private Animation<TextureRegion> idleLeft;
+    private Animation<TextureRegion> idleRight;
+    private Animation<TextureRegion> curAnim;
+    private float elapsed = 0;
 
-    bounds.set(this.getX(), this.getY(), idleLeft.getKeyFrames()[0].getRegionWidth(), idleLeft.getKeyFrames()[0].getRegionHeight() - 4);
-    
-    super.act(delta);
-  }
+    private Sound swipe;
 
-  @Override
-  public void draw(Batch batch, float parentAlpha) {
-    batch.setColor(getColor());
-    batch.draw(curAnim.getKeyFrame(elapsed, true), getX(), getY());
-    
-    super.draw(batch, parentAlpha);
-  }
+    public SequenceAction flicker;
+    public MoveToAction respawn;
 
-  @Override
-  public void onSwipe(Vector2 dir) {
-    dir.y = -dir.y;
-    
-    if (hasActions())
-      return;
-    
-    if (dir.y + dir.x < 0 && dir.y - dir.x < 0) {
-      addAction(Actions.moveBy(0, -16, .025f));
-    } else if (dir.y + dir.x > 0 && dir.y - dir.x > 0) {
-      addAction(Actions.moveBy(0, 16, .025f));
-    } else if (dir.y + dir.x < 0 && dir.y - dir.x > 0) {
-      curAnim = idleLeft;
-      addAction(Actions.moveBy(-16, 0, .025f));
-    } else if (dir.y + dir.x > 0 && dir.y - dir.x < 0) {
-      curAnim = idleRight;
-      addAction(Actions.moveBy(16, 0, .025f));
+    public Player() {
+        bounds = new Rectangle();
+        swipe = Assets.manager.get(Assets.swipe);
+
+        init();
     }
-    
-    swipe.play();
-  }
-  
-  public Rectangle getBounds() {
-    return bounds;
-  }
+
+    private void init() {
+        flicker = new SequenceAction(Actions.fadeOut(0.15f), Actions.fadeIn(0.15f));
+        respawn = Actions.moveTo(16 * 5, 16 * 3, .2f);
+
+        Texture sheet = Assets.manager.get(Assets.dinoIdle);
+        TextureRegion[][] frames = TextureRegion.split(sheet, 16, 19);
+
+        idleRight = new Animation<>(.15f, frames[0]);
+        idleLeft = new Animation<>(.15f, frames[1]);
+
+        curAnim = idleLeft;
+        setPosition(16 * 5, 16 * 3);
+    }
+
+    @Override
+    public void act(float delta) {
+        elapsed += delta;
+
+        bounds.set(this.getX(), this.getY(), idleLeft.getKeyFrames()[0].getRegionWidth(), idleLeft.getKeyFrames()[0].getRegionHeight() - 4);
+
+        super.act(delta);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        batch.setColor(getColor());
+        batch.draw(curAnim.getKeyFrame(elapsed, true), getX(), getY());
+
+        super.draw(batch, parentAlpha);
+    }
+
+    @Override
+    public void onSwipe(Vector2 dir) {
+        dir.y = -dir.y;
+
+        if (hasActions())
+            return;
+
+        if (dir.y + dir.x < 0 && dir.y - dir.x < 0) {
+            addAction(Actions.moveBy(0, -16, .025f));
+        } else if (dir.y + dir.x > 0 && dir.y - dir.x > 0) {
+            addAction(Actions.moveBy(0, 16, .025f));
+        } else if (dir.y + dir.x < 0 && dir.y - dir.x > 0) {
+            curAnim = idleLeft;
+            addAction(Actions.moveBy(-16, 0, .025f));
+        } else if (dir.y + dir.x > 0 && dir.y - dir.x < 0) {
+            curAnim = idleRight;
+            addAction(Actions.moveBy(16, 0, .025f));
+        }
+
+        swipe.play();
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
+    }
 }

@@ -25,100 +25,109 @@ import aeren.leep.level.Level;
 import aeren.leep.level.LevelData;
 
 public class GameState extends State {
-  private Level level;
-  private OrthogonalTiledMapRenderer mapRenderer;
-  
-  private Stage ui;
-  private Skin skin;
-  
-  private Table table;
-  private Label scoreLabel;
-  private Label highscoreLabel;
-  
-  //TODO: Constructor with the Level parameter
-  public GameState() {
-    super(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
-  }
+    private Level level;
+    private OrthogonalTiledMapRenderer mapRenderer;
+    private GestureHandler gestureHandler;
 
-  @Override
-  void init() {
-    ui = new Stage(new ExtendViewport(Settings.WIDTH * 4, Settings.HEIGHT * 4));
-    skin = Assets.manager.get(Assets.skin);
+    private Stage ui;
+    private Skin skin;
 
-    table = new Table();
-    table.setPosition(Settings.WIDTH * 2, Settings.HEIGHT * 4, Align.center);
+    private Table table;
+    private Label scoreLabel;
+    private Label highscoreLabel;
 
-    scoreLabel = new Label("SCORE: [RED]00", skin);
-    highscoreLabel = new Label("HIGHSCORE: 00", skin);
-
-
-    float padAmount = Settings.WIDTH * 4 - (highscoreLabel.getPrefWidth() + scoreLabel.getPrefWidth());
-    table.add(scoreLabel).padTop(scoreLabel.getPrefHeight());
-    table.add(highscoreLabel).padTop(highscoreLabel.getPrefHeight()).padLeft(padAmount);
-    ui.addActor(table);
-  }
-
-  @Override
-  public void show() {
-    level = new Level(LevelData.getLevelDataFromJson("levels/forestlevel.json"));
-    mapRenderer = new OrthogonalTiledMapRenderer(level.getData().map);
-    
-    getCamera().position.set(Settings.WIDTH / 2, Settings.HEIGHT / 2, 0);
-    Gdx.input.setInputProcessor(new GestureHandler(level.getPlayer()));
-    
-    addActor(level);
-  }
-  
-  @Override
-  public void render(float delta) {
-    Gdx.gl.glClearColor(100f / 255f, 173f / 255f, 234f / 255f, 1f);
-    Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
-  
-    getViewport().apply();
-    mapRenderer.setView((OrthographicCamera) this.getCamera());
-    mapRenderer.render();
-    
-    if (level.isNewRecord()) {
-      highscoreLabel.setText("[MAROON]HIGHSCORE: [GOLD]" + level.getScore());
-    } else {
-      //highscoreLabel.getStyle().fontColor = Color.BLACK;
-      highscoreLabel.setText("[BLACK]HIGHSCORE: [GOLD]" + level.getHighscore());
+    //TODO: Constructor with the Level parameter
+    public GameState() {
+        super(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
     }
 
-    scoreLabel.setText("[BLACK]SCORE: [GOLD]" + level.getScore());
+    @Override
+    void init() {
+        ui = new Stage(new ExtendViewport(Settings.WIDTH * 4, Settings.HEIGHT * 4));
+        skin = Assets.manager.get(Assets.skin);
 
-    super.render(delta);
-    
-    ui.getViewport().apply();
-    ui.act(delta);
-    ui.draw();
-  }
-  
-  @Override
-  public void pause() {
-  
-  }
-  
-  @Override
-  public void resume() {
-  
-  }
-  
-  @Override
-  public void hide() {
-  
-  }
+        table = new Table();
+        table.setPosition(Settings.WIDTH * 2, Settings.HEIGHT * 4, Align.center);
 
-  @Override
-  public void resize(int width, int height) {
-    ui.getViewport().update(width, height);
-    table.setPosition(ui.getWidth() / 2, ui.getHeight(), Align.center);
-    super.resize(width, height);
-  }
+        scoreLabel = new Label("SCORE: [RED]00", skin);
+        highscoreLabel = new Label("HIGHSCORE: 00", skin);
 
-  @Override
-  public void dispose() {
-    level.dispose();
-    super.dispose();
-  }
+        float padAmount = Settings.WIDTH * 4 - (highscoreLabel.getPrefWidth() + scoreLabel.getPrefWidth());
+        table.add(scoreLabel).padTop(scoreLabel.getPrefHeight());
+        table.add(highscoreLabel).padTop(highscoreLabel.getPrefHeight()).padLeft(padAmount);
+        ui.addActor(table);
+    }
+
+    @Override
+    public void show() {
+        level = new Level(LevelData.getLevelDataFromJson("levels/forestlevel.json"));
+        mapRenderer = new OrthogonalTiledMapRenderer(level.getData().map);
+        gestureHandler = new GestureHandler(level.getPlayer());
+
+        getCamera().position.set(Settings.WIDTH / 2, Settings.HEIGHT / 2, 0);
+        Gdx.input.setInputProcessor(gestureHandler);
+
+        addActor(level);
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(100f / 255f, 173f / 255f, 234f / 255f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        getViewport().apply();
+        mapRenderer.setView((OrthographicCamera) this.getCamera());
+        mapRenderer.render();
+
+        if (level.isNewRecord())
+            highscoreLabel.setText("[MAROON]HIGHSCORE: [GOLD]" + level.getScore());
+        else
+            highscoreLabel.setText("[BLACK]HIGHSCORE: [GOLD]" + level.getHighscore());
+
+        scoreLabel.setText("[BLACK]SCORE: [GOLD]" + level.getScore());
+
+        super.render(delta);
+
+        ui.getViewport().apply();
+        ui.act(delta);
+        ui.draw();
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        ui.getViewport().update(width, height);
+        table.setPosition(ui.getWidth() / 2, ui.getHeight(), Align.center);
+        super.resize(width, height);
+    }
+
+    @Override
+    public void dispose() {
+        level.dispose();
+        super.dispose();
+    }
+
+    @Override
+    public void popFragment() {
+        super.popFragment();
+        Gdx.input.setInputProcessor(fragments.isEmpty() ? gestureHandler : fragments.peek());
+    }
+
+    public Level getLevel() {
+        return level;
+    }
 }

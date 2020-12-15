@@ -8,52 +8,64 @@ import java.util.Stack;
 
 public class StateManager {
 
-  private static StateManager instance = null;
+    private static StateManager instance = null;
 
-  private Game game;
-  private State state;
-  private Stack<State> stateStack;
+    private Game game;
+    private State state;
+    private Stack<State> stateStack;
 
-  private StateManager() {
-    stateStack = new Stack();
-  }
+    private StateManager() {
+        stateStack = new Stack();
+    }
 
-  public void setGame(Game game) {
-    this.game = game;
-  }
+    public void setGame(Game game) {
+        this.game = game;
+    }
 
-  public void setState(State state) {
-    //if (this.state != null) this.state.dispose();
-    this.state = state;
-    
-    if (game == null)
-      throw new NullPointerException("StateManager: game is null");
-    
-    game.setScreen(state);
-    stateStack.push(state);
-  }
+    public void setState(State state) {
+        stateStack.clear();
+        this.state.dispose();
+        this.state = state;
 
-  public void popState() {
-    if (stateStack.size() == 1)
-      return;
+        if (game == null)
+            throw new NullPointerException("StateManager: game is null");
 
-    state.dispose();
-    stateStack.pop();
+        game.setScreen(state);
+        stateStack.push(state);
+    }
 
-    if (game == null)
-      throw new NullPointerException("StateManager: game is null");
+    public void pushState(State state) {
+        //if (this.state != null) this.state.dispose();
+        this.state = state;
 
-    state = stateStack.peek();
-    game.setScreen(state);
-  }
+        if (game == null)
+            throw new NullPointerException("StateManager: game is null");
 
-  public State getState() {
-    return state;
-  }
+        game.setScreen(state);
+        stateStack.push(state);
+    }
 
-  public static StateManager getInstance() {
-    if (instance == null)
-      instance = new StateManager();
-    return instance;
-  }
+    public void popState() {
+        if (stateStack.size() == 1)
+            return;
+
+        state.dispose();
+        stateStack.pop();
+
+        if (game == null)
+            throw new NullPointerException("StateManager: game is null");
+
+        state = stateStack.peek();
+        game.setScreen(state);
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public static StateManager getInstance() {
+        if (instance == null)
+            instance = new StateManager();
+        return instance;
+    }
 }

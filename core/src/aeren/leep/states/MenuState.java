@@ -2,8 +2,7 @@ package aeren.leep.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -14,76 +13,81 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import aeren.leep.Assets;
 import aeren.leep.Settings;
-import aeren.leep.actors.Player;
 
 public class MenuState extends State {
-  private Skin skin;
-  
-  private Table table;
-  private Label title;
-  private TextButton play;
-  private TextButton stats;
-  private TextButton settings;
-  
-  public MenuState() {
-    super(new ExtendViewport(Settings.WIDTH * 4, Settings.HEIGHT * 4));
-  }
+    private Skin skin;
 
-  @Override
-  void init() {
-    skin = Assets.manager.get(Assets.skin);
+    private Table table;
+    private Label title;
+    private TextButton play;
+    private TextButton stats;
+    private TextButton settings;
 
-    table = new Table();
-    table.align(Align.center);
+    public MenuState() {
+        super(new ExtendViewport(Settings.WIDTH * 4, Settings.HEIGHT * 4));
+    }
 
-    title = new Label("[#FFA64D]LEEP", skin, "title");
+    @Override
+    void init() {
+        skin = Assets.manager.get(Assets.skin);
 
-    play = new TextButton("PLAY", skin);
-    play.addListener(new ChangeListener() {
-      @Override
-      public void changed(ChangeEvent event, Actor actor) {
-        StateManager.getInstance().setState(new GameState());
-      }
-    });
+        table = new Table();
+        table.align(Align.center);
 
-    stats = new TextButton("STATS", skin);
-    settings = new TextButton("SETTINGS", skin);
+        title = new Label("[#FFA64D]LEEP", skin, "title");
 
-    table.padTop(-192);
-    table.add(title).row();
-    table.add(play).minWidth(216).spaceTop(32).row();
-    table.add(stats).minWidth(216).spaceTop(8).row();
-    table.add(settings).minWidth(216).spaceTop(8);
+        play = new TextButton("PLAY", skin);
+//    play.addListener(new ChangeListener() {
+//      @Override
+//      public void changed(ChangeEvent event, Actor actor) {
+//        StateManager.getInstance().setState(new GameState());
+//      }
+//    });
 
-    this.addActor(table);
-  }
+        play.addListener((Event event) -> {
+            if (event instanceof ChangeListener.ChangeEvent)
+                StateManager.getInstance().pushState(new GameState());
+            return false;
+        });
 
-  @Override
-  public void show() {
-    Gdx.input.setInputProcessor(this);
-  }
+        stats = new TextButton("STATS", skin);
+        settings = new TextButton("SETTINGS", skin);
 
-  @Override
-  public void render(float delta) {
-    Gdx.gl.glClearColor(181f / 255f, 234f / 255f, 255f / 255f, 1f);
-    Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+        table.padTop(-192);
+        table.add(title).row();
+        table.add(play).minWidth(216).spaceTop(32).row();
+        table.add(stats).minWidth(216).spaceTop(8).row();
+        table.add(settings).minWidth(216).spaceTop(8);
 
-    getViewport().apply();
-    super.render(delta);
-  }
+        this.addActor(table);
+    }
 
-  @Override
-  public void pause() {
-  
-  }
-  
-  @Override
-  public void resume() {
-  
-  }
-  
-  @Override
-  public void hide() {
-  
-  }
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(this);
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(181f / 255f, 234f / 255f, 255f / 255f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        getViewport().apply();
+        super.render(delta);
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
 }
