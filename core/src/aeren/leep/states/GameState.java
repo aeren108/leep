@@ -127,7 +127,7 @@ public class GameState extends State {
         Gdx.input.setInputProcessor(fragments.isEmpty() ? gestureHandler : fragments.peek());
     }
 
-    public Level getLevel() {
-        return level;
+    public void reset() {
+        level.reset();
     }
 }

@@ -37,12 +37,6 @@ public class MenuState extends State {
         title = new Label("[#FFA64D]LEEP", skin, "title");
 
         play = new TextButton("PLAY", skin);
-//    play.addListener(new ChangeListener() {
-//      @Override
-//      public void changed(ChangeEvent event, Actor actor) {
-//        StateManager.getInstance().setState(new GameState());
-//      }
-//    });
 
         play.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent)

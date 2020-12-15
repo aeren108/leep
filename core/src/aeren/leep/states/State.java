@@ -49,13 +49,16 @@ public abstract class State extends Stage implements Screen {
 
     public void addFragment(Fragment f) {
         fragments.push(f);
+        f.init();
         f.getViewport().update(getViewport().getScreenWidth(), getViewport().getScreenHeight());
+
         Gdx.input.setInputProcessor(fragments.peek());
     }
 
     public void popFragment() {
         fragments.peek().dispose();
         fragments.pop();
+
         Gdx.input.setInputProcessor(fragments.isEmpty() ? this : fragments.peek());
     }
 }

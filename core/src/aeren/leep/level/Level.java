@@ -22,6 +22,7 @@ import aeren.leep.states.StateManager;
 import aeren.leep.states.fragments.GameOverFragment;
 
 public class Level extends Group {
+    private GameState state;
     private LevelData data;
 
     private Player player;
@@ -72,6 +73,8 @@ public class Level extends Group {
         data.music.setLooping(true);
         data.music.setVolume(.3f);
         data.music.play();
+
+        state = (GameState) StateManager.getInstance().getState(GameState.class);
     }
 
     @Override
@@ -122,11 +125,8 @@ public class Level extends Group {
 
                 hurt.play(.5f);
 
-                if (StateManager.getInstance().getState() instanceof GameState) {
-                    GameState state = (GameState) StateManager.getInstance().getState();
-                    state.addFragment(new GameOverFragment(state));
-                    pause = true;
-                }
+                state.addFragment(new GameOverFragment(state, score));
+                pause = true;
 
                 break;
             }
@@ -145,11 +145,8 @@ public class Level extends Group {
             if (tileId == id) {
                 fall.play();
 
-                if (StateManager.getInstance().getState() instanceof GameState) {
-                    GameState state = (GameState) StateManager.getInstance().getState();
-                    state.addFragment(new GameOverFragment(state));
-                    pause = true;
-                }
+                state.addFragment(new GameOverFragment(state, score));
+                pause = true;
 
                 break;
             }

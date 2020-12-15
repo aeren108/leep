@@ -34,6 +34,15 @@ public class StateManager {
         stateStack.push(state);
     }
 
+    public State getState(Class<? extends State> cls) {
+        for (State s : stateStack) {
+            if (s.getClass().equals(cls))
+                return s;
+        }
+
+        return null;
+    }
+
     public void pushState(State state) {
         //if (this.state != null) this.state.dispose();
         this.state = state;
@@ -41,8 +50,8 @@ public class StateManager {
         if (game == null)
             throw new NullPointerException("StateManager: game is null");
 
-        game.setScreen(state);
         stateStack.push(state);
+        game.setScreen(state);
     }
 
     public void popState() {
