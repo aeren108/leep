@@ -17,7 +17,7 @@ import aeren.leep.Assets;
 public class LevelData {
     public TiledMap map;
     public int[] deadlyTiles;
-    private int[] availableTiles;
+    public int[] availableTiles;
     public List<Vector2> availableCells;
 
     public Music music;
@@ -30,6 +30,9 @@ public class LevelData {
 
     public float fireballSpeedInc;
     public float fireballCooldownDec;
+
+    public float birthRate;
+    public int birthThreshold, deathThreshold, maxStep;
 
     private LevelData() {
         availableCells = new ArrayList<>();
@@ -58,25 +61,13 @@ public class LevelData {
         data.fireballSpeedTemp = data.fireballSpeed;
         data.fireballCooldownTemp = data.fireballCooldown;
 
-        data.findAvailableCells();
+        data.birthRate = json.getFloat("birthRate");
+        data.birthThreshold = json.getInt("birthThreshold");
+        data.deathThreshold = json.getInt("deathThreshold");
+        data.maxStep = json.getInt("maxStep");
 
         return data;
     }
 
-    private void findAvailableCells() {
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("ground");
 
-        for (int i = 0; i < layer.getWidth(); i++) {
-            for (int j = 0; j < layer.getHeight(); j++) {
-                for (int id : availableTiles) {
-                    TiledMapTileLayer.Cell cell = layer.getCell(i, j);
-                    if (cell == null)
-                        continue;
-
-                    if (cell.getTile().getId() == id)
-                        availableCells.add(new Vector2(i * 16, j * 16));
-                }
-            }
-        }
-    }
 }

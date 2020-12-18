@@ -62,10 +62,10 @@ public class GameOverFragment extends Fragment {
         Table table = new Table();
         table.align(Align.center);
 
-        table.padTop(-132);
+        table.padTop(-156);
         table.add(titleLabel).row();
         table.add(scoreLabel).row();
-        table.add(retryButton).minWidth(256).spaceTop(16).row();
+        table.add(retryButton).minWidth(256).spaceTop(48).row();
         table.add(backButton).minWidth(256).spaceTop(8).row();
 
         this.addActor(table);

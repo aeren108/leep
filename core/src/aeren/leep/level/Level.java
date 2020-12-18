@@ -3,6 +3,7 @@ package aeren.leep.level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -24,6 +25,8 @@ import aeren.leep.states.fragments.GameOverFragment;
 public class Level extends Group {
     private GameState state;
     private LevelData data;
+    private MapGenerator generator;
+    private List<Vector2> availableCells;
 
     private Player player;
     private Fruit fruit;
@@ -51,6 +54,7 @@ public class Level extends Group {
     public Level(LevelData data) {
         this.data = data;
         random = new Random();
+        generator = new MapGenerator(data);
 
         player = new Player();
         fruit = new Fruit();
@@ -75,6 +79,8 @@ public class Level extends Group {
         data.music.play();
 
         state = (GameState) StateManager.getInstance().getState(GameState.class);
+        generator.generateTiledMap();
+        findAvailableCells();
     }
 
     @Override
@@ -195,9 +201,29 @@ public class Level extends Group {
         }
     }
 
+    public void findAvailableCells() {
+        TiledMapTileLayer layer = (TiledMapTileLayer) data.map.getLayers().get("ground");
+
+        for (int i = 0; i < layer.getWidth(); i++) {
+            for (int j = 0; j < layer.getHeight(); j++) {
+                for (int id : data.availableTiles) {
+                    TiledMapTileLayer.Cell cell = layer.getCell(i, j);
+                    if (cell == null)
+                        continue;
+
+                    if (cell.getTile().getId() == id)
+                        availableCells.add(new Vector2(i * 16, j * 16));
+                }
+            }
+        }
+    }
+
     public void reset() {
         respawning = true;
         pause = false;
+
+        data.map = generator.generateTiledMap();
+        findAvailableCells();
 
         player.clearActions();
         activeFireballs.clear();

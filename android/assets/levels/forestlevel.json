@@ -2,20 +2,34 @@
   "tmxFile": "levels/forestlevel.tmx",
   "music": "sfx/level1_theme.ogg",
 
-  "difficultyThreshold": 7.5,
+  "difficultyThreshold": 8.0,
+
+  "birthRate": 0.6,
+  "birthThreshold": 4,
+  "deathThreshold": 4,
+  "maxStep": 16,
 
   "fireball": {
-    "speed": 1.75,
-    "cooldown": 1.0,
+    "speed": 1.70,
+    "cooldown": 1.25,
     "maxSpeed": 3.0,
     "minCooldown": 0.4,
     "alert": 0.5,
 
-    "speedInc": 0.1,
+    "speedInc": 0.05,
     "cooldownDec": 0.05
   },
 
   "laser": {},
+
+  "patterns": [
+    {
+
+    },
+    {
+
+    }
+  ],
 
   "availableTiles": [1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19],
   "deadlyTiles": [97, 98, 99, 109, 110, 111, 121, 122, 123, 133, 134, 135, 145, 146, 147, 157, 158, 159, 169, 170, 171, 181, 182, 183]
