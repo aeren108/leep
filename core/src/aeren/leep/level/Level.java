@@ -55,6 +55,7 @@ public class Level extends Group {
         this.data = data;
         random = new Random();
         generator = new MapGenerator(data);
+        availableCells = new ArrayList<>();
 
         player = new Player();
         fruit = new Fruit();
@@ -69,8 +70,6 @@ public class Level extends Group {
         activeFireballs = new ArrayList<>();
         fireballFactory = new FireballFactory();
 
-        placeFruit();
-
         prefs = Gdx.app.getPreferences("leep");
         highscore = prefs.getInteger("hs");
 
@@ -79,8 +78,10 @@ public class Level extends Group {
         data.music.play();
 
         state = (GameState) StateManager.getInstance().getState(GameState.class);
+
         generator.generateTiledMap();
         findAvailableCells();
+        placeFruit();
     }
 
     @Override
@@ -160,7 +161,7 @@ public class Level extends Group {
     }
 
     private void placeFruit() {
-        Vector2 pos = data.availableCells.get(random.nextInt(data.availableCells.size() - 1));
+        Vector2 pos = availableCells.get(random.nextInt(availableCells.size() - 1));
 
         if ((pos.x == player.getX() && pos.y == player.getY()) || (pos.x == fruit.getX() && pos.y == fruit.getY())) {
             placeFruit();
@@ -203,6 +204,7 @@ public class Level extends Group {
 
     public void findAvailableCells() {
         TiledMapTileLayer layer = (TiledMapTileLayer) data.map.getLayers().get("ground");
+        availableCells.clear();
 
         for (int i = 0; i < layer.getWidth(); i++) {
             for (int j = 0; j < layer.getHeight(); j++) {
@@ -219,11 +221,11 @@ public class Level extends Group {
     }
 
     public void reset() {
-        respawning = true;
-        pause = false;
-
         data.map = generator.generateTiledMap();
         findAvailableCells();
+
+        respawning = true;
+        pause = false;
 
         player.clearActions();
         activeFireballs.clear();

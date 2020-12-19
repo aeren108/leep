@@ -18,7 +18,7 @@ public class LevelData {
     public TiledMap map;
     public int[] deadlyTiles;
     public int[] availableTiles;
-    public List<Vector2> availableCells;
+    public int[] autoTiles;
 
     public Music music;
 
@@ -35,7 +35,7 @@ public class LevelData {
     public int birthThreshold, deathThreshold, maxStep;
 
     private LevelData() {
-        availableCells = new ArrayList<>();
+
     }
 
     public static LevelData getLevelDataFromJson(String path) {
@@ -49,6 +49,7 @@ public class LevelData {
         data.music = Assets.manager.get(json.getString("music"));
         data.deadlyTiles = json.get("deadlyTiles").asIntArray();
         data.availableTiles = json.get("availableTiles").asIntArray();
+        data.autoTiles = json.get("autoTiles").asIntArray();
         data.fireballCooldown = fireball.getFloat("cooldown");
         data.fireballSpeed = fireball.getFloat("speed");
         data.fireballMaxSpeed = fireball.getFloat("maxSpeed");

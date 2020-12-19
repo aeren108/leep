@@ -4,10 +4,10 @@
 
   "difficultyThreshold": 8.0,
 
-  "birthRate": 0.6,
+  "birthRate": 0.7,
   "birthThreshold": 4,
   "deathThreshold": 4,
-  "maxStep": 16,
+  "maxStep": 12,
 
   "fireball": {
     "speed": 1.70,
@@ -32,5 +32,6 @@
   ],
 
   "availableTiles": [1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19],
+  "autoTiles": [97, 99, 109, 111, 98, 122, 121, 123, 157, 159, 181, 183],
   "deadlyTiles": [97, 98, 99, 109, 110, 111, 121, 122, 123, 133, 134, 135, 145, 146, 147, 157, 158, 159, 169, 170, 171, 181, 182, 183]
 }
