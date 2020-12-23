@@ -12,8 +12,8 @@
   "fireball": {
     "speed": 1.70,
     "cooldown": 1.25,
-    "maxSpeed": 3.0,
-    "minCooldown": 0.4,
+    "maxSpeed": 4.0,
+    "minCooldown": 0.3,
     "alert": 0.5,
 
     "speedInc": 0.05,
@@ -24,10 +24,25 @@
 
   "patterns": [
     {
-
+      "controlPattern": [[1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1]],
+      "targetPattern": [[0,0], [0,0], [0,0], [0,0]],
+      "tileThreshold": 65,
+      "max": 1,
+      "repeat": true
     },
     {
-
+      "controlPattern": [[1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1]],
+      "targetPattern": [[0,0], [0,0], [0,0]],
+      "tileThreshold": 50,
+      "max": 1,
+      "repeat": true
+    },
+    {
+      "controlPattern": [[1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1]],
+      "targetPattern": [[0,0], [0,0]],
+      "tileThreshold": 10,
+      "max": 3,
+      "repeat": true
     }
   ],
 

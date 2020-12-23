@@ -1,18 +1,21 @@
 package aeren.leep.level;
 
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 
-import java.awt.datatransfer.FlavorEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import aeren.leep.level.pattern.Pattern;
+import aeren.leep.level.pattern.PatternMatcher;
 
 public class MapGenerator {
 
     private LevelData data;
     private int[][] mapData;
 
-    private int width = 9, height = 16;
+    private final int width = 9, height = 16;
 
     public MapGenerator(LevelData data) {
         this.data = data;
@@ -23,9 +26,9 @@ public class MapGenerator {
     }
 
     private void randomizeMap() {
-        for (int y = 1; y < height - 1; y++) {
+        for (int y = 2; y < height - 2; y++) {
             for (int x = 1; x < width - 1; x++) {
-                if ( (int) (Math.random() * 11) <= data.birthRate * 10) mapData[y][x] = 1;
+                if ((int) (Math.random() * 11) <= data.birthRate * 10) mapData[y][x] = 1;
                 else mapData[y][x] = 0;
             }
         }
@@ -45,10 +48,10 @@ public class MapGenerator {
         }
     }
 
-    public int[][] stepAutomata() {
+    private int[][] stepAutomata() {
         int[][] newMap = new int[height][width];
 
-        for (int y = 1; y < height - 1; y++) {
+        for (int y = 2; y < height - 2; y++) {
             for (int x = 1; x < width - 1; x++) {
                 int aliveNeighbours = aliveNeighbourCount(x, y);
 
@@ -104,9 +107,65 @@ public class MapGenerator {
             }
         }
 
+        placePatterns();
         autoTile();
 
         return map;
+    }
+
+    private void placePatterns() {
+        Pattern p = null;
+        for (int i = 0; i < data.patterns.size(); i++) {
+            if (tileCount() >= data.patterns.get(i).tileThreshold) {
+                p = data.patterns.get(i);
+                break;
+            }
+        }
+
+        int implementationCount = 0;
+
+        while (p != null && p.repeat && tileCount() >= p.tileThreshold) {
+            if (implementPattern(p)) {
+                implementationCount++;
+                if (implementationCount >= p.max && data.patterns.indexOf(p) + 1 < data.patterns.size()) {
+                    p = data.patterns.get(data.patterns.indexOf(p) + 1);
+                    implementationCount = 0;
+                }
+            } else if (data.patterns.indexOf(p) + 1 < data.patterns.size()) {
+                p = data.patterns.get(data.patterns.indexOf(p) + 1);
+                implementationCount = 0;
+            } else {
+                break;
+            }
+        }
+    }
+
+    /*implements pattern to mapData if circumstances are right,
+    returns whether pattern is implemented or not */
+    private boolean implementPattern(Pattern p) {
+        List<int[]> matchingTiles = patternMatchingTiles(p);
+
+        if (matchingTiles.isEmpty())
+            return false;
+
+        int[] tile = matchingTiles.get((int) (Math.random() * matchingTiles.size()));
+        PatternMatcher.applyPattern(mapData, p.targetPattern, tile[0], tile[1]);
+
+        return true;
+    }
+
+    private List<int[]> patternMatchingTiles(Pattern p) {
+        List<int[]> matchingTiles = new ArrayList<>();
+        List<int[]> tilePos = tilePositions();
+
+        for (int[] pos : tilePos) {
+            int[][] curPattern = PatternMatcher.extractPattern(mapData, p.controlPattern, pos[0], pos[1]);
+
+            if (PatternMatcher.doPatternsMatch(curPattern, p.controlPattern))
+                matchingTiles.add(new int[]{pos[0], pos[1]});
+        }
+
+        return matchingTiles;
     }
 
     private void autoTile() {
@@ -119,10 +178,10 @@ public class MapGenerator {
                 if (mapData[y][x] != 0)
                     continue;
 
-                int[][] pattern = PatternMatcher.extractPattern(mapData, x, y);
+                int[][] pattern = aeren.leep.level.pattern.PatternMatcher.extractTilePattern(mapData, x, y);
 
-                for (int i = 0; i < PatternMatcher.PATTERNS.length; i++) {
-                    if (PatternMatcher.doPatternsMatch(PatternMatcher.PATTERNS[i], pattern)) {
+                for (int i = 0; i < aeren.leep.level.pattern.PatternMatcher.PATTERNS.length; i++) {
+                    if (aeren.leep.level.pattern.PatternMatcher.doPatternsMatch(PatternMatcher.PATTERNS[i], pattern)) {
                         TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
 
                         cell.setTile(tileSet.getTile(data.autoTiles[i]));
@@ -133,5 +192,31 @@ public class MapGenerator {
                 }
             }
         }
+    }
+
+    private List<int[]> tilePositions() {
+        List<int[]> posList = new ArrayList<>();
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (mapData[y][x] == 1) {
+                    posList.add(new int[] {x, y});
+                }
+            }
+        }
+
+        return posList;
+    }
+
+    private int tileCount() {
+        int tiles = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (mapData[y][x] == 1)
+                    tiles++;
+            }
+        }
+
+        return tiles;
     }
 }
