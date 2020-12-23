@@ -2,7 +2,7 @@
   "tmxFile": "levels/forestlevel.tmx",
   "music": "sfx/level1_theme.ogg",
 
-  "difficultyThreshold": 8.0,
+  "difficultyThreshold": 5.0,
 
   "birthRate": 0.7,
   "birthThreshold": 4,

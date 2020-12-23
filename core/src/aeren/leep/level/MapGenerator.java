@@ -219,4 +219,8 @@ public class MapGenerator {
 
         return tiles;
     }
+
+    public int[][] getRawMap() {
+        return mapData;
+    }
 }

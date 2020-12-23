@@ -3,8 +3,8 @@ package aeren.leep.level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -26,6 +26,7 @@ public class Level extends Group {
     private GameState state;
     private LevelData data;
     private MapGenerator generator;
+    private Rectangle mapBounds;
     private List<Vector2> availableCells;
 
     private Player player;
@@ -35,7 +36,6 @@ public class Level extends Group {
     private Sound hurt;
     private Sound fall;
 
-    private Random random;
     private boolean respawning = false;
 
     private List<Fireball> activeFireballs;
@@ -53,7 +53,6 @@ public class Level extends Group {
 
     public Level(LevelData data) {
         this.data = data;
-        random = new Random();
         generator = new MapGenerator(data);
         availableCells = new ArrayList<>();
 
@@ -82,6 +81,10 @@ public class Level extends Group {
         generator.generateTiledMap();
         findAvailableCells();
         placeFruit();
+        computeMapBoundaries();
+
+        Vector2 playerPos = availableCells.get((int) (Math.random() * availableCells.size()));
+        player.setPosition(playerPos.x, playerPos.y);
     }
 
     @Override
@@ -161,7 +164,7 @@ public class Level extends Group {
     }
 
     private void placeFruit() {
-        Vector2 pos = availableCells.get(random.nextInt(availableCells.size() - 1));
+        Vector2 pos = availableCells.get((int) (Math.random() * availableCells.size()));
 
         if ((pos.x == player.getX() && pos.y == player.getY()) || (pos.x == fruit.getX() && pos.y == fruit.getY())) {
             placeFruit();
@@ -174,11 +177,10 @@ public class Level extends Group {
 
     private void generateFireballs() {
         if (fireballTimer >= data.fireballCooldownTemp) {
-
             for (int i = 0; i < 2; i++) {
                 Fireball f = fireballFactory.createFireball(Fireball.FireballType.values()[i]);
                 f.setVelocity((f.getType() == Fireball.FireballType.VERTICAL) ? Fireball.VEL_DOWN : Fireball.VEL_RIGHT);
-                f.setLinage((f.getType() == Fireball.FireballType.VERTICAL) ? random.nextInt(9) : random.nextInt(16));
+                f.setLinage((f.getType() == Fireball.FireballType.VERTICAL) ? (int)(mapBounds.x + Math.random() * (mapBounds.width - mapBounds.x)) : (int)(mapBounds.y + Math.random() * (mapBounds.height - mapBounds.y)));
                 f.setVelocity(f.getVelocity().cpy().scl(data.fireballSpeedTemp));
                 f.setAlertThreshold(data.fireballAlert);
                 f.flip();
@@ -234,6 +236,9 @@ public class Level extends Group {
         data.fireballSpeedTemp = data.fireballSpeed;
         data.fireballCooldownTemp = data.fireballCooldown;
 
+        Vector2 playerPos = availableCells.get((int) (Math.random() * availableCells.size()));
+        player.respawn.setPosition(playerPos.x, playerPos.y);
+
         player.addAction(Actions.sequence(Actions.repeat(3, player.flicker), player.respawn, Actions.run(() -> {
             placeFruit();
 
@@ -246,6 +251,48 @@ public class Level extends Group {
 
         score = 0;
         isNewRecord = false;
+    }
+
+    private void computeMapBoundaries() {
+        int[][] rawMap = generator.getRawMap();
+
+        int minY = 15, maxY = 0;
+        int minX = 8, maxX = 0;
+        for (int y = 0; y < 16; y++) {
+            int[] row = rawMap[y];
+            boolean containsTile = false;
+
+            for (int i = 0; i < row.length; i++) {
+                if (row[i] == 1)
+                    containsTile = true;
+            }
+
+            if (containsTile) {
+                int curY = 16 - y;
+                if (curY < minY)
+                    minY = curY;
+
+                if (curY > maxY)
+                    maxY = curY;
+            }
+        }
+
+        for (int x = 0; x < 9; x++) {
+            boolean containsTile = false;
+            for (int y = 0; y < 16; y++) {
+                if(rawMap[y][x] == 1)
+                    containsTile = true;
+            }
+
+            if (containsTile) {
+                if (x < minX)
+                    minX = x;
+                if (x > maxX)
+                    maxX = x;
+            }
+        }
+
+        mapBounds = new Rectangle(minX, minY, maxX, maxY);
     }
 
     public void dispose() {
