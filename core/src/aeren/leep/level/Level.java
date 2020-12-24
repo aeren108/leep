@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import aeren.leep.Assets;
 import aeren.leep.actors.Fireball;
@@ -24,6 +23,8 @@ import aeren.leep.states.fragments.GameOverFragment;
 
 public class Level extends Group {
     private GameState state;
+    private Assets assets;
+
     private LevelData data;
     private MapGenerator generator;
     private Rectangle mapBounds;
@@ -37,6 +38,7 @@ public class Level extends Group {
     private Sound fall;
 
     private boolean respawning = false;
+    private boolean pause = false;
 
     private List<Fireball> activeFireballs;
     private FireballFactory fireballFactory;
@@ -46,8 +48,6 @@ public class Level extends Group {
     private int score = 0;
     private int highscore = 0;
     private boolean isNewRecord = false;
-
-    private boolean pause = false;
 
     private Preferences prefs;
 
@@ -59,9 +59,11 @@ public class Level extends Group {
         player = new Player();
         fruit = new Fruit();
 
-        pickup = Assets.manager.get(Assets.pickup);
-        hurt = Assets.manager.get(Assets.hurt);
-        fall = Assets.manager.get(Assets.fall);
+        assets = Assets.getInstance();
+
+        pickup = assets.get("sfx/pickup.wav", Sound.class);
+        hurt = assets.get("sfx/hurt.wav", Sound.class);
+        fall = assets.get("sfx/fall.wav", Sound.class);
 
         addActor(fruit);
         addActor(player);
@@ -262,33 +264,33 @@ public class Level extends Group {
             int[] row = rawMap[y];
             boolean containsTile = false;
 
-            for (int i = 0; i < row.length; i++) {
-                if (row[i] == 1)
+            for (int value : row) {
+                if (value == 1) {
                     containsTile = true;
+                    break;
+                }
             }
 
             if (containsTile) {
                 int curY = 16 - y;
-                if (curY < minY)
-                    minY = curY;
 
-                if (curY > maxY)
-                    maxY = curY;
+                if (curY < minY) minY = curY;
+                if (curY > maxY) maxY = curY;
             }
         }
 
         for (int x = 0; x < 9; x++) {
             boolean containsTile = false;
             for (int y = 0; y < 16; y++) {
-                if(rawMap[y][x] == 1)
+                if (rawMap[y][x] == 1) {
                     containsTile = true;
+                    break;
+                }
             }
 
             if (containsTile) {
-                if (x < minX)
-                    minX = x;
-                if (x > maxX)
-                    maxX = x;
+                if (x < minX) minX = x;
+                if (x > maxX) maxX = x;
             }
         }
 

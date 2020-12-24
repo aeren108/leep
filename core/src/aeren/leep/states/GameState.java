@@ -44,7 +44,7 @@ public class GameState extends State {
     @Override
     void init() {
         ui = new Stage(new ExtendViewport(Settings.WIDTH * 4, Settings.HEIGHT * 4));
-        skin = Assets.manager.get(Assets.skin);
+        skin = Assets.getInstance().get("ui/ui-skin.json", Skin.class);
 
         table = new Table();
         table.setPosition(Settings.WIDTH * 2, Settings.HEIGHT * 4, Align.center);
@@ -129,5 +129,10 @@ public class GameState extends State {
 
     public void reset() {
         level.reset();
+    }
+
+    @Override
+    public String getGroupName() {
+        return "game";
     }
 }

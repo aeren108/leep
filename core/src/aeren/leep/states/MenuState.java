@@ -29,7 +29,7 @@ public class MenuState extends State {
 
     @Override
     void init() {
-        skin = Assets.manager.get(Assets.skin);
+        skin = Assets.getInstance().get("ui/ui-skin.json", Skin.class);
 
         table = new Table();
         table.align(Align.center);
@@ -83,5 +83,10 @@ public class MenuState extends State {
     @Override
     public void hide() {
 
+    }
+
+    @Override
+    public String getGroupName() {
+        return "menu";
     }
 }

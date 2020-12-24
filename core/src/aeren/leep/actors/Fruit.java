@@ -1,5 +1,6 @@
 package aeren.leep.actors;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
@@ -13,7 +14,7 @@ public class Fruit extends Actor {
     private Rectangle bounds;
 
     public Fruit() {
-        sprite = new Sprite(Assets.manager.get(Assets.fruit));
+        sprite = new Sprite(Assets.getInstance().get("sprites/fruit.png", Texture.class));
         bounds = new Rectangle();
     }
 

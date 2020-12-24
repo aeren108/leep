@@ -46,7 +46,7 @@ public class LevelData {
         JsonValue fireball = json.get("fireball");
 
         data.map = new TmxMapLoader().load(json.getString("tmxFile"));
-        data.music = Assets.manager.get(json.getString("music"));
+        data.music = Assets.getInstance().get(json.getString("music"), Music.class);
         data.deadlyTiles = json.get("deadlyTiles").asIntArray();
         data.availableTiles = json.get("availableTiles").asIntArray();
         data.autoTiles = json.get("autoTiles").asIntArray();

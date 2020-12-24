@@ -33,7 +33,7 @@ public class GameOverFragment extends Fragment {
 
     @Override
     public void init() {
-        Skin skin = Assets.manager.get(Assets.skin);
+        Skin skin = Assets.getInstance().get("ui/ui-skin.json", Skin.class);
 
         Pixmap pixmap = new Pixmap((int) Settings.WIDTH * 4, (int) Settings.HEIGHT * 4, Pixmap.Format.RGBA8888);
         pixmap.setColor(0, 0, 0, .5f);

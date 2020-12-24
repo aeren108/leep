@@ -30,7 +30,7 @@ public class Player extends Actor implements SwipeListener {
 
     public Player() {
         bounds = new Rectangle();
-        swipe = Assets.manager.get(Assets.swipe);
+        swipe = Assets.getInstance().get("sfx/swipe.wav", Sound.class);
 
         init();
     }
@@ -39,7 +39,7 @@ public class Player extends Actor implements SwipeListener {
         flicker = new SequenceAction(Actions.fadeOut(0.15f), Actions.fadeIn(0.15f));
         respawn = Actions.moveTo(16 * 5, 16 * 3, .2f);
 
-        Texture sheet = Assets.manager.get(Assets.dinoIdle);
+        Texture sheet = Assets.getInstance().get("sprites/dino_idle.png", Texture.class);
         TextureRegion[][] frames = TextureRegion.split(sheet, 16, 19);
 
         idleRight = new Animation<>(.15f, frames[0]);

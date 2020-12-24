@@ -1,10 +1,9 @@
 package aeren.leep.states;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-
-import java.lang.reflect.Constructor;
 import java.util.Stack;
+
+import aeren.leep.Assets;
 
 public class StateManager {
 
@@ -12,10 +11,12 @@ public class StateManager {
 
     private Game game;
     private State state;
+    private Assets assets;
     private Stack<State> stateStack;
 
     private StateManager() {
-        stateStack = new Stack();
+        stateStack = new Stack<>();
+        assets = Assets.getInstance();
     }
 
     public void setGame(Game game) {
@@ -23,9 +24,16 @@ public class StateManager {
     }
 
     public void setState(State state) {
+        for (State s : stateStack) {
+            assets.unloadGroup(s.getGroupName());
+            s.dispose();
+        }
+
         stateStack.clear();
-        this.state.dispose();
         this.state = state;
+
+        assets.loadGroup(state.getGroupName());
+        assets.finishLoading();
 
         if (game == null)
             throw new NullPointerException("StateManager: game is null");
@@ -44,8 +52,12 @@ public class StateManager {
     }
 
     public void pushState(State state) {
-        //if (this.state != null) this.state.dispose();
+        if (this.state != null)
+            assets.unloadGroup(this.state.getGroupName());
+
         this.state = state;
+        assets.loadGroup(state.getGroupName());
+        assets.finishLoading();
 
         if (game == null)
             throw new NullPointerException("StateManager: game is null");
@@ -58,11 +70,15 @@ public class StateManager {
         if (stateStack.size() == 1)
             return;
 
+        assets.unloadGroup(state.getGroupName());
         state.dispose();
         stateStack.pop();
 
         if (game == null)
             throw new NullPointerException("StateManager: game is null");
+
+        assets.loadGroup(stateStack.peek().getGroupName());
+        assets.finishLoading();
 
         state = stateStack.peek();
         game.setScreen(state);

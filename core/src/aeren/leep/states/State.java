@@ -19,11 +19,13 @@ public abstract class State extends Stage implements Screen {
 
     public State(Viewport viewport) {
         this.setViewport(viewport);
-        this.fragments = new Stack();
+        this.fragments = new Stack<>();
+
         init();
     }
 
     abstract void init();
+    abstract String getGroupName();
 
     @Override
     public void render(float delta) {

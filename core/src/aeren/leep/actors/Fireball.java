@@ -37,8 +37,8 @@ public abstract class Fireball extends Actor implements Pool.Poolable {
 
     public Fireball() {
         bounds = new Rectangle(0, 0, 16, 16);
-        frames = TextureRegion.split(Assets.manager.get(Assets.fireball), 16, 16);
-        alert = Assets.manager.get(Assets.alert);
+        frames = TextureRegion.split(Assets.getInstance().get("sprites/fireball.png", Texture.class), 16, 16);
+        alert = Assets.getInstance().get("sprites/alert.png", Texture.class);
     }
 
     @Override
