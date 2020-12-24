@@ -10,9 +10,10 @@ import aeren.leep.states.StateManager;
 
 public class LeepMain extends Game {
     private Assets assets;
+    public AndroidCallback callback;
 
-    public LeepMain() {
-
+    public LeepMain(AndroidCallback callback) {
+        this.callback = callback;
     }
 
     @Override

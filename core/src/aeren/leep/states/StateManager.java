@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import java.util.Stack;
 
 import aeren.leep.Assets;
+import aeren.leep.LeepMain;
 
 public class StateManager {
 
@@ -67,8 +68,10 @@ public class StateManager {
     }
 
     public void popState() {
-        if (stateStack.size() == 1)
+        if (stateStack.size() == 1) {
+            ((LeepMain) game).callback.shutDown();
             return;
+        }
 
         assets.unloadGroup(state.getGroupName());
         state.dispose();
