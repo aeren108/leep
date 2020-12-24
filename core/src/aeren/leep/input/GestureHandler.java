@@ -3,6 +3,9 @@ package aeren.leep.input;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GestureHandler extends GestureDetector {
 
     public GestureHandler(SwipeListener listener) {
@@ -11,12 +14,13 @@ public class GestureHandler extends GestureDetector {
 
     private static class GestureManager implements GestureListener {
 
-        private SwipeListener listener;
-        private Vector2 swipeDirection;
-        //TODO: List<SwipeListener> listeners;
+        private final Vector2 swipeDirection;
+        private final List<SwipeListener> listeners;
 
         public GestureManager(SwipeListener listener) {
-            this.listener = listener;
+            listeners = new ArrayList<>();
+            listeners.add(listener);
+
             swipeDirection = Vector2.Zero;
         }
 
@@ -38,7 +42,8 @@ public class GestureHandler extends GestureDetector {
         @Override
         public boolean fling(float velocityX, float velocityY, int button) {
             swipeDirection.set(velocityX, velocityY);
-            listener.onSwipe(swipeDirection);
+            for (SwipeListener listener : listeners)
+                listener.onSwipe(swipeDirection);
 
             return false;
         }
@@ -66,6 +71,10 @@ public class GestureHandler extends GestureDetector {
         @Override
         public void pinchStop() {
 
+        }
+
+        public void addListener(SwipeListener listener) {
+            listeners.add(listener);
         }
     }
 }
