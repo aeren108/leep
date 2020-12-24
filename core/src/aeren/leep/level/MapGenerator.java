@@ -26,7 +26,7 @@ public class MapGenerator {
     }
 
     private void randomizeMap() {
-        for (int y = 2; y < height - 2; y++) {
+        for (int y = 3; y < height - 3; y++) {
             for (int x = 1; x < width - 1; x++) {
                 if ((int) (Math.random() * 11) <= data.birthRate * 10) mapData[y][x] = 1;
                 else mapData[y][x] = 0;
@@ -51,7 +51,7 @@ public class MapGenerator {
     private int[][] stepAutomata() {
         int[][] newMap = new int[height][width];
 
-        for (int y = 2; y < height - 2; y++) {
+        for (int y = 3; y < height - 3; y++) {
             for (int x = 1; x < width - 1; x++) {
                 int aliveNeighbours = aliveNeighbourCount(x, y);
 
