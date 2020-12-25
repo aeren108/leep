@@ -49,7 +49,7 @@ public abstract class State extends Stage implements Screen {
         this.getViewport().update(width, height);
     }
 
-    public void addFragment(Fragment f) {
+    public void pushFragment(Fragment f) {
         fragments.push(f);
         f.init();
         f.getViewport().update(getViewport().getScreenWidth(), getViewport().getScreenHeight());

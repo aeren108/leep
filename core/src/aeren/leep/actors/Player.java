@@ -19,6 +19,7 @@ import aeren.leep.input.SwipeListener;
 public class Player extends Actor implements SwipeListener, Disposable {
     private Rectangle bounds;
 
+    private Texture spriteSheet;
     private Animation<TextureRegion> idleLeft;
     private Animation<TextureRegion> idleRight;
     private Animation<TextureRegion> curAnim;
@@ -40,8 +41,8 @@ public class Player extends Actor implements SwipeListener, Disposable {
         flicker = new SequenceAction(Actions.fadeOut(0.15f), Actions.fadeIn(0.15f));
         respawn = Actions.moveTo(16 * 5, 16 * 3, .2f);
 
-        Texture sheet = Assets.getInstance().get("sprites/dino_idle.png", Texture.class);
-        TextureRegion[][] frames = TextureRegion.split(sheet, 16, 19);
+        spriteSheet = Assets.getInstance().get("sprites/dino_idle.png", Texture.class);
+        TextureRegion[][] frames = TextureRegion.split(spriteSheet, 16, 19);
 
         idleRight = new Animation<>(.15f, frames[0]);
         idleLeft = new Animation<>(.15f, frames[1]);
@@ -96,5 +97,6 @@ public class Player extends Actor implements SwipeListener, Disposable {
     @Override
     public void dispose() {
         swipe.dispose();
+        spriteSheet.dispose();
     }
 }

@@ -138,7 +138,7 @@ public class Level extends Group implements Disposable {
 
                 hurt.play(.5f);
 
-                state.addFragment(new GameOverFragment(state, score));
+                state.pushFragment(new GameOverFragment(state, score));
                 pause = true;
 
                 break;
@@ -158,7 +158,7 @@ public class Level extends Group implements Disposable {
             if (tileId == id) {
                 fall.play();
 
-                state.addFragment(new GameOverFragment(state, score));
+                state.pushFragment(new GameOverFragment(state, score));
                 pause = true;
 
                 break;
@@ -304,8 +304,10 @@ public class Level extends Group implements Disposable {
         fall.dispose();
         hurt.dispose();
         data.music.dispose();
+
         player.dispose();
         fruit.dispose();
+        fireballFactory.dispose();
     }
 
     public LevelData getData() {

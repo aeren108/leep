@@ -19,6 +19,7 @@ import aeren.leep.states.StateManager;
 
 public class GameOverFragment extends Fragment {
     private Texture background;
+    private Pixmap pixmap;
 
     private Label titleLabel;
     private Label scoreLabel;
@@ -36,11 +37,11 @@ public class GameOverFragment extends Fragment {
     public void init() {
         Skin skin = Assets.getInstance().get("ui/ui-skin.json", Skin.class);
 
-        //TODO: Do not create pixmap every time this fragment is created
-        Pixmap pixmap = new Pixmap((int) 16, (int) 16, Pixmap.Format.RGBA8888);
+        pixmap = new Pixmap(9, 16, Pixmap.Format.RGBA8888);
         pixmap.setColor(0, 0, 0, .5f);
-        pixmap.fillRectangle(0, 0, (int) Settings.WIDTH / 4, (int) Settings.HEIGHT / 4);
+        pixmap.fillRectangle(0, 0, 9, 16);
         background = new Texture(pixmap);
+        pixmap.dispose();
 
         titleLabel = new Label("[GOLD]YOU DIED", skin);
         scoreLabel = new Label("[WHITE]SCORE: [GOLD]" + score, skin);
@@ -80,5 +81,12 @@ public class GameOverFragment extends Fragment {
         getBatch().end();
 
         super.draw();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        
+        background.dispose();
     }
 }
