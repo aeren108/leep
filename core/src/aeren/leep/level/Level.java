@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Disposable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import aeren.leep.states.GameState;
 import aeren.leep.states.StateManager;
 import aeren.leep.states.fragments.GameOverFragment;
 
-public class Level extends Group {
+public class Level extends Group implements Disposable {
     private GameState state;
     private Assets assets;
 
@@ -78,7 +79,7 @@ public class Level extends Group {
         data.music.setVolume(.3f);
         data.music.play();
 
-        state = (GameState) StateManager.getInstance().getState(GameState.class);
+        state = (GameState) StateManager.getInstance().getState();
 
         generator.generateTiledMap();
         findAvailableCells();
@@ -297,11 +298,14 @@ public class Level extends Group {
         mapBounds = new Rectangle(minX, minY, maxX, maxY);
     }
 
+    @Override
     public void dispose() {
-        pickup.stop();
-        fall.stop();
-        hurt.stop();
-        data.music.stop();
+        pickup.dispose();
+        fall.dispose();
+        hurt.dispose();
+        data.music.dispose();
+        player.dispose();
+        fruit.dispose();
     }
 
     public LevelData getData() {

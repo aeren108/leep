@@ -40,7 +40,7 @@ public class MenuState extends State {
 
         play.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent)
-                StateManager.getInstance().pushState(new GameState());
+                StateManager.getInstance().pushState(StateEnum.GAME_STATE);
             return false;
         });
 

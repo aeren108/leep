@@ -14,6 +14,7 @@ import aeren.leep.Assets;
 import aeren.leep.Settings;
 import aeren.leep.states.GameState;
 import aeren.leep.states.MenuState;
+import aeren.leep.states.StateEnum;
 import aeren.leep.states.StateManager;
 
 public class GameOverFragment extends Fragment {
@@ -35,9 +36,10 @@ public class GameOverFragment extends Fragment {
     public void init() {
         Skin skin = Assets.getInstance().get("ui/ui-skin.json", Skin.class);
 
-        Pixmap pixmap = new Pixmap((int) Settings.WIDTH * 4, (int) Settings.HEIGHT * 4, Pixmap.Format.RGBA8888);
+        //TODO: Do not create pixmap every time this fragment is created
+        Pixmap pixmap = new Pixmap((int) 16, (int) 16, Pixmap.Format.RGBA8888);
         pixmap.setColor(0, 0, 0, .5f);
-        pixmap.fillRectangle(0, 0, (int) Settings.WIDTH * 4, (int) Settings.HEIGHT * 4);
+        pixmap.fillRectangle(0, 0, (int) Settings.WIDTH / 4, (int) Settings.HEIGHT / 4);
         background = new Texture(pixmap);
 
         titleLabel = new Label("[GOLD]YOU DIED", skin);
@@ -55,7 +57,7 @@ public class GameOverFragment extends Fragment {
 
         backButton.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent)
-                StateManager.getInstance().setState(new MenuState());
+                StateManager.getInstance().setState(StateEnum.MAIN_MENU);
             return true;
         });
 

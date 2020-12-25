@@ -43,8 +43,10 @@ public class Assets {
 
         if (assets == null) return;
 
-        for (Asset asset : assets)
-            manager.load(asset.path, asset.type);
+        for (Asset asset : assets) {
+            if (!manager.isLoaded(asset.path, asset.type))
+                manager.load(asset.path, asset.type);
+        }
     }
 
     public void unloadGroup(String groupName) {

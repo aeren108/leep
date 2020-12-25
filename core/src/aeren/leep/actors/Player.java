@@ -11,11 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.utils.Disposable;
 
 import aeren.leep.Assets;
 import aeren.leep.input.SwipeListener;
 
-public class Player extends Actor implements SwipeListener {
+public class Player extends Actor implements SwipeListener, Disposable {
     private Rectangle bounds;
 
     private Animation<TextureRegion> idleLeft;
@@ -90,5 +91,10 @@ public class Player extends Actor implements SwipeListener {
 
     public Rectangle getBounds() {
         return bounds;
+    }
+
+    @Override
+    public void dispose() {
+        swipe.dispose();
     }
 }

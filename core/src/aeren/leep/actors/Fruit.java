@@ -6,10 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Disposable;
 
 import aeren.leep.Assets;
 
-public class Fruit extends Actor {
+public class Fruit extends Actor implements Disposable {
     private Sprite sprite;
     private Rectangle bounds;
 
@@ -43,5 +44,10 @@ public class Fruit extends Actor {
 
     public Rectangle getBounds() {
         return bounds;
+    }
+
+    @Override
+    public void dispose() {
+
     }
 }

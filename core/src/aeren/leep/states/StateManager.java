@@ -11,60 +11,52 @@ public class StateManager {
     private static StateManager instance = null;
 
     private Game game;
-    private State state;
+    private State curState;
     private Assets assets;
-    private Stack<State> stateStack;
+    private Stack<StateEnum> stateStack;
 
     private StateManager() {
         stateStack = new Stack<>();
         assets = Assets.getInstance();
     }
 
-    public void setGame(Game game) {
+    public void initialize(Game game) {
         this.game = game;
     }
 
-    public void setState(State state) {
-        for (State s : stateStack) {
-            assets.unloadGroup(s.getGroupName());
-            s.dispose();
-        }
-
+    public void setState(StateEnum stateEnum) {
         stateStack.clear();
-        this.state = state;
 
-        assets.loadGroup(state.getGroupName());
+        assets.unloadGroup(curState.getGroupName());
+        curState.dispose();
+
+        curState = stateEnum.getState();
+
+        assets.loadGroup(curState.getGroupName());
         assets.finishLoading();
 
         if (game == null)
             throw new NullPointerException("StateManager: game is null");
 
-        game.setScreen(state);
-        stateStack.push(state);
+        game.setScreen(curState);
+        stateStack.push(stateEnum);
     }
 
-    public State getState(Class<? extends State> cls) {
-        for (State s : stateStack) {
-            if (s.getClass().equals(cls))
-                return s;
+    public void pushState(StateEnum stateEnum) {
+        if (curState != null) {
+            assets.unloadGroup(curState.getGroupName());
+            curState.dispose();
         }
 
-        return null;
-    }
-
-    public void pushState(State state) {
-        if (this.state != null)
-            assets.unloadGroup(this.state.getGroupName());
-
-        this.state = state;
-        assets.loadGroup(state.getGroupName());
+        curState = stateEnum.getState();
+        assets.loadGroup(curState.getGroupName());
         assets.finishLoading();
 
         if (game == null)
             throw new NullPointerException("StateManager: game is null");
 
-        stateStack.push(state);
-        game.setScreen(state);
+        stateStack.push(stateEnum);
+        game.setScreen(curState);
     }
 
     public void popState() {
@@ -73,22 +65,23 @@ public class StateManager {
             return;
         }
 
-        assets.unloadGroup(state.getGroupName());
-        state.dispose();
+        assets.unloadGroup(curState.getGroupName());
+        curState.dispose();
         stateStack.pop();
 
         if (game == null)
             throw new NullPointerException("StateManager: game is null");
 
-        assets.loadGroup(stateStack.peek().getGroupName());
+        curState = stateStack.peek().getState();
+
+        assets.loadGroup(curState.getGroupName());
         assets.finishLoading();
 
-        state = stateStack.peek();
-        game.setScreen(state);
+        game.setScreen(curState);
     }
 
     public State getState() {
-        return state;
+        return curState;
     }
 
     public static StateManager getInstance() {

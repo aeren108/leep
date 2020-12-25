@@ -118,6 +118,8 @@ public class GameState extends State {
     @Override
     public void dispose() {
         level.dispose();
+        ui.dispose();
+        mapRenderer.dispose();
         super.dispose();
     }
 
