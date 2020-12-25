@@ -45,7 +45,6 @@ button-down
   xy: 1029, 1299
   size: 64, 64
   split: 13, 13, 13, 13
-  pad: 0, 0, 0, 0
   orig: 64, 64
   offset: 0, 0
   index: -1

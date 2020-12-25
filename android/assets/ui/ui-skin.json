@@ -35,7 +35,6 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		fontColor: white
 		up: button
 		down: button-down
-		over: button-down
 		focused: button-down
 	}
 }
