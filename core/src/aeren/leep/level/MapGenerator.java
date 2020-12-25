@@ -127,12 +127,12 @@ public class MapGenerator {
         while (p != null && p.repeat && tileCount() >= p.tileThreshold) {
             if (implementPattern(p)) {
                 implementationCount++;
-                if (implementationCount >= p.max && data.patterns.indexOf(p) + 1 < data.patterns.size()) {
-                    p = data.patterns.get(data.patterns.indexOf(p) + 1);
+                if (implementationCount >= p.max && p.after < data.patterns.size() && p.after != -1) {
+                    p = data.patterns.get(p.after);
                     implementationCount = 0;
                 }
-            } else if (data.patterns.indexOf(p) + 1 < data.patterns.size()) {
-                p = data.patterns.get(data.patterns.indexOf(p) + 1);
+            } else if (p.after < data.patterns.size() && p.after != -1) {
+                p = data.patterns.get(p.after);
                 implementationCount = 0;
             } else {
                 break;

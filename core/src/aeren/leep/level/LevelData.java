@@ -78,6 +78,7 @@ public class LevelData {
             Pattern p = new Pattern();
             p.tileThreshold = jv.getInt("tileThreshold");
             p.max = jv.getInt("max");
+            p.after = jv.getInt("after");
             p.repeat = jv.getBoolean("repeat");
 
             JsonValue jControlPattern = jv.get("controlPattern");

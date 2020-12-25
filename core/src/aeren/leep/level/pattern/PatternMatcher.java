@@ -2,7 +2,8 @@ package aeren.leep.level.pattern;
 
 public class PatternMatcher {
     //patterns for auto tiling
-    public static final int[][][] PATTERNS = new int[][][] {{{1,1,-1}, {1,0,0}, {-1,0,0}},   //upper left
+    public static final int[][][] PATTERNS = new int[][][] {{{0,0,0}, {0,0,0}, {0,0,0}},     //mid
+                                                            {{1,1,-1}, {1,0,0}, {-1,0,0}},   //upper left
                                                             {{-1, 1,1}, {0,0,1}, {0,0,-1}},  //upper right
                                                             {{-1,0,0}, {1,0,0}, {-1,0,0}},   //mid left
                                                             {{0,0,-1}, {0,0,1}, {0,0,-1}},   //mid right

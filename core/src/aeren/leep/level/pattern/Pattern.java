@@ -5,5 +5,6 @@ public class Pattern {
     public int[][] targetPattern;
     public int tileThreshold;
     public int max;
+    public int after;
     public boolean repeat;
 }
