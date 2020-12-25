@@ -1,13 +1,7 @@
 package aeren.leep;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.SkinLoader;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
@@ -21,10 +15,11 @@ public class Assets {
 
     private AssetManager manager;
     private Map<String, List<Asset>> groups;
-    //TODO: Main menu bacground texture
+    //TODO: Main menu background texture
 
     private Assets(String assetsFile) {
         manager = new AssetManager();
+        groups = new HashMap<>();
 
         loadGroups(assetsFile);
         loadGroup("global");
@@ -54,8 +49,10 @@ public class Assets {
 
         if (assets == null) return;
 
-        for (Asset asset : assets)
-            manager.unload(asset.path);
+        for (Asset asset : assets) {
+            if (manager.isLoaded(asset.path, asset.type))
+                manager.unload(asset.path);
+        }
     }
 
     public <T> T get(String fileName) {
@@ -67,8 +64,6 @@ public class Assets {
     }
 
     private void loadGroups(String assetFile) {
-        groups = new HashMap<>();
-
         JsonValue json = new JsonReader().parse(Gdx.files.internal(assetFile));
         JsonValue assets = json.get("assets");
 

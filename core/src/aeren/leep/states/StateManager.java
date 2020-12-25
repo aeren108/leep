@@ -26,8 +26,6 @@ public class StateManager {
 
     public void setState(StateEnum stateEnum) {
         stateStack.clear();
-
-        assets.unloadGroup(curState.getGroupName());
         curState.dispose();
 
         curState = stateEnum.getState();
@@ -43,10 +41,8 @@ public class StateManager {
     }
 
     public void pushState(StateEnum stateEnum) {
-        if (curState != null) {
-            assets.unloadGroup(curState.getGroupName());
+        if (curState != null)
             curState.dispose();
-        }
 
         curState = stateEnum.getState();
         assets.loadGroup(curState.getGroupName());
@@ -65,7 +61,6 @@ public class StateManager {
             return;
         }
 
-        assets.unloadGroup(curState.getGroupName());
         curState.dispose();
         stateStack.pop();
 
@@ -76,7 +71,6 @@ public class StateManager {
 
         assets.loadGroup(curState.getGroupName());
         assets.finishLoading();
-
         game.setScreen(curState);
     }
 

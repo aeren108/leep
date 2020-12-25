@@ -30,7 +30,6 @@ public class GameState extends State {
     private GestureHandler gestureHandler;
 
     private Stage ui;
-    private Skin skin;
 
     private Table table;
     private Label scoreLabel;
@@ -42,32 +41,28 @@ public class GameState extends State {
     }
 
     @Override
-    void init() {
+    public void show() {
+        Skin skin = Assets.getInstance().get("ui/ui-skin.json", Skin.class);
+
         ui = new Stage(new ExtendViewport(Settings.WIDTH * 4, Settings.HEIGHT * 4));
-        skin = Assets.getInstance().get("ui/ui-skin.json", Skin.class);
+        level = new Level(LevelData.getLevelDataFromJson("levels/forestlevel.json"));
+        mapRenderer = new OrthogonalTiledMapRenderer(level.getData().map);
+        gestureHandler = new GestureHandler(level.getPlayer());
 
         table = new Table();
-        table.setPosition(Settings.WIDTH * 2, Settings.HEIGHT * 4, Align.center);
-
         scoreLabel = new Label("SCORE: [RED]00", skin);
         highscoreLabel = new Label("HIGHSCORE: 00", skin);
 
         float padAmount = Settings.WIDTH * 4 - (highscoreLabel.getPrefWidth() + scoreLabel.getPrefWidth());
         table.add(scoreLabel).padTop(scoreLabel.getPrefHeight());
         table.add(highscoreLabel).padTop(highscoreLabel.getPrefHeight()).padLeft(padAmount);
-        ui.addActor(table);
-    }
+        table.setPosition(Settings.WIDTH * 2, Settings.HEIGHT * 4, Align.center);
 
-    @Override
-    public void show() {
-        level = new Level(LevelData.getLevelDataFromJson("levels/forestlevel.json"));
-        mapRenderer = new OrthogonalTiledMapRenderer(level.getData().map);
-        gestureHandler = new GestureHandler(level.getPlayer());
+        ui.addActor(table);
+        addActor(level);
 
         getCamera().position.set(Settings.WIDTH / 2, Settings.HEIGHT / 2, 0);
         Gdx.input.setInputProcessor(gestureHandler);
-
-        addActor(level);
     }
 
     @Override
@@ -117,10 +112,10 @@ public class GameState extends State {
 
     @Override
     public void dispose() {
-        level.dispose();
+        super.dispose();
+
         ui.dispose();
         mapRenderer.dispose();
-        super.dispose();
     }
 
     @Override

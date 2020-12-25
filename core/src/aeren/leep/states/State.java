@@ -6,10 +6,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
+import aeren.leep.Assets;
 import aeren.leep.states.fragments.Fragment;
 
 public abstract class State extends Stage implements Screen {
@@ -20,11 +19,8 @@ public abstract class State extends Stage implements Screen {
     public State(Viewport viewport) {
         this.setViewport(viewport);
         this.fragments = new Stack<>();
-
-        init();
     }
 
-    abstract void init();
     abstract String getGroupName();
 
     @Override
@@ -47,6 +43,12 @@ public abstract class State extends Stage implements Screen {
     @Override
     public void resize(int width, int height) {
         this.getViewport().update(width, height);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        Assets.getInstance().unloadGroup(getGroupName());
     }
 
     public void pushFragment(Fragment f) {

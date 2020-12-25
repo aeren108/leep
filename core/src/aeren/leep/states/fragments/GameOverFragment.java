@@ -86,7 +86,6 @@ public class GameOverFragment extends Fragment {
     @Override
     public void dispose() {
         super.dispose();
-        
         background.dispose();
     }
 }

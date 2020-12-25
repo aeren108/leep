@@ -28,15 +28,14 @@ public class MenuState extends State {
     }
 
     @Override
-    void init() {
+    public void show() {
         skin = Assets.getInstance().get("ui/ui-skin.json", Skin.class);
 
         table = new Table();
-        table.align(Align.center);
-
         title = new Label("[#FFA64D]LEEP", skin, "title");
-
         play = new TextButton("PLAY", skin);
+        stats = new TextButton("STATS", skin);
+        settings = new TextButton("SETTINGS", skin);
 
         play.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent)
@@ -44,20 +43,15 @@ public class MenuState extends State {
             return false;
         });
 
-        stats = new TextButton("STATS", skin);
-        settings = new TextButton("SETTINGS", skin);
-
         table.padTop(-192);
         table.add(title).row();
         table.add(play).minWidth(216).spaceTop(32).row();
         table.add(stats).minWidth(216).spaceTop(8).row();
         table.add(settings).minWidth(216).spaceTop(8);
+        table.align(Align.center);
 
-        this.addActor(table);
-    }
+        addActor(table);
 
-    @Override
-    public void show() {
         Gdx.input.setInputProcessor(this);
     }
 

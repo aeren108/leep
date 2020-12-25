@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Pool;
 
 import aeren.leep.Assets;
 
-public class FireballFactory implements Disposable {
+public class FireballFactory {
 
     private final Pool<VerticalFireball> vfp = new Pool<VerticalFireball>() {
         @Override
@@ -40,11 +40,4 @@ public class FireballFactory implements Disposable {
             hfp.free((HorizontalFireball) fireball);
         }
     }
-
-    @Override
-    public void dispose() {
-        Assets.getInstance().get("sprites/alert.png", Texture.class).dispose();
-        Assets.getInstance().get("sprites/fireball.png", Texture.class).dispose();
-    }
-
 }

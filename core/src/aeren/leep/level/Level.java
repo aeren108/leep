@@ -307,7 +307,6 @@ public class Level extends Group implements Disposable {
 
         player.dispose();
         fruit.dispose();
-        fireballFactory.dispose();
     }
 
     public LevelData getData() {
