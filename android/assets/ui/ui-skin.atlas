@@ -6,35 +6,35 @@ filter: Linear,Linear
 repeat: none
 orange-kid
   rotate: false
-  xy: 1, 1
+  xy: 1, 57
   size: 506, 334
   orig: 506, 334
   offset: 0, 0
   index: -1
 orange-kid-title_0
   rotate: false
-  xy: 1, 851
+  xy: 1, 907
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 orange-kid-title_1
   rotate: false
-  xy: 1, 337
+  xy: 1, 393
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 orange-kid-title_2
   rotate: false
-  xy: 515, 851
+  xy: 515, 907
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 button
   rotate: false
-  xy: 515, 785
+  xy: 515, 841
   size: 64, 64
   split: 13, 13, 13, 13
   orig: 64, 64
@@ -42,9 +42,16 @@ button
   index: -1
 button-down
   rotate: false
-  xy: 1029, 1299
+  xy: 1029, 1355
   size: 64, 64
   split: 13, 13, 13, 13
   orig: 64, 64
+  offset: 0, 0
+  index: -1
+pause-up
+  rotate: false
+  xy: 1, 1
+  size: 48, 54
+  orig: 48, 54
   offset: 0, 0
   index: -1

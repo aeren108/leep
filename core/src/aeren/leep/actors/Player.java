@@ -9,8 +9,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.Disposable;
 
 import aeren.leep.Assets;
@@ -27,9 +25,6 @@ public class Player extends Actor implements SwipeListener, Disposable {
 
     private Sound swipe;
 
-    public SequenceAction flicker;
-    public MoveToAction respawn;
-
     public Player() {
         bounds = new Rectangle();
         swipe = Assets.getInstance().get("sfx/swipe.wav", Sound.class);
@@ -38,9 +33,6 @@ public class Player extends Actor implements SwipeListener, Disposable {
     }
 
     private void init() {
-        flicker = new SequenceAction(Actions.fadeOut(0.15f), Actions.fadeIn(0.15f));
-        respawn = Actions.moveTo(16 * 5, 16 * 3, .2f);
-
         spriteSheet = Assets.getInstance().get("sprites/dino_idle.png", Texture.class);
         TextureRegion[][] frames = TextureRegion.split(spriteSheet, 16, 19);
 
@@ -76,15 +68,15 @@ public class Player extends Actor implements SwipeListener, Disposable {
             return;
 
         if (dir.y + dir.x < 0 && dir.y - dir.x < 0) {
-            addAction(Actions.moveBy(0, -16, .025f));
+            addAction(Actions.moveBy(0, -16, .02f));
         } else if (dir.y + dir.x > 0 && dir.y - dir.x > 0) {
-            addAction(Actions.moveBy(0, 16, .025f));
+            addAction(Actions.moveBy(0, 16, .02f));
         } else if (dir.y + dir.x < 0 && dir.y - dir.x > 0) {
             curAnim = idleLeft;
-            addAction(Actions.moveBy(-16, 0, .025f));
+            addAction(Actions.moveBy(-16, 0, .02f));
         } else if (dir.y + dir.x > 0 && dir.y - dir.x < 0) {
             curAnim = idleRight;
-            addAction(Actions.moveBy(16, 0, .025f));
+            addAction(Actions.moveBy(16, 0, .02f));
         }
 
         swipe.play();

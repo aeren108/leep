@@ -27,10 +27,10 @@ public class Assets {
     }
 
     public static Assets getInstance() {
-        if (instance == null)
-            instance = new Assets("assets.json");
+        if (Assets.instance == null)
+            Assets.instance = new Assets("assets.json");
 
-        return instance;
+        return Assets.instance;
     }
 
     public void loadGroup(String groupName) {
@@ -50,8 +50,9 @@ public class Assets {
         if (assets == null) return;
 
         for (Asset asset : assets) {
-            if (manager.isLoaded(asset.path, asset.type))
+            if (manager.isLoaded(asset.path, asset.type)) {
                 manager.unload(asset.path);
+            }
         }
     }
 

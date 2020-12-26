@@ -35,8 +35,8 @@ public abstract class State extends Stage implements Screen {
 
         if (!fragments.isEmpty()) {
             fragments.peek().getViewport().apply();
-            fragments.peek().act(delta);
             fragments.peek().draw();
+            fragments.peek().act(delta);
         }
     }
 

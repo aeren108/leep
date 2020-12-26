@@ -2,18 +2,24 @@
   "tmxFile": "levels/forestlevel.tmx",
   "music": "sfx/level1_theme.ogg",
 
-  "difficultyThreshold": 5.0,
+  "difficultyThreshold": 7.5,
 
   "birthRate": 0.7,
   "birthThreshold": 4,
   "deathThreshold": 4,
-  "maxStep": 12,
+  "maxStep": 24,
+
+  "player": {
+    "movementDelay": 0.25,
+    "movementDelayDec": 0.002,
+    "minMovementDelay": 0.2
+  },
 
   "fireball": {
-    "speed": 1.70,
-    "cooldown": 1.25,
-    "maxSpeed": 4.0,
-    "minCooldown": 0.3,
+    "speed": 1.75,
+    "cooldown": 1.20,
+    "maxSpeed": 4.15,
+    "minCooldown": 0.25,
     "alert": 0.5,
 
     "speedInc": 0.05,
@@ -24,17 +30,25 @@
 
   "patterns": [
     {
-      "controlPattern": [[1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1]],
-      "targetPattern": [[0,0,0], [0,0,0], [0,0,0]],
+      "controlPattern": [[1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1]],
+      "targetPattern": [[0,0,0], [0,0,0], [0,0,0], [0,0,0]],
       "tileThreshold": 50,
       "max": 1,
-      "after": 2,
+      "after": 4,
+      "repeat": true
+    },
+    {
+      "controlPattern": [[1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1]],
+      "targetPattern": [[0,0,0], [0,0,0], [0,0,0]],
+      "tileThreshold": 40,
+      "max": 1,
+      "after": 4,
       "repeat": true
     },
     {
       "controlPattern": [[1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1]],
       "targetPattern": [[0,0], [0,0], [0,0]],
-      "tileThreshold": 30,
+      "tileThreshold": 15,
       "max": 1,
       "after": 3,
       "repeat": true
@@ -42,16 +56,16 @@
     {
       "controlPattern": [[1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1]],
       "targetPattern": [[0,0], [0,0]],
-      "tileThreshold": 40,
-      "max": 1,
+      "tileThreshold": 10,
+      "max": 3,
       "after": -1,
       "repeat": true
     },
     {
       "controlPattern": [[1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1]],
       "targetPattern": [[0,0], [0,0]],
-      "tileThreshold": 15,
-      "max": 2,
+      "tileThreshold": 20,
+      "max": 1,
       "after": -1,
       "repeat": true
     }

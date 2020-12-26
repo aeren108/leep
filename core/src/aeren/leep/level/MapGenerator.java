@@ -110,6 +110,11 @@ public class MapGenerator {
         placePatterns();
         autoTile();
 
+        if (tileCount() < 15) {
+            System.out.println("YENIDEN OLUSTURULUYOR");
+            return generateTiledMap();
+        }
+
         return map;
     }
 
