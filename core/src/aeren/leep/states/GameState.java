@@ -86,7 +86,6 @@ public class GameState extends State {
         Gdx.gl.glClearColor(100f / 255f, 173f / 255f, 234f / 255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        getViewport().apply();
         mapRenderer.setView((OrthographicCamera) this.getCamera());
         mapRenderer.render();
 
@@ -97,7 +96,6 @@ public class GameState extends State {
 
         super.render(delta);
 
-        ui.getViewport().apply();
         ui.act(delta);
         ui.draw();
     }
@@ -126,10 +124,10 @@ public class GameState extends State {
 
     @Override
     public void dispose() {
-        super.dispose();
-
         ui.dispose();
         mapRenderer.dispose();
+
+        super.dispose();
     }
 
     @Override

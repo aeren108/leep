@@ -47,8 +47,8 @@ public abstract class State extends Stage implements Screen {
 
     @Override
     public void dispose() {
-        super.dispose();
         Assets.getInstance().unloadGroup(getGroupName());
+        super.dispose();
     }
 
     public void pushFragment(Fragment f) {

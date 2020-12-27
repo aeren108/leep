@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Disposable;
@@ -40,6 +41,7 @@ public class Level extends Group implements Disposable {
 
     private boolean isPaused = false;
     private boolean isGameOver = false;
+    private boolean isPlacingPlayer = false;
 
     private List<Fireball> activeFireballs;
     private FireballFactory fireballFactory;
@@ -47,7 +49,7 @@ public class Level extends Group implements Disposable {
     private float difficultyTimer = 0;
 
     private int score = 0;
-    private int highscore = 0;
+    private int highscore;
     private boolean isNewRecord = false;
 
     private Preferences prefs;
@@ -83,11 +85,9 @@ public class Level extends Group implements Disposable {
 
         generator.generateTiledMap();
         findAvailableCells();
-        placeFruit();
         computeMapBoundaries();
-
-        Vector2 playerPos = availableCells.get((int) (Math.random() * availableCells.size()));
-        player.setPosition(playerPos.x, playerPos.y);
+        placeFruit();
+        placePlayer();
     }
 
     @Override
@@ -97,51 +97,43 @@ public class Level extends Group implements Disposable {
         fireballTimer += delta;
         difficultyTimer += delta;
 
-        if (!isGameOver) {
+        if (!isGameOver && !isPlacingPlayer) {
             checkActorCollisions();
             checkTileCollisions();
             generateFireballs();
             handleDifficulty();
         }
 
-        for (int i = 0; i < activeFireballs.size(); i++) {
-            Fireball f = activeFireballs.get(i);
-
-            if (!f.alive) {
-                removeActor(f);
-                activeFireballs.remove(f);
-                fireballFactory.destroyFireball(f);
-
-                i--;
-            }
-        }
+        destroyFireballs();
 
         super.act(delta);
     }
 
     private void checkActorCollisions() {
-        if (fruit.getBounds().overlaps(player.getBounds())) {
-            pickup.play(.35f);
+        for (Actor a : getChildren()) {
+            if (a instanceof Fruit) {
+                Fruit f = (Fruit) a;
 
-            score++;
-            placeFruit();
+                if (f.getBounds().overlaps(player.getBounds())) {
+                    score++;
+                    pickup.play(.35f);
+                    placeFruit();
 
-            if (score > highscore)
-                isNewRecord = true;
-        }
+                    if (score > highscore) isNewRecord = true;
+                }
+            } else if (a instanceof Fireball) {
+                Fireball f = (Fireball) a;
 
-        for (int i = 0; i < activeFireballs.size(); i++) {
-            Fireball f = activeFireballs.get(i);
+                if (player.getBounds().overlaps(f.getBounds())) {
+                    removeActor(f);
+                    activeFireballs.remove(f);
+                    fireballFactory.destroyFireball(f);
 
-            if (player.getBounds().overlaps(f.getBounds())) {
-                activeFireballs.remove(f);
-                removeActor(f);
-                fireballFactory.destroyFireball(f);
+                    hurt.play(.5f);
+                    gameOver();
 
-                hurt.play(.5f);
-                gameOver();
-
-                return;
+                    return;
+                }
             }
         }
     }
@@ -149,9 +141,8 @@ public class Level extends Group implements Disposable {
     private void checkTileCollisions() {
         TiledMapTileLayer layer = (TiledMapTileLayer) data.map.getLayers().get("ground");
         TiledMapTileLayer.Cell cell = layer.getCell((int) ((player.getX() + 8) / 16), (int) ((player.getY() + 8) / 16));
-        if (cell == null)
-            return;
 
+        if (cell == null) return;
         int tileId = cell.getTile().getId();
 
         for (int id : data.deadlyTiles) {
@@ -176,6 +167,13 @@ public class Level extends Group implements Disposable {
         fruit.respawn();
     }
 
+    private void placePlayer() {
+        isPlacingPlayer = true;
+
+        Vector2 playerPos = availableCells.get((int) (Math.random() * availableCells.size()));
+        player.addAction(Actions.sequence(Actions.moveTo(playerPos.x, playerPos.y, 0.2f), Actions.run(() -> isPlacingPlayer = false)));
+    }
+
     private void generateFireballs() {
         if (fireballTimer >= data.fireballCooldownTemp) {
             for (int i = 0; i < 2; i++) {
@@ -191,6 +189,20 @@ public class Level extends Group implements Disposable {
             }
 
             fireballTimer = 0;
+        }
+    }
+
+    private void destroyFireballs() {
+        for (int i = 0; i < activeFireballs.size(); i++) {
+            Fireball f = activeFireballs.get(i);
+
+            if (!f.alive) {
+                removeActor(f);
+                activeFireballs.remove(f);
+                fireballFactory.destroyFireball(f);
+
+                i--;
+            }
         }
     }
 
@@ -229,37 +241,6 @@ public class Level extends Group implements Disposable {
             Actions.repeat(2, Actions.sequence(Actions.fadeOut(0.15f), Actions.fadeIn(0.15f))),
             Actions.run(() -> state.pushFragment(new GameOverFragment(state, score))))
         );
-
-    }
-
-    public void reset() {
-        data.map = generator.generateTiledMap();
-        findAvailableCells();
-
-        player.clearActions();
-        activeFireballs.clear();
-        data.music.setVolume(.15f);
-
-        data.fireballSpeedTemp = data.fireballSpeed;
-        data.fireballCooldownTemp = data.fireballCooldown;
-
-        Vector2 playerPos = availableCells.get((int) (Math.random() * availableCells.size()));
-
-        player.addAction(Actions.sequence(
-            Actions.moveTo(playerPos.x, playerPos.y, 0.2f),
-            Actions.run(() -> {
-                placeFruit();
-
-                isGameOver = false;
-                data.music.setVolume(.3f);
-            }))
-        );
-
-        if (score > highscore)
-            setHighscore(score);
-
-        score = 0;
-        isNewRecord = false;
     }
 
     private void computeMapBoundaries() {
@@ -304,6 +285,28 @@ public class Level extends Group implements Disposable {
         mapBounds = new Rectangle(minX, minY, maxX, maxY);
     }
 
+    public void reset() {
+        data.map = generator.generateTiledMap();
+        findAvailableCells();
+
+        player.clearActions();
+        activeFireballs.clear();
+        data.music.setVolume(.15f);
+
+        data.fireballSpeedTemp = data.fireballSpeed;
+        data.fireballCooldownTemp = data.fireballCooldown;
+
+        placePlayer();
+        placeFruit();
+
+        if (score > highscore)
+            setHighscore(score);
+
+        score = 0;
+        isNewRecord = false;
+        isGameOver = false;
+    }
+
     public void pause() {
         isPaused = true;
     }
@@ -331,16 +334,16 @@ public class Level extends Group implements Disposable {
         return player;
     }
 
-    public int getScore() {
-        return score;
-    }
-
     public boolean isNewRecord() {
         return isNewRecord;
     }
 
     public boolean isGameOver() {
         return isGameOver;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public int getHighscore() {
@@ -353,7 +356,4 @@ public class Level extends Group implements Disposable {
         prefs.putInteger("hs", highscore);
         prefs.flush();
     }
-
-    /* TODO: generateLasers() */
-
 }

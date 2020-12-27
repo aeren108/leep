@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Disposable;
 
 import aeren.leep.Assets;
+import aeren.leep.Utils;
 import aeren.leep.input.SwipeListener;
 
 public class Player extends Actor implements SwipeListener, Disposable {
@@ -33,11 +34,11 @@ public class Player extends Actor implements SwipeListener, Disposable {
     }
 
     private void init() {
-        spriteSheet = Assets.getInstance().get("sprites/dino_idle.png", Texture.class);
-        TextureRegion[][] frames = TextureRegion.split(spriteSheet, 16, 19);
+        spriteSheet = Assets.getInstance().get("sprites/characters.png", Texture.class);
+        TextureRegion[][] frames = Utils.getFrames(spriteSheet, 1, 1, 1, 4, 16, 20);
 
         idleRight = new Animation<>(.15f, frames[0]);
-        idleLeft = new Animation<>(.15f, frames[1]);
+        idleLeft = new Animation<>(.15f, Utils.flipFrames(frames[0], true, false));
 
         curAnim = idleLeft;
         setPosition(16 * 5, 16 * 3);
@@ -46,7 +47,6 @@ public class Player extends Actor implements SwipeListener, Disposable {
     @Override
     public void act(float delta) {
         elapsed += delta;
-
         bounds.set(this.getX(), this.getY(), idleLeft.getKeyFrames()[0].getRegionWidth(), idleLeft.getKeyFrames()[0].getRegionHeight() - 4);
 
         super.act(delta);
@@ -82,13 +82,13 @@ public class Player extends Actor implements SwipeListener, Disposable {
         swipe.play();
     }
 
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
     @Override
     public void dispose() {
         swipe.dispose();
         spriteSheet.dispose();
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
     }
 }
