@@ -27,6 +27,7 @@ import aeren.leep.Settings;
 import aeren.leep.input.GestureHandler;
 import aeren.leep.level.Level;
 import aeren.leep.level.LevelData;
+import aeren.leep.level.LevelDataFactory;
 import aeren.leep.states.fragments.PauseFragment;
 
 public class GameState extends State {
@@ -51,7 +52,7 @@ public class GameState extends State {
         Skin skin = Assets.getInstance().get("ui/ui-skin.json", Skin.class);
 
         ui = new Stage(new ExtendViewport(Settings.WIDTH * 4, Settings.HEIGHT * 4));
-        level = new Level(LevelData.getLevelDataFromJson("levels/forestlevel.json"));
+        level = new Level(new LevelDataFactory().getLevelData("levels/forestlevel.json"));
         mapRenderer = new OrthogonalTiledMapRenderer(level.getData().map);
         gestureHandler = new GestureHandler(level.getPlayer());
 
