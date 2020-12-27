@@ -19,6 +19,8 @@ import aeren.leep.actors.Fireball;
 import aeren.leep.actors.FireballFactory;
 import aeren.leep.actors.Fruit;
 import aeren.leep.actors.Player;
+import aeren.leep.character.Character;
+import aeren.leep.character.CharacterManager;
 import aeren.leep.states.GameState;
 import aeren.leep.states.StateManager;
 import aeren.leep.states.fragments.GameOverFragment;
@@ -26,6 +28,7 @@ import aeren.leep.states.fragments.GameOverFragment;
 public class Level extends Group implements Disposable {
     private GameState state;
     private Assets assets;
+    private CharacterManager charManager;
 
     private LevelData data;
     private MapGenerator generator;
@@ -63,6 +66,7 @@ public class Level extends Group implements Disposable {
         fruit = new Fruit();
 
         assets = Assets.getInstance();
+        charManager = CharacterManager.getInstance();
 
         pickup = assets.get("sfx/pickup.wav", Sound.class);
         hurt = assets.get("sfx/hurt.wav", Sound.class);
@@ -295,6 +299,9 @@ public class Level extends Group implements Disposable {
 
         data.fireballSpeedTemp = data.fireballSpeed;
         data.fireballCooldownTemp = data.fireballCooldown;
+
+        charManager.setCurrentCharacter(charManager.getCharacter("ottoman-pirate"));
+        player.updateCharacter();
 
         placePlayer();
         placeFruit();

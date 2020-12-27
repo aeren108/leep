@@ -13,12 +13,15 @@ import com.badlogic.gdx.utils.Disposable;
 
 import aeren.leep.Assets;
 import aeren.leep.Utils;
+import aeren.leep.character.Character;
+import aeren.leep.character.CharacterManager;
 import aeren.leep.input.SwipeListener;
 
 public class Player extends Actor implements SwipeListener, Disposable {
     private Rectangle bounds;
 
     private Texture spriteSheet;
+    private Character character;
     private Animation<TextureRegion> idleLeft;
     private Animation<TextureRegion> idleRight;
     private Animation<TextureRegion> curAnim;
@@ -28,20 +31,12 @@ public class Player extends Actor implements SwipeListener, Disposable {
 
     public Player() {
         bounds = new Rectangle();
+
         swipe = Assets.getInstance().get("sfx/swipe.wav", Sound.class);
-
-        init();
-    }
-
-    private void init() {
+        character = CharacterManager.getInstance().getCurrentCharacter();
         spriteSheet = Assets.getInstance().get("sprites/characters.png", Texture.class);
-        TextureRegion[][] frames = Utils.getFrames(spriteSheet, 1, 1, 1, 4, 16, 20);
 
-        idleRight = new Animation<>(.15f, frames[0]);
-        idleLeft = new Animation<>(.15f, Utils.flipFrames(frames[0], true, false));
-
-        curAnim = idleLeft;
-        setPosition(16 * 5, 16 * 3);
+        updateCharacter();
     }
 
     @Override
@@ -62,21 +57,21 @@ public class Player extends Actor implements SwipeListener, Disposable {
 
     @Override
     public void onSwipe(Vector2 dir) {
-        dir.y = -dir.y;
-
         if (hasActions())
             return;
 
+        dir.y = -dir.y;
+
         if (dir.y + dir.x < 0 && dir.y - dir.x < 0) {
-            addAction(Actions.moveBy(0, -16, .02f));
+            addAction(Actions.moveBy(0, -16, .03f));
         } else if (dir.y + dir.x > 0 && dir.y - dir.x > 0) {
-            addAction(Actions.moveBy(0, 16, .02f));
+            addAction(Actions.moveBy(0, 16, .03f));
         } else if (dir.y + dir.x < 0 && dir.y - dir.x > 0) {
             curAnim = idleLeft;
-            addAction(Actions.moveBy(-16, 0, .02f));
+            addAction(Actions.moveBy(-16, 0, .03f));
         } else if (dir.y + dir.x > 0 && dir.y - dir.x < 0) {
             curAnim = idleRight;
-            addAction(Actions.moveBy(16, 0, .02f));
+            addAction(Actions.moveBy(16, 0, .03f));
         }
 
         swipe.play();
@@ -86,6 +81,23 @@ public class Player extends Actor implements SwipeListener, Disposable {
     public void dispose() {
         swipe.dispose();
         spriteSheet.dispose();
+    }
+
+    public void updateCharacter() {
+        setCharacter(CharacterManager.getInstance().getCurrentCharacter());
+    }
+
+    public void setCharacter(Character character) {
+        this.character = character;
+
+        TextureRegion[][] frames = Utils.getFrames(spriteSheet, character.x, character.y, 1, 4, 16, 20);
+        idleRight = new Animation<>(.15f, frames[0]);
+        idleLeft = new Animation<>(.15f, Utils.flipFrames(frames[0], true, false));
+        curAnim = idleLeft;
+    }
+
+    public Character getCharacter() {
+        return character;
     }
 
     public Rectangle getBounds() {
