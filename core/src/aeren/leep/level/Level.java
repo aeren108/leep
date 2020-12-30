@@ -19,7 +19,6 @@ import aeren.leep.actors.Fireball;
 import aeren.leep.actors.FireballFactory;
 import aeren.leep.actors.Fruit;
 import aeren.leep.actors.Player;
-import aeren.leep.character.Character;
 import aeren.leep.character.CharacterManager;
 import aeren.leep.states.GameState;
 import aeren.leep.states.StateManager;
@@ -54,7 +53,9 @@ public class Level extends Group implements Disposable {
     private int score = 0;
     private int highscore;
     private boolean isNewRecord = false;
+    private boolean played = false;
 
+    private ScoreListener scoreListener;
     private Preferences prefs;
 
     public Level(LevelData data) {
@@ -68,9 +69,9 @@ public class Level extends Group implements Disposable {
         assets = Assets.getInstance();
         charManager = CharacterManager.getInstance();
 
-        pickup = assets.get("sfx/pickup.wav", Sound.class);
-        hurt = assets.get("sfx/hurt.wav", Sound.class);
-        fall = assets.get("sfx/fall.wav", Sound.class);
+        pickup = Assets.getInstance().get("sfx/pickup.wav", Sound.class);
+        hurt = Assets.getInstance().get("sfx/hurt.wav", Sound.class);
+        fall = Assets.getInstance().get("sfx/fall.wav", Sound.class);
 
         addActor(fruit);
         addActor(player);
@@ -82,7 +83,7 @@ public class Level extends Group implements Disposable {
         highscore = prefs.getInteger("hs");
 
         data.music.setLooping(true);
-        data.music.setVolume(.3f);
+        data.music.setVolume(.25f);
         data.music.play();
 
         state = (GameState) StateManager.getInstance().getState();
@@ -98,10 +99,10 @@ public class Level extends Group implements Disposable {
     public void act(float delta) {
         if (isPaused) return;
 
-        fireballTimer += delta;
-        difficultyTimer += delta;
-
         if (!isGameOver && !isPlacingPlayer) {
+            fireballTimer += delta;
+            difficultyTimer += delta;
+
             checkActorCollisions();
             checkTileCollisions();
             generateFireballs();
@@ -119,11 +120,11 @@ public class Level extends Group implements Disposable {
                 Fruit f = (Fruit) a;
 
                 if (f.getBounds().overlaps(player.getBounds())) {
-                    score++;
+                    if (score > highscore) isNewRecord = true;
+
                     pickup.play(.35f);
                     placeFruit();
-
-                    if (score > highscore) isNewRecord = true;
+                    setScore(++score);
                 }
             } else if (a instanceof Fireball) {
                 Fireball f = (Fireball) a;
@@ -240,6 +241,8 @@ public class Level extends Group implements Disposable {
     }
 
     private void gameOver() {
+        if (score > highscore)
+            setHighscore(score);
         isGameOver = true;
         player.addAction(Actions.sequence( //flicker the player and show game over fragment
             Actions.repeat(2, Actions.sequence(Actions.fadeOut(0.15f), Actions.fadeIn(0.15f))),
@@ -290,28 +293,31 @@ public class Level extends Group implements Disposable {
     }
 
     public void reset() {
-        data.map = generator.generateTiledMap();
+        generator.generateTiledMap();
         findAvailableCells();
 
         player.clearActions();
         activeFireballs.clear();
-        data.music.setVolume(.15f);
+        data.music.setVolume(.25f);
 
         data.fireballSpeedTemp = data.fireballSpeed;
         data.fireballCooldownTemp = data.fireballCooldown;
 
-        charManager.setCurrentCharacter(charManager.getCharacter("ottoman-pirate"));
+        fireballTimer = 0;
+        difficultyTimer = 0;
+
+        charManager.setCurrentCharacter(charManager.getCharacter("archer"));
         player.updateCharacter();
+        charManager.flush();
 
         placePlayer();
         placeFruit();
 
-        if (score > highscore)
-            setHighscore(score);
-
-        score = 0;
         isNewRecord = false;
         isGameOver = false;
+        isPaused = false;
+
+        setScore(0);
     }
 
     public void pause() {
@@ -324,13 +330,11 @@ public class Level extends Group implements Disposable {
 
     @Override
     public void dispose() {
-        pickup.dispose();
-        fall.dispose();
-        hurt.dispose();
-        data.music.dispose();
+        data.music.stop();
+    }
 
-        player.dispose();
-        fruit.dispose();
+    public void setScoreListener(ScoreListener scoreListener) {
+        this.scoreListener = scoreListener;
     }
 
     public LevelData getData() {
@@ -351,6 +355,13 @@ public class Level extends Group implements Disposable {
 
     public int getScore() {
         return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+
+        if (scoreListener != null)
+            scoreListener.onScoreChanged(score, isNewRecord);
     }
 
     public int getHighscore() {

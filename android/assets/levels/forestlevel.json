@@ -4,7 +4,7 @@
 
   "difficultyThreshold": 7.5,
 
-  "birthRate": 0.7,
+  "birthRate": 0.75,
   "birthThreshold": 4,
   "deathThreshold": 4,
   "maxStep": 24,
@@ -30,11 +30,19 @@
 
   "patterns": [
     {
+      "controlPattern": [[1,1,1,1,1,1], [1,1,1,1,1,1], [1,1,1,1,1,1], [1,1,1,1,1,1], [1,1,1,1,1,1], [1,1,1,1,1,1]],
+      "targetPattern": [[0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]],
+      "tileThreshold": 60,
+      "max": 1,
+      "after": 1,
+      "repeat": true
+    },
+    {
       "controlPattern": [[1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1]],
       "targetPattern": [[0,0,0], [0,0,0], [0,0,0], [0,0,0]],
       "tileThreshold": 50,
       "max": 1,
-      "after": 4,
+      "after": 2,
       "repeat": true
     },
     {
@@ -42,15 +50,15 @@
       "targetPattern": [[0,0,0], [0,0,0], [0,0,0]],
       "tileThreshold": 40,
       "max": 1,
-      "after": 4,
+      "after": 3,
       "repeat": true
     },
     {
       "controlPattern": [[1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1]],
       "targetPattern": [[0,0], [0,0], [0,0]],
-      "tileThreshold": 15,
+      "tileThreshold": 20,
       "max": 1,
-      "after": 3,
+      "after": 5,
       "repeat": true
     },
     {
@@ -64,7 +72,7 @@
     {
       "controlPattern": [[1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1]],
       "targetPattern": [[0,0], [0,0]],
-      "tileThreshold": 20,
+      "tileThreshold": 45,
       "max": 1,
       "after": -1,
       "repeat": true

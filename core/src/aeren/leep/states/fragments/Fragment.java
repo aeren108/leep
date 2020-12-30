@@ -13,7 +13,6 @@ import aeren.leep.Settings;
 public abstract class Fragment extends Stage implements Disposable {
 
     protected State state;
-    protected Map<String, Object> extras;
 
     public Fragment(State state) {
         this.state = state;

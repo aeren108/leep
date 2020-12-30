@@ -20,6 +20,8 @@ public class LeepMain extends Game {
 
     @Override
     public void create() {
+        copyFiles();
+
         assets = Assets.getInstance();
         cm = CharacterManager.getInstance();
 
@@ -37,6 +39,12 @@ public class LeepMain extends Game {
     @Override
     public void dispose() {
         assets.dispose();
+        cm.flush();
         super.dispose();
+    }
+
+    private void copyFiles() {
+        if (!Gdx.files.local("characters.json").exists())
+            Gdx.files.internal("characters.json").copyTo(Gdx.files.local(""));
     }
 }

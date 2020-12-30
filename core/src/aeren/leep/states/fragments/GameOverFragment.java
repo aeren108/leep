@@ -11,9 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
 import aeren.leep.Assets;
-import aeren.leep.Settings;
 import aeren.leep.states.GameState;
-import aeren.leep.states.MenuState;
 import aeren.leep.states.StateEnum;
 import aeren.leep.states.StateManager;
 
@@ -49,6 +47,7 @@ public class GameOverFragment extends Fragment {
 
         retryButton.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent) {
+                retryButton.setDisabled(true);
                 state.popFragment();
                 ((GameState)state).reset();
             }
@@ -84,7 +83,7 @@ public class GameOverFragment extends Fragment {
 
     @Override
     public void dispose() {
-        super.dispose();
         background.dispose();
+        super.dispose();
     }
 }

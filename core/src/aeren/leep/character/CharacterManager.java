@@ -15,9 +15,11 @@ public class CharacterManager {
     private Map<String, Character> chars;
     private Character current;
     private JsonValue json;
+    private FileHandle file;
 
     private CharacterManager() {
         chars = new HashMap<>();
+        file = Gdx.files.local("characters.json");
     }
 
     public static CharacterManager getInstance() {
@@ -27,7 +29,7 @@ public class CharacterManager {
     }
 
     public void loadCharacters() {
-        json = new JsonReader().parse(Gdx.files.internal("characters.json"));
+        json = new JsonReader().parse(Gdx.files.local("characters.json"));
         JsonValue charsArray = json.get("characters");
 
         for (JsonValue jv : charsArray) {
@@ -38,9 +40,8 @@ public class CharacterManager {
         current = chars.get(json.getString("currentCharacter"));
     }
 
-    public void saveToJson() {
-        FileHandle file = Gdx.files.internal("character.json");
-        file.writeBytes(json.toJson(JsonWriter.OutputType.json).getBytes(), false);
+    public void flush() {
+        file.writeString(json.toJson(JsonWriter.OutputType.json), false);
     }
 
     public void unlockCharacter(Character c) {

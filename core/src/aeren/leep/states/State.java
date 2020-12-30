@@ -21,8 +21,6 @@ public abstract class State extends Stage implements Screen {
         this.fragments = new Stack<>();
     }
 
-    abstract String getGroupName();
-
     @Override
     public void render(float delta) {
         if (backReleased && Gdx.input.isKeyPressed(Input.Keys.BACK)) {
@@ -43,12 +41,6 @@ public abstract class State extends Stage implements Screen {
     @Override
     public void resize(int width, int height) {
         this.getViewport().update(width, height);
-    }
-
-    @Override
-    public void dispose() {
-        Assets.getInstance().unloadGroup(getGroupName());
-        super.dispose();
     }
 
     public void pushFragment(Fragment f) {

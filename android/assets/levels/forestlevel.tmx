@@ -21,6 +21,7 @@
 110,110,110,110,110,110,110,110,110
 </data>
  </layer>
+
  <layer id="2" name="decoration" width="9" height="16">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,

@@ -1,5 +1,5 @@
 {
-    "currentCharacter": "knight",
+    "currentCharacter": "wizard",
 
     "characters": {
         "dino-v1": {"unlocked": true, "x": 0, "y": 0},

@@ -1,21 +1,15 @@
 package aeren.leep.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.Disposable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import aeren.leep.Assets;
 import aeren.leep.level.pattern.Pattern;
 
-public class LevelData {
+public class LevelData implements Disposable {
     public TiledMap map;
     public List<Pattern> patterns;
     public int[] deadlyTiles;
@@ -38,5 +32,11 @@ public class LevelData {
 
     public LevelData() {
         patterns = new ArrayList<>();
+    }
+
+
+    @Override
+    public void dispose() {
+        map.dispose();
     }
 }

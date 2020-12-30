@@ -84,7 +84,8 @@ public class PauseFragment extends Fragment {
                 countDown.setText("[WHITE]" + countDownDuration);
 
                 if (countDownDuration <= 0) {
-                    state.resume();
+
+                    ((GameState)state).resumeGame();
                     state.popFragment();
                 }
             }
@@ -92,5 +93,11 @@ public class PauseFragment extends Fragment {
         }
 
         super.act(delta);
+    }
+
+    @Override
+    public void dispose() {
+        background.dispose();
+        super.dispose();
     }
 }

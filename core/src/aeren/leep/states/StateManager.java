@@ -7,7 +7,6 @@ import aeren.leep.Assets;
 import aeren.leep.LeepMain;
 
 public class StateManager {
-
     private static StateManager instance = null;
 
     private Game game;
@@ -28,25 +27,25 @@ public class StateManager {
         stateStack.clear();
         curState.dispose();
 
-        curState = stateEnum.getState();
-
-        assets.loadGroup(curState.getGroupName());
-        assets.finishLoading();
+        assets.loadGroup(stateEnum.groupName);
+        State state = stateEnum.getState();
 
         if (game == null)
             throw new NullPointerException("StateManager: game is null");
 
+        curState = state;
         game.setScreen(curState);
         stateStack.push(stateEnum);
     }
 
     public void pushState(StateEnum stateEnum) {
-        if (curState != null)
+        if (curState != null) {
             curState.dispose();
+            //assets.unloadGroup(stateStack.peek().groupName);
+        }
 
         curState = stateEnum.getState();
-        assets.loadGroup(curState.getGroupName());
-        assets.finishLoading();
+        assets.loadGroup(stateEnum.groupName);
 
         if (game == null)
             throw new NullPointerException("StateManager: game is null");
@@ -61,16 +60,14 @@ public class StateManager {
             return;
         }
 
-        curState.dispose();
         stateStack.pop();
+        curState.dispose();
+        assets.loadGroup(stateStack.peek().groupName);
 
         if (game == null)
             throw new NullPointerException("StateManager: game is null");
 
         curState = stateStack.peek().getState();
-
-        assets.loadGroup(curState.getGroupName());
-        assets.finishLoading();
         game.setScreen(curState);
     }
 

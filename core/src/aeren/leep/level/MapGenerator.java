@@ -96,7 +96,7 @@ public class MapGenerator {
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+                TiledMapTileLayer.Cell cell = ground.getCell(x, height - y - 1);
                 if (mapData[y][x] == 1) {
                     cell.setTile(tileSet.getTile(1));
                     ground.setCell(x, height - y - 1, cell); // height - y - 1, because origin is bottom left corner for tiled map
@@ -110,10 +110,8 @@ public class MapGenerator {
         placePatterns();
         autoTile();
 
-        if (tileCount() < 15) {
-            System.out.println("YENIDEN OLUSTURULUYOR");
+        if (tileCount() < 15)
             return generateTiledMap();
-        }
 
         return map;
     }
@@ -135,6 +133,8 @@ public class MapGenerator {
                 if (implementationCount >= p.max && p.after < data.patterns.size() && p.after != -1) {
                     p = data.patterns.get(p.after);
                     implementationCount = 0;
+                } else {
+                    break;
                 }
             } else if (p.after < data.patterns.size() && p.after != -1) {
                 p = data.patterns.get(p.after);
@@ -183,10 +183,10 @@ public class MapGenerator {
                 if (mapData[y][x] != 0)
                     continue;
 
-                int[][] pattern = aeren.leep.level.pattern.PatternMatcher.extractTilePattern(mapData, x, y);
+                int[][] pattern = PatternMatcher.extractTilePattern(mapData, x, y);
 
-                for (int i = 0; i < aeren.leep.level.pattern.PatternMatcher.PATTERNS.length; i++) {
-                    if (aeren.leep.level.pattern.PatternMatcher.doPatternsMatch(PatternMatcher.PATTERNS[i], pattern)) {
+                for (int i = 0; i < PatternMatcher.PATTERNS.length; i++) {
+                    if (PatternMatcher.doPatternsMatch(PatternMatcher.PATTERNS[i], pattern)) {
                         TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
 
                         cell.setTile(tileSet.getTile(data.autoTiles[i]));

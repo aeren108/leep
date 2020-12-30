@@ -39,8 +39,9 @@ public class Assets {
         if (assets == null) return;
 
         for (Asset asset : assets) {
-            if (!manager.isLoaded(asset.path, asset.type))
+            if (!manager.isLoaded(asset.path, asset.type)) {
                 manager.load(asset.path, asset.type);
+            }
         }
     }
 
@@ -82,10 +83,6 @@ public class Assets {
 
     public void finishLoading() {
         manager.finishLoading();
-    }
-
-    public boolean update() {
-        return manager.update();
     }
 
     public void dispose() {
