@@ -2,12 +2,11 @@
     "assets": {
         "global": [
             {"type": "com.badlogic.gdx.scenes.scene2d.ui.Skin", "path": "ui/ui-skin.json"},
-            {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/characters.png"},
-            {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/fruit.png"}
         ],
 
         "menu": [
-
+            {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/characters.png"},
+            {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/fruit.png"}
         ],
 
         "game": [

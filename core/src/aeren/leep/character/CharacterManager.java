@@ -6,19 +6,23 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonWriter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CharacterManager {
     private static CharacterManager instance;
 
-    private Map<String, Character> chars;
+    private Map<String, Character> characterMap;
+    private List<Character> characterList;
     private Character current;
     private JsonValue json;
     private FileHandle file;
 
     private CharacterManager() {
-        chars = new HashMap<>();
+        characterMap = new HashMap<>();
+        characterList = new ArrayList<>();
         file = Gdx.files.local("characters.json");
     }
 
@@ -34,10 +38,11 @@ public class CharacterManager {
 
         for (JsonValue jv : charsArray) {
             Character c = new Character(jv.name, jv.getBoolean("unlocked"), jv.getInt("x"), jv.getInt("y"));
-            chars.put(c.name, c);
+            characterMap.put(c.name, c);
+            characterList.add(c);
         }
 
-        current = chars.get(json.getString("currentCharacter"));
+        current = characterMap.get(json.getString("currentCharacter"));
     }
 
     public void flush() {
@@ -50,7 +55,11 @@ public class CharacterManager {
     }
 
     public Character getCharacter(String name) {
-        return chars.get(name);
+        return characterMap.get(name);
+    }
+
+    public Character getCharacter(int index) {
+        return characterList.get(index);
     }
 
     public Character getCurrentCharacter() {

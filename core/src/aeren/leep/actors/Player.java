@@ -19,14 +19,15 @@ import aeren.leep.input.SwipeListener;
 public class Player extends Actor implements SwipeListener {
     private Rectangle bounds;
 
+    private Sound swipe;
     private Texture spriteSheet;
     private Character character;
     private Animation<TextureRegion> idleLeft;
     private Animation<TextureRegion> idleRight;
     private Animation<TextureRegion> curAnim;
-    private float elapsed = 0;
 
-    private Sound swipe;
+    private float elapsed = 0;
+    public float movementDelay = 0.03f;
 
     public Player() {
         bounds = new Rectangle();
@@ -67,24 +68,28 @@ public class Player extends Actor implements SwipeListener {
         swipe.play();
 
         if (dir.y + dir.x < 0 && dir.y - dir.x < 0) {
-            addAction(Actions.moveBy(0, -16, .03f));
+            addAction(Actions.moveBy(0, -16, movementDelay));
         } else if (dir.y + dir.x > 0 && dir.y - dir.x > 0) {
-            addAction(Actions.moveBy(0, 16, .03f));
+            addAction(Actions.moveBy(0, 16, movementDelay));
         } else if (dir.y + dir.x < 0 && dir.y - dir.x > 0) {
             curAnim = idleLeft;
-            addAction(Actions.moveBy(-16, 0, .03f));
+            addAction(Actions.moveBy(-16, 0, movementDelay));
         } else if (dir.y + dir.x > 0 && dir.y - dir.x < 0) {
             curAnim = idleRight;
-            addAction(Actions.moveBy(16, 0, .03f));
+            addAction(Actions.moveBy(16, 0, movementDelay));
         }
+
+        System.out.println("MOV DELAY: " + movementDelay);
     }
 
     public void updateCharacter() {
         setCharacter(CharacterManager.getInstance().getCurrentCharacter());
     }
 
-    public void setCharacter(Character c) {
-        TextureRegion[][] frames = Utils.getFrames(spriteSheet, c.x, c.y, 1, 4, 16, 20);
+    public void setCharacter(Character character) {
+        this.character = character;
+
+        TextureRegion[][] frames = Utils.getFrames(spriteSheet, character.x, character.y, 1, 4, 16, 20);
         idleRight = new Animation<>(.15f, frames[0]);
         idleLeft = new Animation<>(.15f, Utils.flipFrames(frames[0], true, false));
         curAnim = idleLeft;

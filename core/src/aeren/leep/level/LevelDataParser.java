@@ -20,6 +20,7 @@ public class LevelDataParser {
         JsonReader reader = new JsonReader();
         JsonValue json = reader.parse(Gdx.files.internal(path));
         JsonValue fireball = json.get("fireball");
+        JsonValue player = json.get("player");
 
         data.map = new TmxMapLoader().load(json.getString("tmxFile"));
         data.music = Assets.getInstance().get(json.getString("music"), Music.class);
@@ -37,6 +38,11 @@ public class LevelDataParser {
 
         data.fireballSpeedTemp = data.fireballSpeed;
         data.fireballCooldownTemp = data.fireballCooldown;
+
+        data.playerMovementDelay = player.getFloat("movementDelay");
+        data.playerMovementDelayDec = player.getFloat("movementDelayDec");
+        data.playerMinMovement = player.getFloat("minMovementDelay");
+        data.playerMovementDelayTemp = data.playerMovementDelay;
 
         data.birthRate = json.getFloat("birthRate");
         data.birthThreshold = json.getInt("birthThreshold");

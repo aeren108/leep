@@ -27,6 +27,9 @@ public class LevelData implements Disposable {
     public float fireballSpeedInc;
     public float fireballCooldownDec;
 
+    public float playerMovementDelay, playerMovementDelayDec, playerMinMovement;
+    public float playerMovementDelayTemp;
+
     public float birthRate;
     public int birthThreshold, deathThreshold, maxStep;
 

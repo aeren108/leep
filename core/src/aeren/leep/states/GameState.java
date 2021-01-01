@@ -53,13 +53,14 @@ public class GameState extends State implements ScoreListener {
         gestureHandler = new GestureHandler(level.getPlayer());
 
         table = new Table();
-        scoreLabel = new Label("SCORE: [GOLD]00", skin);
+        scoreLabel = new Label("SCORE: [GOLD]0", skin);
         pause = new ImageButton(skin.getDrawable("pause-up"));
 
-        float padAmount = Settings.WIDTH * 4 - (pause.getPrefWidth() + scoreLabel.getPrefWidth());
-        table.add(scoreLabel).padTop(scoreLabel.getPrefHeight());
-        table.add(pause).padTop(pause.getPrefHeight()).padLeft(padAmount);
-        table.setPosition(Settings.WIDTH * 2, Settings.HEIGHT * 4, Align.center);
+        table.top();
+        table.add(scoreLabel).expandX().left().padLeft(8);
+        table.add(pause).expandX().right();
+        table.setFillParent(true);
+
 
         pause.addListener((Event event) -> {
             if (!level.isGameOver() && event instanceof ChangeListener.ChangeEvent) {
@@ -114,7 +115,7 @@ public class GameState extends State implements ScoreListener {
     @Override
     public void resize(int width, int height) {
         ui.getViewport().update(width, height);
-        table.setPosition(ui.getWidth() / 2, ui.getHeight(), Align.center);
+        //table.setPosition(ui.getWidth() / 2, ui.getHeight(), Align.center);
         super.resize(width, height);
     }
 
@@ -149,7 +150,7 @@ public class GameState extends State implements ScoreListener {
 
     @Override
     public void onScoreChanged(int score, boolean isRecord) {
-        String text = isRecord ? "[PURPLE]HIGHSCORE: [GOLD]" + score : "[BLACK]SCORE: [GOLD]" + score;
+        String text = isRecord ? "[PURPLE]HIGHSCORE: [GOLD]" + score : "[WHITE]SCORE: [GOLD]" + score;
         scoreLabel.setText(text);
     }
 }

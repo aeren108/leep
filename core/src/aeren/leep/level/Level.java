@@ -53,7 +53,6 @@ public class Level extends Group implements Disposable {
     private int score = 0;
     private int highscore;
     private boolean isNewRecord = false;
-    private boolean played = false;
 
     private ScoreListener scoreListener;
     private Preferences prefs;
@@ -69,9 +68,9 @@ public class Level extends Group implements Disposable {
         assets = Assets.getInstance();
         charManager = CharacterManager.getInstance();
 
-        pickup = Assets.getInstance().get("sfx/pickup.wav", Sound.class);
-        hurt = Assets.getInstance().get("sfx/hurt.wav", Sound.class);
-        fall = Assets.getInstance().get("sfx/fall.wav", Sound.class);
+        pickup = assets.get("sfx/pickup.wav", Sound.class);
+        hurt = assets.get("sfx/hurt.wav", Sound.class);
+        fall = assets.getInstance().get("sfx/fall.wav", Sound.class);
 
         addActor(fruit);
         addActor(player);
@@ -85,6 +84,7 @@ public class Level extends Group implements Disposable {
         data.music.setLooping(true);
         data.music.setVolume(.25f);
         data.music.play();
+        player.movementDelay = data.playerMovementDelay;
 
         state = (GameState) StateManager.getInstance().getState();
 
@@ -103,7 +103,7 @@ public class Level extends Group implements Disposable {
             fireballTimer += delta;
             difficultyTimer += delta;
 
-            checkActorCollisions();
+            //checkActorCollisions();
             checkTileCollisions();
             generateFireballs();
             handleDifficulty();
@@ -218,6 +218,9 @@ public class Level extends Group implements Disposable {
             if (data.fireballCooldownTemp > data.fireballMinCooldown)
                 data.fireballCooldownTemp -= data.fireballCooldownDec;
 
+            if (player.movementDelay > data.playerMinMovement)
+                player.movementDelay -= data.playerMovementDelayDec;
+
             difficultyTimer = 0;
         }
     }
@@ -306,9 +309,9 @@ public class Level extends Group implements Disposable {
         fireballTimer = 0;
         difficultyTimer = 0;
 
-        charManager.setCurrentCharacter(charManager.getCharacter("archer"));
+        charManager.setCurrentCharacter(charManager.getCharacter((int) (Math.random() * 12)));
+        player.movementDelay = data.playerMovementDelay;
         player.updateCharacter();
-        charManager.flush();
 
         placePlayer();
         placeFruit();
@@ -331,6 +334,7 @@ public class Level extends Group implements Disposable {
     @Override
     public void dispose() {
         data.music.stop();
+        charManager.flush();
     }
 
     public void setScoreListener(ScoreListener scoreListener) {
