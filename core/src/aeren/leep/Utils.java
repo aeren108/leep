@@ -2,6 +2,10 @@ package aeren.leep;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
 
@@ -28,6 +32,24 @@ public class Utils {
         }
 
         return flipped;
+    }
+
+    public static List<Vector2> removeAdjacentTiles(List<Vector2> tiles, int posx, int posy, int distance) {
+        List<Vector2> distants = new ArrayList<>();
+        distants.addAll(tiles);
+
+        for (int y = posy - distance; y <= posy + distance; y++) {
+            for (int x = posx - distance; x <= posx + distance; x++) {
+                for (int i = 0; i < distants.size(); i++) {
+                    Vector2 tile = distants.get(i);
+
+                    if ((int) tile.x == x && (int) tile.y == y)
+                        distants.remove(tile);
+                }
+            }
+        }
+
+        return distants;
     }
 
 }

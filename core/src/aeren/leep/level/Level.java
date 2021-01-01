@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aeren.leep.Assets;
+import aeren.leep.Utils;
 import aeren.leep.actors.Fireball;
 import aeren.leep.actors.FireballFactory;
 import aeren.leep.actors.Fruit;
@@ -103,7 +104,7 @@ public class Level extends Group implements Disposable {
             fireballTimer += delta;
             difficultyTimer += delta;
 
-            //checkActorCollisions();
+            checkActorCollisions();
             checkTileCollisions();
             generateFireballs();
             handleDifficulty();
@@ -161,14 +162,15 @@ public class Level extends Group implements Disposable {
     }
 
     private void placeFruit() {
-        Vector2 pos = availableCells.get((int) (Math.random() * availableCells.size()));
+        List<Vector2> tiles = Utils.removeAdjacentTiles(availableCells, (int) fruit.getX() / 16, (int) fruit.getY() / 16, 2);
+        Vector2 pos = tiles.get((int) (Math.random() * tiles.size()));
 
-        if ((pos.x == player.getX() && pos.y == player.getY()) || (pos.x == fruit.getX() && pos.y == fruit.getY())) {
+        if ((pos.x == player.getX() && pos.y == player.getY())) {
             placeFruit();
             return;
         }
 
-        fruit.setPosition(pos.x, pos.y);
+        fruit.setPosition(pos.x * 16, pos.y * 16);
         fruit.respawn();
     }
 
@@ -176,7 +178,7 @@ public class Level extends Group implements Disposable {
         isPlacingPlayer = true;
 
         Vector2 playerPos = availableCells.get((int) (Math.random() * availableCells.size()));
-        player.addAction(Actions.sequence(Actions.moveTo(playerPos.x, playerPos.y, 0.2f), Actions.run(() -> isPlacingPlayer = false)));
+        player.addAction(Actions.sequence(Actions.moveTo(playerPos.x * 16, playerPos.y * 16, 0.2f), Actions.run(() -> isPlacingPlayer = false)));
     }
 
     private void generateFireballs() {
@@ -226,19 +228,13 @@ public class Level extends Group implements Disposable {
     }
 
     public void findAvailableCells() {
-        TiledMapTileLayer layer = (TiledMapTileLayer) data.map.getLayers().get("ground");
+        int[][] rawMap = generator.getRawMap();
         availableCells.clear();
 
-        for (int i = 0; i < layer.getWidth(); i++) {
-            for (int j = 0; j < layer.getHeight(); j++) {
-                for (int id : data.availableTiles) {
-                    TiledMapTileLayer.Cell cell = layer.getCell(i, j);
-                    if (cell == null)
-                        continue;
-
-                    if (cell.getTile().getId() == id)
-                        availableCells.add(new Vector2(i * 16, j * 16));
-                }
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 9; x++) {
+                if (rawMap[15 - y][x] == 1)
+                    availableCells.add(new Vector2(x, y));
             }
         }
     }
