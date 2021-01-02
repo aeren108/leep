@@ -68,6 +68,7 @@ public class Level extends Group implements Disposable {
 
         assets = Assets.getInstance();
         charManager = CharacterManager.getInstance();
+        charManager.setCharacterListener(player);
 
         pickup = assets.get("sfx/pickup.wav", Sound.class);
         hurt = assets.get("sfx/hurt.wav", Sound.class);
@@ -305,10 +306,6 @@ public class Level extends Group implements Disposable {
         fireballTimer = 0;
         difficultyTimer = 0;
 
-        charManager.setCurrentCharacter(charManager.getCharacter((int) (Math.random() * 12)));
-        player.movementDelay = data.playerMovementDelay;
-        player.updateCharacter();
-
         placePlayer();
         placeFruit();
 
@@ -330,7 +327,6 @@ public class Level extends Group implements Disposable {
     @Override
     public void dispose() {
         data.music.stop();
-        charManager.flush();
     }
 
     public void setScoreListener(ScoreListener scoreListener) {

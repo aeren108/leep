@@ -21,6 +21,20 @@ com.badlogic.gdx.graphics.Color: {
 		a: 1
 	}
 }
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	next: {
+		imageUp: next
+		up: button
+		down: button-down
+		disabled: button-disabled
+	}
+	prev: {
+		imageUp: prev
+		up: button
+		down: button-down
+		disabled: button-disabled
+	}
+}
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
 		font: orange-kid
@@ -35,7 +49,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		fontColor: white
 		up: button
 		down: button-down
-		focused: button-down
+		disabled: button-disabled
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {

@@ -1,12 +1,20 @@
 {
     "assets": {
         "global": [
-            {"type": "com.badlogic.gdx.scenes.scene2d.ui.Skin", "path": "ui/ui-skin.json"},
+            {"type": "com.badlogic.gdx.scenes.scene2d.ui.Skin", "path": "ui/ui-skin.json"}
         ],
 
         "menu": [
             {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/characters.png"},
-            {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/fruit.png"}
+            {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/fruit.png"},
+            {"type": "com.badlogic.gdx.maps.tiled.TiledMap", "path": "ui/menu-maps.tmx"}
+        ],
+
+        "character": [
+            {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/characters.png"},
+            {"type": "com.badlogic.gdx.maps.tiled.TiledMap", "path": "ui/menu-maps.tmx"},
+            {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/blip_next.wav"},
+            {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/blip_prev.wav"}
         ],
 
         "game": [
@@ -16,7 +24,8 @@
             {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/pickup.wav"},
             {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/swipe.wav"},
             {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/hurt.wav"},
-            {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/fall.wav"}
+            {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/fall.wav"},
+            {"type": "com.badlogic.gdx.maps.tiled.TiledMap", "path": "levels/forestlevel.tmx"}
         ]
     }
 }

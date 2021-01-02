@@ -6,35 +6,50 @@ filter: Linear,Linear
 repeat: none
 orange-kid
   rotate: false
-  xy: 1, 57
+  xy: 1, 67
   size: 506, 334
   orig: 506, 334
   offset: 0, 0
   index: -1
 orange-kid-title_0
   rotate: false
-  xy: 1, 907
+  xy: 1, 917
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 orange-kid-title_1
   rotate: false
-  xy: 1, 393
+  xy: 1, 403
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 orange-kid-title_2
   rotate: false
-  xy: 515, 907
+  xy: 515, 917
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
+unlocked
+  rotate: false
+  xy: 1095, 1413
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 button
   rotate: false
-  xy: 515, 841
+  xy: 515, 851
+  size: 64, 64
+  split: 13, 13, 13, 13
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+button-disabled
+  rotate: false
+  xy: 1, 1
   size: 64, 64
   split: 13, 13, 13, 13
   orig: 64, 64
@@ -42,16 +57,30 @@ button
   index: -1
 button-down
   rotate: false
-  xy: 1029, 1355
+  xy: 1029, 1365
   size: 64, 64
   split: 13, 13, 13, 13
   orig: 64, 64
   offset: 0, 0
   index: -1
+next
+  rotate: false
+  xy: 515, 785
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 pause-up
   rotate: false
-  xy: 1, 1
+  xy: 1029, 1309
   size: 48, 54
   orig: 48, 54
+  offset: 0, 0
+  index: -1
+prev
+  rotate: false
+  xy: 581, 851
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1

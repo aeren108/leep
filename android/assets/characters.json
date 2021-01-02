@@ -3,7 +3,7 @@
 
     "characters": {
         "dino-v1": {"unlocked": true, "x": 0, "y": 0},
-        "dino-v2": {"unlocked": false, "x": 0, "y": 1},
+        "dino-v2": {"unlocked": true, "x": 0, "y": 1},
         "wizard": {"unlocked": false, "x": 0, "y": 2},
         "knight": {"unlocked": false, "x": 0, "y": 3},
         "archer": {"unlocked": false, "x": 0, "y": 4},

@@ -2,6 +2,8 @@ package aeren.leep;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
@@ -20,6 +22,8 @@ public class Assets {
     private Assets(String assetsFile) {
         manager = new AssetManager();
         groups = new HashMap<>();
+
+        manager.setLoader(TiledMap.class, new TmxMapLoader());
 
         loadGroups(assetsFile);
         loadGroup("global");

@@ -6,6 +6,11 @@ public enum StateEnum {
             return new MenuState();
         }
     },
+    CHARACTER_STATE("character") {
+        public State getState(Object... params) {
+            return new CharacterState();
+        }
+    },
     GAME_STATE("game") {
         public State getState(Object... params) {
             return new GameState();

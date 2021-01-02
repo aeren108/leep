@@ -16,7 +16,7 @@ public abstract class Fragment extends Stage implements Disposable {
 
     public Fragment(State state) {
         this.state = state;
-        this.setViewport(new ExtendViewport(Settings.WIDTH * 4, Settings.HEIGHT * 4));
+        this.setViewport(new ExtendViewport(Settings.UI_WIDTH, Settings.UI_HEIGHT));
     }
 
     public abstract void init();

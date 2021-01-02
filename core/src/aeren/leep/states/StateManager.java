@@ -28,24 +28,24 @@ public class StateManager {
         curState.dispose();
 
         assets.loadGroup(stateEnum.groupName);
-        State state = stateEnum.getState();
+        assets.finishLoading();
+
+        curState = stateEnum.getState();
 
         if (game == null)
             throw new NullPointerException("StateManager: game is null");
 
-        curState = state;
         game.setScreen(curState);
         stateStack.push(stateEnum);
     }
 
     public void pushState(StateEnum stateEnum) {
-        if (curState != null) {
-            curState.dispose();
-            //assets.unloadGroup(stateStack.peek().groupName);
-        }
+        if (curState != null) curState.dispose();
+
+        assets.loadGroup(stateEnum.groupName);
+        assets.finishLoading();
 
         curState = stateEnum.getState();
-        assets.loadGroup(stateEnum.groupName);
 
         if (game == null)
             throw new NullPointerException("StateManager: game is null");
@@ -62,7 +62,9 @@ public class StateManager {
 
         stateStack.pop();
         curState.dispose();
+
         assets.loadGroup(stateStack.peek().groupName);
+        assets.finishLoading();
 
         if (game == null)
             throw new NullPointerException("StateManager: game is null");

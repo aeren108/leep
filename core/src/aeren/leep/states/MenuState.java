@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Event;
@@ -44,16 +45,16 @@ public class MenuState extends State {
     private Animation<TextureRegion> fruitAnim;
 
     private float elapsed = 0;
+    private int[] layers;
 
     public MenuState() {
-        super(new ExtendViewport(Settings.WIDTH * 4, Settings.HEIGHT * 4));
+        super(new ExtendViewport(Settings.UI_WIDTH, Settings.UI_HEIGHT));
         background = new Stage(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
-        assets = Assets.getInstance();
     }
 
     @Override
     public void show() {
-        assets.finishLoading();
+        assets = Assets.getInstance();
         charManager = CharacterManager.getInstance();
 
         Character curr = charManager.getCurrentCharacter();
@@ -61,7 +62,8 @@ public class MenuState extends State {
         TextureRegion[] fruitFrames = Utils.getFrames(assets.get("sprites/fruit.png", Texture.class), 0, 0, 1, 4, 16, 16)[0];
 
         skin = assets.get("ui/ui-skin.json", Skin.class);
-        map = new TmxMapLoader().load("ui/main-menu.tmx");
+        map = assets.get("ui/menu-maps.tmx", TiledMap.class);
+
         mapRenderer = new OrthogonalTiledMapRenderer(map);
         charAnim = new Animation<>(.15f, charFrames);
         fruitAnim = new Animation<>(.15f, fruitFrames);
@@ -72,9 +74,17 @@ public class MenuState extends State {
         stats = new TextButton("STATS", skin);
         settings = new TextButton("SETTINGS", skin);
 
+        layers = new int[] {map.getLayers().getIndex("main-menu")};
+
         play.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent)
                 StateManager.getInstance().pushState(StateEnum.GAME_STATE);
+            return false;
+        });
+
+        stats.addListener((Event event) -> {
+            if (event instanceof ChangeListener.ChangeEvent)
+                StateManager.getInstance().pushState(StateEnum.CHARACTER_STATE);
             return false;
         });
 
@@ -99,7 +109,7 @@ public class MenuState extends State {
 
         background.getViewport().apply();
         mapRenderer.setView((OrthographicCamera) background.getCamera());
-        mapRenderer.render();
+        mapRenderer.render(layers);
 
         background.getBatch().setProjectionMatrix(background.getCamera().combined);
         background.getBatch().begin();

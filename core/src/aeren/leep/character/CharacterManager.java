@@ -17,8 +17,11 @@ public class CharacterManager {
     private Map<String, Character> characterMap;
     private List<Character> characterList;
     private Character current;
+
     private JsonValue json;
     private FileHandle file;
+
+    private CharacterListener listener;
 
     private CharacterManager() {
         characterMap = new HashMap<>();
@@ -37,7 +40,7 @@ public class CharacterManager {
         JsonValue charsArray = json.get("characters");
 
         for (JsonValue jv : charsArray) {
-            Character c = new Character(jv.name, jv.getBoolean("unlocked"), jv.getInt("x"), jv.getInt("y"));
+            Character c = new Character(jv.name, "DENEME", jv.getBoolean("unlocked"), jv.getInt("x"), jv.getInt("y"));
             characterMap.put(c.name, c);
             characterList.add(c);
         }
@@ -73,5 +76,16 @@ public class CharacterManager {
     public void setCurrentCharacter(Character current) {
         this.current = current;
         json.get("currentCharacter").set(current.name);
+
+        if (listener != null)
+            listener.onCharacterChanged(current);
+    }
+
+    public List<Character> getCharacters() {
+        return characterList;
+    }
+
+    public void setCharacterListener(CharacterListener listener) {
+        this.listener = listener;
     }
 }

@@ -40,6 +40,7 @@ public class GameState extends State implements ScoreListener {
     //TODO: Constructor with the Level parameter
     public GameState() {
         super(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
+        ui = new Stage(new ExtendViewport(Settings.UI_WIDTH, Settings.UI_HEIGHT));
     }
 
     @Override
@@ -47,7 +48,6 @@ public class GameState extends State implements ScoreListener {
         Assets.getInstance().finishLoading();
         Skin skin = Assets.getInstance().get("ui/ui-skin.json", Skin.class);
 
-        ui = new Stage(new ExtendViewport(Settings.WIDTH * 4, Settings.HEIGHT * 4));
         level = new Level(new LevelDataFactory().getLevelData("levels/forestlevel.json"));
         mapRenderer = new OrthogonalTiledMapRenderer(level.getData().map);
         gestureHandler = new GestureHandler(level.getPlayer());
@@ -150,7 +150,7 @@ public class GameState extends State implements ScoreListener {
 
     @Override
     public void onScoreChanged(int score, boolean isRecord) {
-        String text = isRecord ? "[PURPLE]HIGHSCORE: [GOLD]" + score : "[WHITE]SCORE: [GOLD]" + score;
+        String text = isRecord ? "[MAROON]HIGHSCORE: [GOLD]" + score : "[WHITE]SCORE: [GOLD]" + score;
         scoreLabel.setText(text);
     }
 }
