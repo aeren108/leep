@@ -12,6 +12,7 @@ import aeren.leep.states.StateManager;
 public class LeepMain extends Game {
     private Assets assets;
     private CharacterManager cm;
+    private DataManager dm;
     public AndroidCallback callback;
 
     public LeepMain(AndroidCallback callback) {
@@ -24,10 +25,12 @@ public class LeepMain extends Game {
 
         assets = Assets.getInstance();
         cm = CharacterManager.getInstance();
+        dm = DataManager.getInstance();
 
         assets.get("ui/ui-skin.json", Skin.class).getFont("orange-kid").getData().markupEnabled = true;
         assets.get("ui/ui-skin.json", Skin.class).getFont("orange-kid-title").getData().markupEnabled = true;
         cm.loadCharacters();
+        dm.loadData();
 
         StateManager stateManager = StateManager.getInstance();
         stateManager.initialize(this);
@@ -46,5 +49,8 @@ public class LeepMain extends Game {
     private void copyFiles() {
         if (!Gdx.files.local("characters.json").exists())
             Gdx.files.internal("characters.json").copyTo(Gdx.files.local(""));
+
+        if (!Gdx.files.local("data.json").exists())
+            Gdx.files.internal("data.json").copyTo(Gdx.files.local(""));
     }
 }

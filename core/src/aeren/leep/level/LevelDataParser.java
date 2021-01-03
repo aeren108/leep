@@ -22,6 +22,7 @@ public class LevelDataParser {
         JsonValue fireball = json.get("fireball");
         JsonValue player = json.get("player");
 
+        data.levelName = json.getString("levelName");
         data.map = new TmxMapLoader().load(json.getString("tmxFile"));
         data.music = Assets.getInstance().get(json.getString("music"), Music.class);
         data.deadlyTiles = json.get("deadlyTiles").asIntArray();

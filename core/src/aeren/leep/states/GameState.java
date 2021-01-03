@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import aeren.leep.Assets;
+import aeren.leep.DataManager;
 import aeren.leep.Settings;
 import aeren.leep.input.GestureHandler;
 import aeren.leep.level.Level;
@@ -115,7 +116,6 @@ public class GameState extends State implements ScoreListener {
     @Override
     public void resize(int width, int height) {
         ui.getViewport().update(width, height);
-        //table.setPosition(ui.getWidth() / 2, ui.getHeight(), Align.center);
         super.resize(width, height);
     }
 
@@ -131,6 +131,8 @@ public class GameState extends State implements ScoreListener {
 
     @Override
     public void dispose() {
+        DataManager.getInstance().flush();
+
         ui.dispose();
         mapRenderer.dispose();
         level.dispose();
@@ -150,7 +152,7 @@ public class GameState extends State implements ScoreListener {
 
     @Override
     public void onScoreChanged(int score, boolean isRecord) {
-        String text = isRecord ? "[MAROON]HIGHSCORE: [GOLD]" + score : "[WHITE]SCORE: [GOLD]" + score;
+        String text = isRecord ? "[MAROON]BEST: [GOLD]" + score : "[WHITE]SCORE: [GOLD]" + score;
         scoreLabel.setText(text);
     }
 }

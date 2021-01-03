@@ -10,6 +10,7 @@ import java.util.List;
 import aeren.leep.level.pattern.Pattern;
 
 public class LevelData implements Disposable {
+    public String levelName;
     public TiledMap map;
     public List<Pattern> patterns;
     public int[] deadlyTiles;

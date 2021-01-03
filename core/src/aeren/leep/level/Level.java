@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aeren.leep.Assets;
+import aeren.leep.DataManager;
 import aeren.leep.Utils;
 import aeren.leep.actors.Fireball;
 import aeren.leep.actors.FireballFactory;
@@ -27,8 +28,10 @@ import aeren.leep.states.fragments.GameOverFragment;
 
 public class Level extends Group implements Disposable {
     private GameState state;
+
     private Assets assets;
     private CharacterManager charManager;
+    private DataManager dm;
 
     private LevelData data;
     private MapGenerator generator;
@@ -56,7 +59,6 @@ public class Level extends Group implements Disposable {
     private boolean isNewBest = false;
 
     private ScoreListener scoreListener;
-    private Preferences prefs;
 
     public Level(LevelData data) {
         this.data = data;
@@ -68,20 +70,19 @@ public class Level extends Group implements Disposable {
 
         assets = Assets.getInstance();
         charManager = CharacterManager.getInstance();
+        dm = DataManager.getInstance();
         charManager.setCharacterListener(player);
 
         pickup = assets.get("sfx/pickup.wav", Sound.class);
         hurt = assets.get("sfx/hurt.wav", Sound.class);
         fall = assets.getInstance().get("sfx/fall.wav", Sound.class);
+        best = dm.getHighscore(data.levelName);
 
         addActor(fruit);
         addActor(player);
 
         activeFireballs = new ArrayList<>();
         fireballFactory = new FireballFactory();
-
-        prefs = Gdx.app.getPreferences("leep");
-        best = prefs.getInteger("hs");
 
         data.music.setLooping(true);
         data.music.setVolume(.25f);
@@ -241,9 +242,14 @@ public class Level extends Group implements Disposable {
     }
 
     private void gameOver() {
+        isGameOver = true;
+
+        dm.increaseData("totalFruitsCollected", score);
+        dm.increaseData("totalGamesPlayed", 1);
+
         if (score > best)
             setBest(score);
-        isGameOver = true;
+
         player.addAction(Actions.sequence( //flicker the player and show game over fragment
             Actions.repeat(2, Actions.sequence(Actions.fadeOut(0.15f), Actions.fadeIn(0.15f))),
             Actions.run(() -> state.pushFragment(new GameOverFragment(state, score, best))))
@@ -366,8 +372,6 @@ public class Level extends Group implements Disposable {
 
     public void setBest(int best) {
         this.best = best;
-
-        prefs.putInteger("hs", best);
-        prefs.flush();
+        dm.setHighscore(data.levelName, best);
     }
 }
