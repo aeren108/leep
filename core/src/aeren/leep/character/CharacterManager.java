@@ -49,7 +49,7 @@ public class CharacterManager {
     }
 
     public void flush() {
-        file.writeString(json.toJson(JsonWriter.OutputType.json), false);
+        file.writeBytes(json.toJson(JsonWriter.OutputType.json).getBytes(), false);
     }
 
     public void unlockCharacter(Character c) {

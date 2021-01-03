@@ -14,20 +14,21 @@ import aeren.leep.Assets;
 import aeren.leep.states.GameState;
 import aeren.leep.states.StateEnum;
 import aeren.leep.states.StateManager;
+import aeren.leep.ui.GameOverTable;
 
 public class GameOverFragment extends Fragment {
     private Texture background;
 
-    private Label titleLabel;
-    private Label scoreLabel;
+    private GameOverTable got;
     private TextButton retryButton;
     private TextButton backButton;
 
-    private int score;
+    private int score, best;
 
-    public GameOverFragment(GameState state, int score) {
+    public GameOverFragment(GameState state, int score, int best) {
         super(state);
         this.score = score;
+        this.best = best;
     }
 
     @Override
@@ -40,8 +41,7 @@ public class GameOverFragment extends Fragment {
         background = new Texture(pixmap);
         pixmap.dispose();
 
-        titleLabel = new Label("[GOLD]YOU DIED", skin);
-        scoreLabel = new Label("[WHITE]SCORE: [GOLD]" + score, skin);
+        got = new GameOverTable(skin, score, best);
         retryButton = new TextButton("RETRY", skin);
         backButton = new TextButton("MAIN MENU", skin);
 
@@ -62,10 +62,7 @@ public class GameOverFragment extends Fragment {
 
         Table table = new Table();
         table.align(Align.center);
-
-        table.padTop(-156);
-        table.add(titleLabel).row();
-        table.add(scoreLabel).row();
+        table.add(got).row();
         table.add(retryButton).minWidth(256).spaceTop(48).row();
         table.add(backButton).minWidth(256).spaceTop(8).row();
 

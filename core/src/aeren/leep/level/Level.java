@@ -52,8 +52,8 @@ public class Level extends Group implements Disposable {
     private float difficultyTimer = 0;
 
     private int score = 0;
-    private int highscore;
-    private boolean isNewRecord = false;
+    private int best;
+    private boolean isNewBest = false;
 
     private ScoreListener scoreListener;
     private Preferences prefs;
@@ -81,7 +81,7 @@ public class Level extends Group implements Disposable {
         fireballFactory = new FireballFactory();
 
         prefs = Gdx.app.getPreferences("leep");
-        highscore = prefs.getInteger("hs");
+        best = prefs.getInteger("hs");
 
         data.music.setLooping(true);
         data.music.setVolume(.25f);
@@ -122,7 +122,7 @@ public class Level extends Group implements Disposable {
                 Fruit f = (Fruit) a;
 
                 if (f.getBounds().overlaps(player.getBounds())) {
-                    if (score > highscore) isNewRecord = true;
+                    if (score > best) isNewBest = true;
 
                     pickup.play(.35f);
                     placeFruit();
@@ -241,12 +241,12 @@ public class Level extends Group implements Disposable {
     }
 
     private void gameOver() {
-        if (score > highscore)
-            setHighscore(score);
+        if (score > best)
+            setBest(score);
         isGameOver = true;
         player.addAction(Actions.sequence( //flicker the player and show game over fragment
             Actions.repeat(2, Actions.sequence(Actions.fadeOut(0.15f), Actions.fadeIn(0.15f))),
-            Actions.run(() -> state.pushFragment(new GameOverFragment(state, score))))
+            Actions.run(() -> state.pushFragment(new GameOverFragment(state, score, best))))
         );
     }
 
@@ -309,7 +309,7 @@ public class Level extends Group implements Disposable {
         placePlayer();
         placeFruit();
 
-        isNewRecord = false;
+        isNewBest = false;
         isGameOver = false;
         isPaused = false;
 
@@ -341,8 +341,8 @@ public class Level extends Group implements Disposable {
         return player;
     }
 
-    public boolean isNewRecord() {
-        return isNewRecord;
+    public boolean isNewBest() {
+        return isNewBest;
     }
 
     public boolean isGameOver() {
@@ -357,17 +357,17 @@ public class Level extends Group implements Disposable {
         this.score = score;
 
         if (scoreListener != null)
-            scoreListener.onScoreChanged(score, isNewRecord);
+            scoreListener.onScoreChanged(score, isNewBest);
     }
 
-    public int getHighscore() {
-        return highscore;
+    public int getBest() {
+        return best;
     }
 
-    public void setHighscore(int highscore) {
-        this.highscore = highscore;
+    public void setBest(int best) {
+        this.best = best;
 
-        prefs.putInteger("hs", highscore);
+        prefs.putInteger("hs", best);
         prefs.flush();
     }
 }

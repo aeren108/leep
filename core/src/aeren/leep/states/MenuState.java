@@ -71,7 +71,7 @@ public class MenuState extends State {
         table = new Table();
         title = new Label("[GOLD]LEEP", skin, "title");
         play = new TextButton("PLAY", skin);
-        stats = new TextButton("STATS", skin);
+        stats = new TextButton("LEEPERS", skin);
         settings = new TextButton("SETTINGS", skin);
 
         layers = new int[] {map.getLayers().getIndex("main-menu")};
