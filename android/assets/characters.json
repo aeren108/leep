@@ -1,18 +1,74 @@
 {
-    "currentCharacter": "wizard",
-
-    "characters": {
-        "dino-v1": {"unlocked": true, "x": 0, "y": 0},
-        "dino-v2": {"unlocked": true, "x": 0, "y": 1},
-        "wizard": {"unlocked": false, "x": 0, "y": 2},
-        "knight": {"unlocked": false, "x": 0, "y": 3},
-        "archer": {"unlocked": false, "x": 0, "y": 4},
-        "demon": {"unlocked": false, "x": 0, "y": 5},
-        "ottoman-pirate": {"unlocked": false, "x": 1, "y": 0},
-        "ghost": {"unlocked": false, "x": 1, "y": 1},
-        "monster": {"unlocked": false, "x": 1, "y": 2},
-        "frankenstein": {"unlocked": false, "x": 1, "y": 3},
-        "pig": {"unlocked": false, "x": 1, "y": 4},
-        "girl": {"unlocked": false, "x": 1, "y": 5}
+    "dino-v1": {
+        "x": 0,
+        "y": 0,
+        "condition": "totalGamesPlayed",
+        "conditionValue": 0,
+        "status": "UNLOCKED"
+    },
+    "dino-v2": {
+        "x": 0,
+        "y": 1,
+        "condition": "totalGamesPlayed",
+        "conditionValue": 25,
+        "status": "PLAY %d GAMES MORE"
+    },
+    "wizard": {
+        "x": 0,
+        "y": 2,
+        "condition": "totalFruitsCollected",
+        "conditionValue": 200,
+        "status": "EAT %d FRUITS MORE"
+    },
+    "knight": {
+        "x": 0,
+        "y": 3,
+        "condition": "totalGamesPlayed",
+        "conditionValue": 150,
+        "status": "PLAY %d GAMES MORE"
+    },
+    "archer": {
+        "x": 0,
+        "y": 4,
+        "condition": "highscores.Grassland",
+        "conditionValue": 30,
+        "status": "SCORE 30+"
+    },
+    "demon": {
+        "x": 0,
+        "y": 5,
+        "condition": "totalGamesPlayed",
+        "conditionValue": 300,
+        "status": "PLAY %d GAMES MORE"
+    },
+    "ottoman-pirate": {
+        "x": 1,
+        "y": 0,
+        "condition": "totalFruitsCollected",
+        "conditionValue": 700,
+        "status": "EAT %d FRUITS MORE"
+    },
+    "ghost": {
+        "x": 1,
+        "y": 1,
+        "condition": "totalGamesPlayed",
+        "conditionValue": 500,
+        "status": "PLAY %d GAMES MORE"
+    },
+    "pig": {
+        "x": 1,
+        "y": 4,
+        "condition": "totalFruitsCollected",
+        "conditionValue": 1000,
+        "status": "EAT %d FRUITS MORE"
+    },
+    "monster": {
+        "unlocked": false,
+        "x": 1,
+        "y": 2,
+        "condition": "highscores.Grassland",
+        "conditionValue": 60,
+        "status": "SCORE 60+"
     }
+
 }

@@ -6,9 +6,6 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonWriter;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class DataManager {
     private static DataManager instance;
 
@@ -36,18 +33,59 @@ public class DataManager {
     }
 
     public void setData(String path, int value) {
-        if (json.get(path) == null)
-            json.addChild(path, new JsonValue(value));
-
-        json.get(path).set(value, null);
+        JsonValue jv = getJsonValueFromPath(path);
+        jv.set(value, null);
     }
 
-    public int getData(String path) {
-        return json.get(path).asInt();
+    public void setData(String path, boolean value) {
+        JsonValue jv = getJsonValueFromPath(path);
+        jv.set(value);
+    }
+
+    public void setData(String path, String value) {
+        JsonValue jv = getJsonValueFromPath(path);
+        jv.set(value);
+    }
+
+    public int getInt(String path) {
+        return getJsonValueFromPath(path).asInt();
+    }
+
+    public boolean getBoolean(String path) {
+        return getJsonValueFromPath(path).asBoolean();
+    }
+
+    public String getString(String path) {
+        return getJsonValueFromPath(path).asString();
+    }
+
+    private JsonValue getJsonValueFromPath(String path) {
+        JsonValue jv = json;
+        JsonValue parent = json;
+        String[] split = path.split("\\.");
+
+        for (int i = 0; i < split.length; i++) {
+            String s = split[i];
+            jv = jv.get(s);
+
+            if (jv == null) {
+                if (i == split.length - 1) {
+                    parent.addChild(s, new JsonValue("0"));
+                } else {
+                    parent.addChild(s, new JsonValue(JsonValue.ValueType.object));
+                }
+
+                jv = parent.get(s);
+            } else {
+                parent = jv.parent;
+            }
+        }
+
+        return jv;
     }
 
     public void increaseData(String path, int amount) {
-        setData(path, getData(path) + amount);
+        setData(path, getInt(path) + amount);
     }
 
     public void setHighscore(String level, int highscore) {

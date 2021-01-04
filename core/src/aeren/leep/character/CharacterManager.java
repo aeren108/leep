@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import aeren.leep.DataManager;
+
 public class CharacterManager {
     private static CharacterManager instance;
 
@@ -18,15 +20,15 @@ public class CharacterManager {
     private List<Character> characterList;
     private Character current;
 
-    private JsonValue json;
-    private FileHandle file;
+    private DataManager dm;
 
     private CharacterListener listener;
 
     private CharacterManager() {
         characterMap = new HashMap<>();
         characterList = new ArrayList<>();
-        file = Gdx.files.local("characters.json");
+
+        dm = DataManager.getInstance();
     }
 
     public static CharacterManager getInstance() {
@@ -36,25 +38,37 @@ public class CharacterManager {
     }
 
     public void loadCharacters() {
-        json = new JsonReader().parse(Gdx.files.local("characters.json"));
-        JsonValue charsArray = json.get("characters");
+        JsonValue json = new JsonReader().parse(Gdx.files.internal("characters.json"));
 
-        for (JsonValue jv : charsArray) {
-            Character c = new Character(jv.name, "DENEME", jv.getBoolean("unlocked"), jv.getInt("x"), jv.getInt("y"));
+        for (JsonValue jv : json) {
+            Character c = new Character(jv.name, jv.getString("status"), jv.getString("condition"), jv.getInt("conditionValue"),
+                                        jv.getInt("x"), jv.getInt("y"), false);
             characterMap.put(c.name, c);
             characterList.add(c);
+
+            //dm.setData("characters."+c.name+".unlocked", false);
         }
 
-        current = characterMap.get(json.getString("currentCharacter"));
+        current = characterMap.get(dm.getString("currentCharacter"));
+        checkUnlockConditions();
     }
 
-    public void flush() {
-        file.writeBytes(json.toJson(JsonWriter.OutputType.json).getBytes(), false);
+    public boolean checkUnlockConditions() {
+        boolean isUnlocked = false;
+        for (Character c : characterList) {
+            int currentConditionValue = dm.getInt(c.condition);
+            if (currentConditionValue >= c.conditionValue) {
+                unlockCharacter(c);
+                isUnlocked = true;
+            }
+        }
+
+        return isUnlocked;
     }
 
     public void unlockCharacter(Character c) {
         c.unlocked = true;
-        json.get("characters").get(c.name).get("unlocked").set(true);
+        //dm.setData("characters."+c.name+".unlocked", true);
     }
 
     public Character getCharacter(String name) {
@@ -75,7 +89,7 @@ public class CharacterManager {
 
     public void setCurrentCharacter(Character current) {
         this.current = current;
-        json.get("currentCharacter").set(current.name);
+        dm.setData("currentCharacter", current.name);
 
         if (listener != null)
             listener.onCharacterChanged(current);

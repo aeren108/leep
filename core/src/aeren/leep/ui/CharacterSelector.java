@@ -11,11 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 import java.util.List;
 
+import aeren.leep.DataManager;
 import aeren.leep.character.Character;
-import aeren.leep.character.CharacterListener;
 import aeren.leep.character.CharacterManager;
 
 public class CharacterSelector extends Table {
+    private DataManager dm;
+
     private Skin skin;
     private Label status;
 
@@ -28,6 +30,8 @@ public class CharacterSelector extends Table {
     public CharacterSelector(Skin skin, List<Character> characters) {
         this.skin = skin;
         this.characters = characters;
+
+        dm = DataManager.getInstance();
 
         setSkin(skin);
         initialize();
@@ -76,7 +80,7 @@ public class CharacterSelector extends Table {
         if (c.unlocked)
             return "UNLOCKED";
 
-        return c.status;
+        return String.format(c.status, (c.conditionValue - dm.getInt(c.condition)));
     }
 
     private float getSelectorWidth() {
@@ -112,7 +116,7 @@ public class CharacterSelector extends Table {
 
     @Override
     public float getPrefWidth() {
-        return getSelectorWidth() + 96;
+        return getSelectorWidth() + 224;
     }
 
     @Override

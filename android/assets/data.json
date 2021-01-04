@@ -1,8 +1,9 @@
 {
+    "currentCharacter": "dino-v1",
+    "totalGamesPlayed": 0,
+    "totalFruitsCollected": 0,
+
     "highscores": {
 
-    },
-
-    "totalGamesPlayed": 0,
-    "totalFruitsCollected": 0
+    }
 }

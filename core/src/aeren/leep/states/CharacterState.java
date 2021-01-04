@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import aeren.leep.Assets;
+import aeren.leep.DataManager;
 import aeren.leep.Settings;
 import aeren.leep.Utils;
 import aeren.leep.character.CharacterManager;
@@ -70,7 +71,7 @@ public class CharacterState extends State {
         selector.setPosition(-selector.getPrefWidth() / 2, Settings.UI_HEIGHT / 2 - selector.getPrefHeight() - 128);
 
         select = new TextButton("SELECT", skin);
-        select.setSize(224, 90);
+        select.setSize(296, 90);
         select.setPosition(-select.getWidth() / 2, -Settings.UI_HEIGHT / 2 + select.getHeight() + 64);
         select.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent) {
@@ -169,7 +170,7 @@ public class CharacterState extends State {
 
     @Override
     public void dispose() {
-        cm.flush();
+        DataManager.getInstance().flush();
         background.dispose();
         super.dispose();
     }

@@ -246,6 +246,7 @@ public class Level extends Group implements Disposable {
 
         dm.increaseData("totalFruitsCollected", score);
         dm.increaseData("totalGamesPlayed", 1);
+        charManager.checkUnlockConditions();
 
         if (score > best)
             setBest(score);
