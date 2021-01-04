@@ -3,11 +3,12 @@ Leep is a mobile game I'm developing with libGDX for fun.
 
 ## About Game
 Your aim is basically collecting fruits while trying to not get shot by anything. You move character by swiping to direction you want.<br>
-As you play game gets harder. (Fireballs get faster)
+As you play game fireballs get faster.
 
 ## Screenshots
-![](screenshots/leepss1.png)
-![](screenshots/leepss2.png)
+![](screenshots/main-menu.png)
+![](screenshots/char-selection.png)
+![](screenshots/game-state.png)
 
 ## Download
 [Download](https://www.dropbox.com/s/0s6yn88z5d9tnu8/leep-release.apk?dl=0) APK.
