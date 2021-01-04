@@ -6,9 +6,11 @@ Your aim is basically collecting fruits while trying to not get shot by anything
 As you play game fireballs get faster.
 
 ## Screenshots
-![](screenshots/main-menu.png)
-![](screenshots/char-selection.png)
-![](screenshots/game-state.png)
+<p float="left">
+	<img src="screenshots/main-menu.png" width="100"/>
+	<img src="screenshots/char-selection.png" width="100"/> 
+	<img src="screenshots/game-state.png" width="100"/>
+</p>
 
 ## Download
 [Download](https://www.dropbox.com/s/0s6yn88z5d9tnu8/leep-release.apk?dl=0) APK.
