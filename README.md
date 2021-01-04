@@ -7,9 +7,9 @@ As you play game fireballs get faster.
 
 ## Screenshots
 <p float="left">
-	<img src="screenshots/main-menu.png" width="480"/>
-	<img src="screenshots/char-selection.png" width="480"/> 
-	<img src="screenshots/game-state.png" width="480"/>
+	<img src="screenshots/main-menu.png" width="200"/>
+	<img src="screenshots/char-selection.png" width="200"/> 
+	<img src="screenshots/game-state.png" width="200"/>
 </p>
 
 ## Download
