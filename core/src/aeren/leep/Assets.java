@@ -17,7 +17,6 @@ public class Assets {
 
     private AssetManager manager;
     private Map<String, List<Asset>> groups;
-    //TODO: Main menu background texture
 
     private Assets(String assetsFile) {
         manager = new AssetManager();
@@ -26,8 +25,6 @@ public class Assets {
         manager.setLoader(TiledMap.class, new TmxMapLoader());
 
         loadGroups(assetsFile);
-        loadGroup("global");
-        finishLoading();
     }
 
     public static Assets getInstance() {
@@ -35,6 +32,12 @@ public class Assets {
             Assets.instance = new Assets("assets.json");
 
         return Assets.instance;
+    }
+
+    public void loadAll() {
+        for (Map.Entry<String, List<Asset>> entry : groups.entrySet()) {
+            loadGroup(entry.getKey());
+        }
     }
 
     public void loadGroup(String groupName) {
@@ -59,6 +62,10 @@ public class Assets {
                 manager.unload(asset.path);
             }
         }
+    }
+
+    public boolean update() {
+        return manager.update();
     }
 
     public <T> T get(String fileName) {

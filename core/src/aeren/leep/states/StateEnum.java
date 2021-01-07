@@ -1,6 +1,11 @@
 package aeren.leep.states;
 
 public enum StateEnum {
+    SPLASH("splash") {
+        public State getState(Object... params) {
+            return new SplashState();
+        }
+    },
     MAIN_MENU("menu") {
         public State getState(Object... params) {
             return new MenuState();

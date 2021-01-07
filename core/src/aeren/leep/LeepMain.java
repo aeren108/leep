@@ -27,14 +27,16 @@ public class LeepMain extends Game {
         dm = DataManager.getInstance();
         cm = CharacterManager.getInstance();
 
-        assets.get("ui/ui-skin.json", Skin.class).getFont("orange-kid").getData().markupEnabled = true;
-        assets.get("ui/ui-skin.json", Skin.class).getFont("orange-kid-title").getData().markupEnabled = true;
         dm.loadData();
         cm.loadCharacters();
+        assets.loadGroup("splash");
+        assets.finishLoading();
+        assets.get("ui/ui-skin.json", Skin.class).getFont("orange-kid").getData().markupEnabled = true;
+        assets.get("ui/ui-skin.json", Skin.class).getFont("orange-kid-title").getData().markupEnabled = true;
 
         StateManager stateManager = StateManager.getInstance();
         stateManager.initialize(this);
-        stateManager.pushState(StateEnum.MAIN_MENU);
+        stateManager.pushState(StateEnum.SPLASH);
 
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }

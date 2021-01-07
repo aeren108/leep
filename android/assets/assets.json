@@ -1,6 +1,6 @@
 {
     "assets": {
-        "global": [
+        "splash": [
             {"type": "com.badlogic.gdx.scenes.scene2d.ui.Skin", "path": "ui/ui-skin.json"}
         ],
 

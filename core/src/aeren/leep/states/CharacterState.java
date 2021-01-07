@@ -68,11 +68,11 @@ public class CharacterState extends State {
         layers = new int[] {map.getLayers().getIndex("character")};
 
         selector = new CharacterSelector(skin, cm.getCharacters());
-        selector.setPosition(-selector.getPrefWidth() / 2, Settings.UI_HEIGHT / 2 - selector.getPrefHeight() - 128);
+        selector.setPosition(-selector.getPrefWidth() / 2, Settings.UI_HEIGHT / 2 - selector.getHeight() - 64);
 
         select = new TextButton("SELECT", skin);
         select.setSize(296, 90);
-        select.setPosition(-select.getWidth() / 2, -Settings.UI_HEIGHT / 2 + select.getHeight() + 64);
+        select.setPosition(-select.getWidth() / 2, -Settings.UI_HEIGHT / 2 + 64);
         select.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent) {
                 cm.setCurrentCharacter(selector.getCharacter());
@@ -82,7 +82,7 @@ public class CharacterState extends State {
         });
 
         next = new ImageButton(skin, "next");
-        next.setPosition(select.getX() + select.getWidth() + 32, -Settings.UI_HEIGHT / 2 + next.getHeight() + 64);
+        next.setPosition(select.getX() + select.getWidth() + 32, -Settings.UI_HEIGHT / 2  + 64);
         next.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent) {
                 selector.next();
@@ -93,7 +93,7 @@ public class CharacterState extends State {
         });
 
         prev = new ImageButton(skin, "prev");
-        prev.setPosition(select.getX() - next.getWidth() - 32, -Settings.UI_HEIGHT / 2 + prev.getHeight() + 64);
+        prev.setPosition(select.getX() - next.getWidth() - 32, -Settings.UI_HEIGHT / 2 + 64);
         prev.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent) {
                 selector.prev();
