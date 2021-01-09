@@ -16,6 +16,7 @@ import java.util.List;
 
 import aeren.leep.Assets;
 import aeren.leep.DataManager;
+import aeren.leep.Settings;
 import aeren.leep.Utils;
 import aeren.leep.actors.Fireball;
 import aeren.leep.actors.FireballFactory;
@@ -85,7 +86,7 @@ public class Level extends Group implements Disposable {
         fireballFactory = new FireballFactory();
 
         data.music.setLooping(true);
-        data.music.setVolume(.25f);
+        data.music.setVolume(.25f * Settings.volume);
         data.music.play();
         player.movementDelay = data.playerMovementDelay;
 
@@ -125,7 +126,7 @@ public class Level extends Group implements Disposable {
                 if (f.getBounds().overlaps(player.getBounds())) {
                     if (score > best) isNewBest = true;
 
-                    pickup.play(.35f);
+                    pickup.play(.35f * Settings.volume);
                     placeFruit();
                     setScore(++score);
                 }
@@ -137,7 +138,7 @@ public class Level extends Group implements Disposable {
                     activeFireballs.remove(f);
                     fireballFactory.destroyFireball(f);
 
-                    hurt.play(.5f);
+                    hurt.play(.5f * Settings.volume);
                     gameOver();
 
                     return;
@@ -155,7 +156,7 @@ public class Level extends Group implements Disposable {
 
         for (int id : data.deadlyTiles) {
             if (tileId == id) {
-                fall.play();
+                fall.play(Settings.volume);
                 gameOver();
 
                 return;
@@ -305,7 +306,7 @@ public class Level extends Group implements Disposable {
 
         player.clearActions();
         activeFireballs.clear();
-        data.music.setVolume(.25f);
+        data.music.setVolume(.25f * Settings.volume);
 
         data.fireballSpeedTemp = data.fireballSpeed;
         data.fireballCooldownTemp = data.fireballCooldown;

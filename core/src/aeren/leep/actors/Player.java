@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import aeren.leep.Assets;
+import aeren.leep.Settings;
 import aeren.leep.Utils;
 import aeren.leep.character.Character;
 import aeren.leep.character.CharacterListener;
@@ -66,7 +67,7 @@ public class Player extends Actor implements SwipeListener, CharacterListener {
             return;
 
         dir.y = -dir.y;
-        swipe.play();
+        swipe.play(Settings.volume);
 
         if (dir.y + dir.x < 0 && dir.y - dir.x < 0) {
             addAction(Actions.moveBy(0, -16, movementDelay));

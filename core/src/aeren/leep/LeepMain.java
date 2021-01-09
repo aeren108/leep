@@ -38,6 +38,7 @@ public class LeepMain extends Game {
         stateManager.initialize(this);
         stateManager.pushState(StateEnum.SPLASH);
 
+        Settings.volume = dm.getInt("volume");
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 

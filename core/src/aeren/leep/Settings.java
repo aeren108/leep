@@ -8,6 +8,5 @@ public class Settings {
     public static final float UI_WIDTH = WIDTH * 4;
     public static final float UI_HEIGHT = HEIGHT * 4;
 
-    public static boolean muteMusic = false;
-    public static boolean muteSound = false;
+    public static int volume = 1;
 }

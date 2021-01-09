@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,6 +19,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import aeren.leep.Assets;
+import aeren.leep.DataManager;
 import aeren.leep.Settings;
 import aeren.leep.Utils;
 import aeren.leep.character.Character;
@@ -37,7 +36,7 @@ public class MenuState extends State {
     private Label title;
     private TextButton play;
     private TextButton stats;
-    private TextButton settings;
+    private TextButton mute;
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -72,7 +71,7 @@ public class MenuState extends State {
         title = new Label("[GOLD]LEEP", skin, "title");
         play = new TextButton("PLAY", skin);
         stats = new TextButton("LEEPERS", skin);
-        settings = new TextButton("SETTINGS", skin);
+        mute = new TextButton((Settings.volume == 1) ? "MUTE" : "UNMUTE", skin);
 
         layers = new int[] {map.getLayers().getIndex("main-menu")};
 
@@ -88,11 +87,20 @@ public class MenuState extends State {
             return false;
         });
 
+        mute.addListener((Event event) -> {
+            if (event instanceof ChangeListener.ChangeEvent) {
+                Settings.volume = (Settings.volume == 1) ? 0 : 1;
+                mute.setText((Settings.volume == 1) ? "MUTE" : "UNMUTE");
+                DataManager.getInstance().setData("volume", Settings.volume);
+            }
+            return false;
+        });
+
         table.padTop(-288);
         table.add(title).row();
         table.add(play).minWidth(216).spaceTop(32).row();
         table.add(stats).minWidth(216).spaceTop(8).row();
-        table.add(settings).minWidth(216).spaceTop(8);
+        table.add(mute).minWidth(216).spaceTop(8);
         table.align(Align.center);
         addActor(table);
 

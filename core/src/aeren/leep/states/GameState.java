@@ -62,7 +62,6 @@ public class GameState extends State implements ScoreListener {
         table.add(pause).expandX().right();
         table.setFillParent(true);
 
-
         pause.addListener((Event event) -> {
             if (!level.isGameOver() && event instanceof ChangeListener.ChangeEvent) {
                 pauseGame();
