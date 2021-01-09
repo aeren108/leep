@@ -247,14 +247,13 @@ public class Level extends Group implements Disposable {
 
         dm.increaseData("totalFruitsCollected", score);
         dm.increaseData("totalGamesPlayed", 1);
-        charManager.checkUnlockConditions();
 
         if (score > best)
             setBest(score);
 
         player.addAction(Actions.sequence( //flicker the player and show game over fragment
             Actions.repeat(2, Actions.sequence(Actions.fadeOut(0.15f), Actions.fadeIn(0.15f))),
-            Actions.run(() -> state.pushFragment(new GameOverFragment(state, score, best))))
+            Actions.run(() -> state.pushFragment(new GameOverFragment(state, score, best, charManager.checkUnlockConditions()))))
         );
     }
 

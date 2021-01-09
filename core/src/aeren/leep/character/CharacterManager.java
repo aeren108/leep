@@ -45,8 +45,6 @@ public class CharacterManager {
                                         jv.getInt("x"), jv.getInt("y"), false);
             characterMap.put(c.name, c);
             characterList.add(c);
-
-            //dm.setData("characters."+c.name+".unlocked", false);
         }
 
         current = characterMap.get(dm.getString("currentCharacter"));
@@ -57,7 +55,7 @@ public class CharacterManager {
         boolean isUnlocked = false;
         for (Character c : characterList) {
             int currentConditionValue = dm.getInt(c.condition);
-            if (currentConditionValue >= c.conditionValue) {
+            if (currentConditionValue >= c.conditionValue && !c.unlocked) {
                 unlockCharacter(c);
                 isUnlocked = true;
             }

@@ -30,15 +30,13 @@ public class GameOverTable extends Table {
     private void initialize() {
         background = new NinePatchDrawable(skin.getPatch("button"));
 
-        titleLabel = new Label("[WHITE]GAME OVER", skin);
         scoreLabel = new Label("[MAROON]SCORE\n[WHITE]" + score, skin);
         bestLabel = new Label("[MAROON]BEST\n[WHITE]" + best, skin);
 
         scoreLabel.setAlignment(Align.center);
         bestLabel.setAlignment(Align.center);
 
-        add(titleLabel).padTop(16).row();
-        add(scoreLabel).padTop(48).row();
+        add(scoreLabel).padTop(16).row();
         add(bestLabel).padTop(24).padBottom(16);
 
         setBackground(background);
@@ -51,7 +49,7 @@ public class GameOverTable extends Table {
 
     @Override
     public float getPrefHeight() {
-        return 448;
+        return 324;
     }
 
     @Override

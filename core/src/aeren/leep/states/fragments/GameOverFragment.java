@@ -22,13 +22,16 @@ public class GameOverFragment extends Fragment {
     private GameOverTable got;
     private TextButton retryButton;
     private TextButton backButton;
+    private Label notif;
 
     private int score, best;
+    private boolean unlocked;
 
-    public GameOverFragment(GameState state, int score, int best) {
+    public GameOverFragment(GameState state, int score, int best, boolean unlocked) {
         super(state);
         this.score = score;
         this.best = best;
+        this.unlocked = unlocked;
     }
 
     @Override
@@ -44,6 +47,7 @@ public class GameOverFragment extends Fragment {
         got = new GameOverTable(skin, score, best);
         retryButton = new TextButton("RETRY", skin);
         backButton = new TextButton("MAIN MENU", skin);
+        notif = new Label("NEW CHARACTER UNLOCKED", skin);
 
         retryButton.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent) {
@@ -63,7 +67,8 @@ public class GameOverFragment extends Fragment {
         Table table = new Table();
         table.align(Align.center);
         table.add(got).row();
-        table.add(retryButton).minWidth(256).spaceTop(48).row();
+        if (unlocked) table.add(notif).spaceTop(24).row();
+        table.add(retryButton).minWidth(256).spaceTop(24).row();
         table.add(backButton).minWidth(256).spaceTop(8).row();
 
         this.addActor(table);
