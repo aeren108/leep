@@ -3,6 +3,7 @@ package aeren.leep.states.fragments;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -12,20 +13,28 @@ import com.badlogic.gdx.utils.Align;
 
 import aeren.leep.Assets;
 import aeren.leep.states.GameState;
+import aeren.leep.states.StateEnum;
+import aeren.leep.states.StateManager;
+import aeren.leep.ui.PauseTable;
 
 public class PauseFragment extends Fragment {
     private Texture background;
 
-    private Label title;
+    private Table col;
     private Label countDown;
-    private TextButton resume;
+    private PauseTable pt;
+    private ImageButton resume;
+    private ImageButton menu;
 
     private int countDownDuration = 3;
     private float countDownTimer = 0;
     private boolean countDownStarted = false;
 
-    public PauseFragment(GameState state) {
+    private final int score;
+
+    public PauseFragment(GameState state, int score) {
         super(state);
+        this.score = score;
     }
 
     @Override
@@ -39,14 +48,15 @@ public class PauseFragment extends Fragment {
         pixmap.dispose();
 
         Table table = new Table();
-        title = new Label("GAME PAUSED", skin);
+        pt = new PauseTable(skin, score);
         countDown = new Label("[WHITE]" + countDownDuration, skin, "title");
-        resume = new TextButton("RESUME", skin);
+        resume = new ImageButton(skin, "play");
+        menu = new ImageButton(skin, "menu");
 
         resume.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent) {
-                table.removeActor(title);
-                table.removeActor(resume);
+                table.removeActor(pt);
+                table.removeActor(col);
                 table.add(countDown);
 
                 countDownStarted = true;
@@ -55,10 +65,20 @@ public class PauseFragment extends Fragment {
             return true;
         });
 
-        table.align(Align.center);
-        table.padTop(-156);
-        table.add(title).row();
-        table.add(resume).minWidth(256).spaceTop(16).row();
+        menu.addListener((Event event) -> {
+            if (event instanceof ChangeListener.ChangeEvent) {
+                StateManager.getInstance().setState(StateEnum.MAIN_MENU);
+            }
+            return false;
+        });
+
+        col = new Table();
+        col.add(resume).minWidth(pt.getMinWidth() / 2 - 12).spaceTop(16).spaceRight(24);
+        col.add(menu).minWidth(pt.getMinWidth() / 2 - 12);
+
+        table.align(Align.center).padTop(-128);
+        table.add(pt).row();
+        table.add(col).spaceTop(24);
 
         addActor(table);
     }

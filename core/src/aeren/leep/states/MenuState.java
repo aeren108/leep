@@ -10,11 +10,13 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
@@ -27,6 +29,7 @@ import aeren.leep.character.CharacterManager;
 
 public class MenuState extends State {
     private CharacterManager charManager;
+    private DataManager dm;
     private Assets assets;
     private Skin skin;
 
@@ -34,9 +37,9 @@ public class MenuState extends State {
 
     private Table table;
     private Label title;
-    private TextButton play;
-    private TextButton stats;
-    private TextButton mute;
+    private ImageButton play;
+    private ImageButton chars;
+    private ImageButton mute;
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -54,6 +57,7 @@ public class MenuState extends State {
     @Override
     public void show() {
         assets = Assets.getInstance();
+        dm = DataManager.getInstance();
         charManager = CharacterManager.getInstance();
 
         Character curr = charManager.getCurrentCharacter();
@@ -69,9 +73,9 @@ public class MenuState extends State {
 
         table = new Table();
         title = new Label("[GOLD]LEEP", skin, "title");
-        play = new TextButton("PLAY", skin);
-        stats = new TextButton("LEEPERS", skin);
-        mute = new TextButton((Settings.volume == 1) ? "MUTE" : "UNMUTE", skin);
+        play = new ImageButton(skin, "play");
+        chars = new ImageButton(skin, "charselect");
+        mute = new ImageButton(skin, (Settings.volume() == 1) ? "volume-on" : "volume-off");
 
         layers = new int[] {map.getLayers().getIndex("main-menu")};
 
@@ -81,7 +85,7 @@ public class MenuState extends State {
             return false;
         });
 
-        stats.addListener((Event event) -> {
+        chars.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent)
                 StateManager.getInstance().pushState(StateEnum.CHARACTER_STATE);
             return false;
@@ -89,19 +93,21 @@ public class MenuState extends State {
 
         mute.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent) {
-                Settings.volume = (Settings.volume == 1) ? 0 : 1;
-                mute.setText((Settings.volume == 1) ? "MUTE" : "UNMUTE");
-                DataManager.getInstance().setData("volume", Settings.volume);
+                dm.setData("volume", (Settings.volume() == 1) ? 0 : 1);
+                mute.setStyle(skin.get((Settings.volume() == 1) ? "volume-on" : "volume-off", ImageButton.ImageButtonStyle.class));
             }
             return false;
         });
 
-        table.padTop(-288);
+        Table col = new Table();
+        col.add(chars).minWidth(172).minHeight(96).spaceRight(16);
+        col.add(mute).minWidth(172).minHeight(96);
+
+        table.align(Align.center).padTop(-288);
         table.add(title).row();
-        table.add(play).minWidth(216).spaceTop(32).row();
-        table.add(stats).minWidth(216).spaceTop(8).row();
-        table.add(mute).minWidth(216).spaceTop(8);
-        table.align(Align.center);
+        table.add(play).minWidth(360).minHeight(96).spaceTop(8).row();
+        table.add(col).spaceTop(16);
+
         addActor(table);
 
         background.getCamera().position.set(Settings.WIDTH / 2, Settings.HEIGHT / 2, 0);

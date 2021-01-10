@@ -1,10 +1,11 @@
 {
     "assets": {
         "splash": [
-            {"type": "com.badlogic.gdx.scenes.scene2d.ui.Skin", "path": "ui/ui-skin.json"}
+            {"type": "com.badlogic.gdx.graphics.Texture", "path": "ui/title.png"}
         ],
 
         "menu": [
+            {"type": "com.badlogic.gdx.scenes.scene2d.ui.Skin", "path": "ui/ui-skin.json"},
             {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/characters.png"},
             {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/fruit.png"},
             {"type": "com.badlogic.gdx.maps.tiled.TiledMap", "path": "ui/menu-maps.tmx"}

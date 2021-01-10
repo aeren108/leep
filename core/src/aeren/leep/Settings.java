@@ -8,5 +8,7 @@ public class Settings {
     public static final float UI_WIDTH = WIDTH * 4;
     public static final float UI_HEIGHT = HEIGHT * 4;
 
-    public static int volume = 1;
+    public static int volume() {
+        return DataManager.getInstance().getInt("volume");
+    }
 }

@@ -5,7 +5,7 @@
 
   "difficultyThreshold": 7.5,
 
-  "birthRate": 0.7,
+  "birthRate": 0.8,
   "birthThreshold": 4,
   "deathThreshold": 4,
   "maxStep": 8,

@@ -67,7 +67,7 @@ public class Player extends Actor implements SwipeListener, CharacterListener {
             return;
 
         dir.y = -dir.y;
-        swipe.play(Settings.volume);
+        swipe.play(Settings.volume());
 
         if (dir.y + dir.x < 0 && dir.y - dir.x < 0) {
             addAction(Actions.moveBy(0, -16, movementDelay));

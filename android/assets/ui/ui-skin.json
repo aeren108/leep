@@ -9,9 +9,9 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 }
 com.badlogic.gdx.graphics.Color: {
 	title: {
-		r: 0.99999964
-		g: 0.6348184
-		b: 0.04333353
+		r: 1
+		g: 0.84313726
+		b: 0
 		a: 1
 	}
 	white: {
@@ -33,6 +33,39 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		up: button
 		down: button-down
 		disabled: button-disabled
+	}
+	play: {
+		imageUp: play
+		up: button
+		down: button-down
+		disabled: button-disabled
+	}
+	charselect: {
+		imageUp: character
+		up: button
+		down: button-down
+		disabled: button-disabled
+	}
+	volume-on: {
+		imageUp: volume-on
+		up: button
+		down: button-down
+		disabled: button-disabled
+	}
+	volume-off: {
+		imageUp: volume-off
+		up: button
+		down: button-down
+		disabled: button-disabled
+	}
+	pause: {
+		imageUp: pause
+		imageDown: pause-down
+	}
+	menu: {
+		imageUp: menu
+		up: button
+		down: button-down
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {

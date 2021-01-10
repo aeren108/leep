@@ -3,6 +3,7 @@ package aeren.leep.states.fragments;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -20,8 +21,8 @@ public class GameOverFragment extends Fragment {
     private Texture background;
 
     private GameOverTable got;
-    private TextButton retryButton;
-    private TextButton backButton;
+    private ImageButton retryButton;
+    private ImageButton backButton;
     private Label notif;
 
     private int score, best;
@@ -45,8 +46,8 @@ public class GameOverFragment extends Fragment {
         pixmap.dispose();
 
         got = new GameOverTable(skin, score, best);
-        retryButton = new TextButton("RETRY", skin);
-        backButton = new TextButton("MAIN MENU", skin);
+        retryButton = new ImageButton(skin, "play");
+        backButton = new ImageButton(skin, "menu");
         notif = new Label("NEW CHARACTER UNLOCKED", skin);
 
         retryButton.addListener((Event event) -> {
@@ -64,12 +65,15 @@ public class GameOverFragment extends Fragment {
             return true;
         });
 
+        Table col = new Table();
+        col.add(retryButton).minWidth(got.getPrefWidth() / 2 - 12).spaceRight(24);
+        col.add(backButton).minWidth(got.getPrefWidth() / 2 - 12);
+
         Table table = new Table();
         table.align(Align.center);
         table.add(got).row();
         if (unlocked) table.add(notif).spaceTop(24).row();
-        table.add(retryButton).minWidth(256).spaceTop(24).row();
-        table.add(backButton).minWidth(256).spaceTop(8).row();
+        table.add(col).spaceTop(24);
 
         this.addActor(table);
     }

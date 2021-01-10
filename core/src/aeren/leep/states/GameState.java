@@ -55,7 +55,7 @@ public class GameState extends State implements ScoreListener {
 
         table = new Table();
         scoreLabel = new Label("SCORE: [GOLD]0", skin);
-        pause = new ImageButton(skin.getDrawable("pause-up"));
+        pause = new ImageButton(skin, "pause");
 
         table.top();
         table.add(scoreLabel).expandX().left().padLeft(8);
@@ -65,7 +65,7 @@ public class GameState extends State implements ScoreListener {
         pause.addListener((Event event) -> {
             if (!level.isGameOver() && event instanceof ChangeListener.ChangeEvent) {
                 pauseGame();
-                pushFragment(new PauseFragment(this));
+                pushFragment(new PauseFragment(this, level.getScore()));
             }
             return true;
         });
@@ -87,8 +87,10 @@ public class GameState extends State implements ScoreListener {
 
         super.render(delta);
 
-        ui.act(delta);
-        ui.draw();
+        if (fragments.isEmpty()) {
+            ui.act(delta);
+            ui.draw();
+        }
     }
 
     @Override
