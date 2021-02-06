@@ -1,74 +1,72 @@
 {
-    "dino-v1": {
-        "x": 0,
-        "y": 0,
+    "ghost": {
+        "x": 1,
+        "y": 1,
         "condition": "totalGamesPlayed",
         "conditionValue": 0,
         "status": "UNLOCKED"
-    },
-    "dino-v2": {
-        "x": 0,
-        "y": 1,
-        "condition": "totalGamesPlayed",
-        "conditionValue": 25,
-        "status": "PLAY %d GAMES MORE"
-    },
-    "wizard": {
-        "x": 0,
-        "y": 2,
-        "condition": "totalFruitsCollected",
-        "conditionValue": 200,
-        "status": "EAT %d FRUITS MORE"
-    },
-    "knight": {
-        "x": 0,
-        "y": 3,
-        "condition": "totalGamesPlayed",
-        "conditionValue": 150,
-        "status": "PLAY %d GAMES MORE"
-    },
-    "archer": {
-        "x": 0,
-        "y": 4,
-        "condition": "highscores.Grassland",
-        "conditionValue": 30,
-        "status": "SCORE 30+"
-    },
-    "demon": {
-        "x": 0,
-        "y": 5,
-        "condition": "totalGamesPlayed",
-        "conditionValue": 300,
-        "status": "PLAY %d GAMES MORE"
     },
     "ottoman-pirate": {
         "x": 1,
         "y": 0,
         "condition": "totalFruitsCollected",
-        "conditionValue": 700,
+        "conditionValue": 500,
         "status": "EAT %d FRUITS MORE"
     },
-    "ghost": {
+    "girl": {
         "x": 1,
-        "y": 1,
+        "y": 5,
         "condition": "totalGamesPlayed",
-        "conditionValue": 500,
+        "conditionValue": 250,
         "status": "PLAY %d GAMES MORE"
     },
     "pig": {
         "x": 1,
         "y": 4,
         "condition": "totalFruitsCollected",
-        "conditionValue": 1000,
+        "conditionValue": 2000,
         "status": "EAT %d FRUITS MORE"
     },
-    "monster": {
-        "unlocked": false,
-        "x": 1,
+    "dino-v1": {
+        "x": 0,
+        "y": 0,
+        "condition": "totalGamesPlayed",
+        "conditionValue": 2000,
+        "status": "PLAY %d GAMES MORE"
+    },
+    "dino-v2": {
+        "x": 0,
+        "y": 1,
+        "condition": "totalGamesPlayed",
+        "conditionValue": 2000,
+        "status": "PLAY %d GAMES MORE"
+    },
+    "wizard": {
+        "x": 0,
         "y": 2,
+        "condition": "totalFruitsCollected",
+        "conditionValue": 10000,
+        "status": "EAT %d FRUITS MORE"
+    },
+    "knight": {
+        "x": 0,
+        "y": 3,
         "condition": "highscores.Grassland",
-        "conditionValue": 60,
-        "status": "SCORE 60+"
+        "conditionValue": 30,
+        "status": "SCORE 30+"
+    },
+    "archer": {
+        "x": 0,
+        "y": 4,
+        "condition": "totalFruitsCollected",
+        "conditionValue": 15000,
+        "status": "EAT %d FRUITS MORE"
+    },
+    "demon": {
+        "x": 0,
+        "y": 5,
+        "condition": "highscores.Grassland",
+        "conditionValue": 50,
+        "status": "SCORE 50+"
     }
-
 }

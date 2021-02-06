@@ -80,8 +80,6 @@ public class Player extends Actor implements SwipeListener, CharacterListener {
             curAnim = idleRight;
             addAction(Actions.moveBy(16, 0, movementDelay));
         }
-
-        System.out.println("MOV DELAY: " + movementDelay);
     }
 
     @Override
