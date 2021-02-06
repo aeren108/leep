@@ -8,7 +8,7 @@
   "birthRate": 0.8,
   "birthThreshold": 4,
   "deathThreshold": 4,
-  "maxStep": 8,
+  "maxStep": 4,
 
   "player": {
     "movementDelay": 0.05,
@@ -31,11 +31,19 @@
 
   "patterns": [
     {
+      "controlPattern": [[1,1,1,1,1,1], [1,1,1,1,1,1], [1,1,1,1,1,1], [1,1,1,1,1,1], [1,1,1,1,1,1], [1,1,1,1,1,1]],
+      "targetPattern": [[0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]],
+      "tileThreshold": 50,
+      "max": 1,
+      "after": 4,
+      "repeat": true
+    },
+    {
       "controlPattern": [[1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1], [1,1,1,1,1]],
       "targetPattern": [[0,0,0], [0,0,0], [0,0,0], [0,0,0]],
       "tileThreshold": 40,
       "max": 1,
-      "after": 1,
+      "after": 4,
       "repeat": true
     },
     {
@@ -43,7 +51,7 @@
       "targetPattern": [[0,0,0], [0,0,0], [0,0,0]],
       "tileThreshold": 30,
       "max": 1,
-      "after": 2,
+      "after": 3,
       "repeat": true
     },
     {
@@ -58,7 +66,7 @@
       "controlPattern": [[1,1,1,1], [1,1,1,1], [1,1,1,1], [1,1,1,1]],
       "targetPattern": [[0,0], [0,0]],
       "tileThreshold": 20,
-      "max": 3,
+      "max": 2,
       "after": -1,
       "repeat": true
     },
