@@ -1,7 +1,7 @@
 {
     "assets": {
         "splash": [
-            {"type": "com.badlogic.gdx.graphics.Texture", "path": "ui/title.png"}
+            {"type": "com.badlogic.gdx.graphics.g2d.BitmapFont", "path": "fonts/lilian.fnt"}
         ],
 
         "menu": [

@@ -3,6 +3,7 @@ package aeren.leep.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -12,7 +13,7 @@ import aeren.leep.Settings;
 
 public class SplashState extends State {
     private Assets assets;
-    private Texture title;
+    private Label title;
 
     private float timer = 0;
 
@@ -25,10 +26,12 @@ public class SplashState extends State {
         assets = Assets.getInstance();
         assets.loadAll();
 
-        title = assets.get("ui/title.png", Texture.class);
-        /*title = new Label("[RED]LEEP", assets.get("ui/ui-skin.json", Skin.class), "title");
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.font = assets.get("fonts/lilian.fnt", BitmapFont.class);
+        style.font.getData().markupEnabled = true;
+        title = new Label("[RED]LEEP", style);
         title.setPosition(-title.getWidth() / 2, -title.getHeight() / 2);
-        addActor(title);*/
+        addActor(title);
     }
 
     @Override
@@ -38,17 +41,13 @@ public class SplashState extends State {
 
         timer += delta;
 
-        if (assets.update() && timer >= 1.5f) {
+        if (assets.update() && timer >= 2f) {
             assets.get("ui/ui-skin.json", Skin.class).getFont("orange-kid").getData().markupEnabled = true;
             assets.get("ui/ui-skin.json", Skin.class).getFont("orange-kid-title").getData().markupEnabled = true;
 
             StateManager.getInstance().setState(StateEnum.MAIN_MENU);
             timer = 0;
         }
-
-        getBatch().begin();
-        getBatch().draw(title, -title.getWidth() / 2, -title.getHeight() / 2);
-        getBatch().end();
 
         super.render(delta);
     }

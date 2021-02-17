@@ -1,10 +1,12 @@
 package aeren.leep.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -72,7 +74,7 @@ public class MenuState extends State {
         fruitAnim = new Animation<>(.15f, fruitFrames);
 
         table = new Table();
-        title = new Label("[GOLD]LEEP", skin, "title");
+        title = new Label("LEEP", new Label.LabelStyle(assets.get("fonts/lilian.fnt", BitmapFont.class), Color.WHITE));
         play = new ImageButton(skin, "play");
         chars = new ImageButton(skin, "charselect");
         mute = new ImageButton(skin, (Settings.volume() == 1) ? "volume-on" : "volume-off");
@@ -103,8 +105,8 @@ public class MenuState extends State {
         col.add(chars).minWidth(172).minHeight(96).spaceRight(16);
         col.add(mute).minWidth(172).minHeight(96);
 
-        table.align(Align.center).padTop(-288);
-        table.add(title).row();
+        table.align(Align.center).padTop(-256);
+        table.add(title).padBottom(64).padLeft(16).row();
         table.add(play).minWidth(360).minHeight(96).spaceTop(8).row();
         table.add(col).spaceTop(16);
 
