@@ -7,38 +7,36 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.Pool;
 
 import aeren.leep.Assets;
 import aeren.leep.Settings;
 
-public abstract class Fireball extends Actor implements Pool.Poolable {
-    protected FireballType type;
-    protected Texture alert;
-    protected TextureRegion[][] frames;
-    protected Animation<TextureRegion> anim;
+public class Fireball extends Actor {
+    private FireballType type;
+    private Texture alert;
+    private TextureRegion[][] frames;
+    private Animation<TextureRegion> anim;
 
-    protected Vector2 velocity;
-    protected Rectangle bounds;
-    protected int xOffset = 0, yOffset = 0;
+    private Vector2 velocity;
+    private Rectangle bounds;
 
-    protected float elapsed = 0;
-    protected float alertTimer = 0;
-    protected float alertThreshold = 0.5f;
-    protected boolean alerted = false;
-
+    private float elapsed = 0;
+    private float alertTimer = 0;
+    private float alertThreshold = 0.5f;
+    private boolean alerted = false;
     public boolean alive = true;
-    protected boolean flipped = false;
 
     public static final Vector2 VEL_UP = new Vector2(0f, 1f);
     public static final Vector2 VEL_DOWN = new Vector2(0f, -1f);
     public static final Vector2 VEL_RIGHT = new Vector2(1f, 0f);
     public static final Vector2 VEL_LEFT = new Vector2(-1f, 0f);
 
-    public Fireball() {
-        bounds = new Rectangle(0, 0, 16, 16);
+    public Fireball(FireballType type) {
         frames = TextureRegion.split(Assets.getInstance().get("sprites/fireball.png", Texture.class), 16, 16);
         alert = Assets.getInstance().get("sprites/alert.png", Texture.class);
+        bounds = new Rectangle(0, 0, 9, 9);
+
+        setType(type);
     }
 
     @Override
@@ -56,7 +54,7 @@ public abstract class Fireball extends Actor implements Pool.Poolable {
             setPosition(getX() + velocity.x, getY() + velocity.y);
         }
 
-        bounds.setPosition(getX() + xOffset, getY() + yOffset);
+        bounds.setPosition(getX() + type.getXOffset(), getY() + type.getYOffset());
 
         if (getX() > Settings.WIDTH || getY() + 24 < 0)
             alive = false;
@@ -67,16 +65,23 @@ public abstract class Fireball extends Actor implements Pool.Poolable {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+
+        if (!alerted) {
+            batch.draw(alert, getX() + type.getAlertXOffset(), getY() + type.getAlertYOffset());
+        } else {
+            batch.draw(anim.getKeyFrame(elapsed, true), getX(), getY());
+        }
     }
 
-    public abstract void setLinage(int linage);
+    public void setLinage(int linage) {
+        Vector2 pos = type.setLinage(linage);
+        setPosition(pos.x, pos.y);
+    }
 
-    public abstract void flip();
-
-    @Override
     public void reset() {
         alive = true;
         alerted = false;
+        velocity = type.getVelocity();
     }
 
     public void setVelocity(Vector2 velocity) {
@@ -91,15 +96,17 @@ public abstract class Fireball extends Actor implements Pool.Poolable {
         return bounds;
     }
 
+    public void setType(FireballType type) {
+        this.type = type;
+        this.velocity = type.getVelocity();
+        anim = new Animation<>(.1f, frames[type.getAnimIndex()]);
+    }
+
     public FireballType getType() {
         return type;
     }
 
     public void setAlertThreshold(float alertThreshold) {
         this.alertThreshold = alertThreshold;
-    }
-
-    public enum FireballType {
-        VERTICAL, HORIZONTAL
     }
 }

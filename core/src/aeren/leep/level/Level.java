@@ -1,7 +1,5 @@
 package aeren.leep.level;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
@@ -19,7 +17,8 @@ import aeren.leep.DataManager;
 import aeren.leep.Settings;
 import aeren.leep.Utils;
 import aeren.leep.actors.Fireball;
-import aeren.leep.actors.FireballFactory;
+import aeren.leep.actors.FireballPool;
+import aeren.leep.actors.FireballType;
 import aeren.leep.actors.Fruit;
 import aeren.leep.actors.Player;
 import aeren.leep.character.CharacterManager;
@@ -51,7 +50,7 @@ public class Level extends Group implements Disposable {
     private boolean isPlacingPlayer = false;
 
     private List<Fireball> activeFireballs;
-    private FireballFactory fireballFactory;
+    private FireballPool fireballPool;
     private float fireballTimer = 0;
     private float difficultyTimer = 0;
 
@@ -83,7 +82,7 @@ public class Level extends Group implements Disposable {
         addActor(player);
 
         activeFireballs = new ArrayList<>();
-        fireballFactory = new FireballFactory();
+        fireballPool = new FireballPool();
 
         data.music.setLooping(true);
         data.music.setVolume(.25f * Settings.volume());
@@ -136,7 +135,7 @@ public class Level extends Group implements Disposable {
                 if (player.getBounds().overlaps(f.getBounds())) {
                     removeActor(f);
                     activeFireballs.remove(f);
-                    fireballFactory.destroyFireball(f);
+                    fireballPool.free(f);
 
                     hurt.play(.5f * Settings.volume());
                     gameOver();
@@ -187,12 +186,11 @@ public class Level extends Group implements Disposable {
     private void generateFireballs() {
         if (fireballTimer >= data.fireballCooldownTemp) {
             for (int i = 0; i < 2; i++) {
-                Fireball f = fireballFactory.createFireball(Fireball.FireballType.values()[i]);
-                f.setVelocity((f.getType() == Fireball.FireballType.VERTICAL) ? Fireball.VEL_DOWN : Fireball.VEL_RIGHT);
-                f.setLinage((f.getType() == Fireball.FireballType.VERTICAL) ? (int)(mapBounds.x + Math.random() * (mapBounds.width - mapBounds.x)) : (int)(mapBounds.y + Math.random() * (mapBounds.height - mapBounds.y)));
+                Fireball f = fireballPool.obtain(FireballType.values()[i]);
+                f.setLinage((f.getType() == FireballType.VERTICAL) ? (int)(mapBounds.x + Math.random() * (mapBounds.width - mapBounds.x)) :
+                            (int)(mapBounds.y + Math.random() * (mapBounds.height - mapBounds.y)));
                 f.setVelocity(f.getVelocity().cpy().scl(data.fireballSpeedTemp));
                 f.setAlertThreshold(data.fireballAlert);
-                f.flip();
 
                 activeFireballs.add(f);
                 addActor(f);
@@ -209,7 +207,7 @@ public class Level extends Group implements Disposable {
             if (!f.alive) {
                 removeActor(f);
                 activeFireballs.remove(f);
-                fireballFactory.destroyFireball(f);
+                fireballPool.free(f);
 
                 i--;
             }
