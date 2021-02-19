@@ -74,7 +74,7 @@ public class MenuState extends State {
         fruitAnim = new Animation<>(.15f, fruitFrames);
 
         table = new Table();
-        title = new Label("LEEP", new Label.LabelStyle(assets.get("fonts/lilian.fnt", BitmapFont.class), Color.WHITE));
+        title = new Label("LEEP", new Label.LabelStyle(assets.get("fonts/inkythin.fnt", BitmapFont.class), Color.WHITE));
         play = new ImageButton(skin, "play");
         chars = new ImageButton(skin, "charselect");
         mute = new ImageButton(skin, (Settings.volume() == 1) ? "volume-on" : "volume-off");
@@ -102,12 +102,12 @@ public class MenuState extends State {
         });
 
         Table col = new Table();
-        col.add(chars).minWidth(172).minHeight(96).spaceRight(16);
-        col.add(mute).minWidth(172).minHeight(96);
+        col.add(chars).minWidth(184).minHeight(104).spaceRight(16);
+        col.add(mute).minWidth(104).minHeight(104);
 
         table.align(Align.center).padTop(-256);
-        table.add(title).padBottom(64).padLeft(16).row();
-        table.add(play).minWidth(360).minHeight(96).spaceTop(8).row();
+        table.add(title).padBottom(48).padLeft(8).row();
+        table.add(play).minWidth(304).minHeight(104).spaceTop(8).row();
         table.add(col).spaceTop(16);
 
         addActor(table);

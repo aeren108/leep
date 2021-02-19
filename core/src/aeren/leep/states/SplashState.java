@@ -27,7 +27,7 @@ public class SplashState extends State {
         assets.loadAll();
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.font = assets.get("fonts/lilian.fnt", BitmapFont.class);
+        style.font = assets.get("fonts/inkythin.fnt", BitmapFont.class);
         style.font.getData().markupEnabled = true;
         title = new Label("[RED]LEEP", style);
         title.setPosition(-title.getWidth() / 2, -title.getHeight() / 2);

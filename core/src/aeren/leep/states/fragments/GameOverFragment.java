@@ -66,14 +66,14 @@ public class GameOverFragment extends Fragment {
         });
 
         Table col = new Table();
-        col.add(retryButton).minWidth(got.getPrefWidth() / 2 - 12).spaceRight(24);
-        col.add(backButton).minWidth(got.getPrefWidth() / 2 - 12);
+        col.add(retryButton).minWidth(got.getPrefWidth() / 2 - 8).minHeight(96).spaceRight(16);
+        col.add(backButton).minWidth(got.getPrefWidth() / 2 - 8).minHeight(96);
 
         Table table = new Table();
         table.align(Align.center);
         table.add(got).row();
         if (unlocked) table.add(notif).spaceTop(24).row();
-        table.add(col).spaceTop(24);
+        table.add(col).spaceTop(16);
 
         this.addActor(table);
     }

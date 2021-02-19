@@ -73,12 +73,12 @@ public class PauseFragment extends Fragment {
         });
 
         col = new Table();
-        col.add(resume).minWidth(pt.getMinWidth() / 2 - 12).spaceTop(16).spaceRight(24);
-        col.add(menu).minWidth(pt.getMinWidth() / 2 - 12);
+        col.add(resume).minWidth(pt.getMinWidth() / 2 - 8).minHeight(96).spaceTop(16).spaceRight(16);
+        col.add(menu).minWidth(pt.getMinWidth() / 2 - 8).minHeight(96);
 
         table.align(Align.center).padTop(-128);
         table.add(pt).row();
-        table.add(col).spaceTop(24);
+        table.add(col).spaceTop(16);
 
         addActor(table);
     }
