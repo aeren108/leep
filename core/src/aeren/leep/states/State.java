@@ -12,8 +12,6 @@ import aeren.leep.Assets;
 import aeren.leep.states.fragments.Fragment;
 
 public abstract class State extends Stage implements Screen {
-
-    private boolean backReleased = true;
     protected Stack<Fragment> fragments;
 
     public State(Viewport viewport) {
@@ -23,10 +21,9 @@ public abstract class State extends Stage implements Screen {
 
     @Override
     public void render(float delta) {
-        if (backReleased && Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
             StateManager.getInstance().popState();
-            backReleased = false;
-        } else backReleased = true;
+        }
 
         this.act(delta);
         this.draw();
