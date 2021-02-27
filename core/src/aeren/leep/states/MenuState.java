@@ -12,24 +12,24 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import aeren.leep.Assets;
 import aeren.leep.DataManager;
+import aeren.leep.Constants;
 import aeren.leep.Settings;
 import aeren.leep.Utils;
 import aeren.leep.character.Character;
 import aeren.leep.character.CharacterManager;
 
 public class MenuState extends State {
+    private Settings settings;
     private CharacterManager charManager;
     private DataManager dm;
     private Assets assets;
@@ -52,12 +52,13 @@ public class MenuState extends State {
     private int[] layers;
 
     public MenuState() {
-        super(new ExtendViewport(Settings.UI_WIDTH, Settings.UI_HEIGHT));
-        background = new Stage(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
+        super(new ExtendViewport(Constants.UI_WIDTH, Constants.UI_HEIGHT));
+        background = new Stage(new ExtendViewport(Constants.WIDTH, Constants.HEIGHT));
     }
 
     @Override
     public void show() {
+        settings = Settings.getInstance();
         assets = Assets.getInstance();
         dm = DataManager.getInstance();
         charManager = CharacterManager.getInstance();
@@ -77,7 +78,7 @@ public class MenuState extends State {
         title = new Label("LEEP", new Label.LabelStyle(assets.get("fonts/inkythin.fnt", BitmapFont.class), Color.WHITE));
         play = new ImageButton(skin, "play");
         chars = new ImageButton(skin, "charselect");
-        mute = new ImageButton(skin, (Settings.volume() == 1) ? "volume-on" : "volume-off");
+        mute = new ImageButton(skin, (settings.getVolume() == 1) ? "volume-on" : "volume-off");
 
         layers = new int[] {map.getLayers().getIndex("main-menu")};
 
@@ -95,8 +96,8 @@ public class MenuState extends State {
 
         mute.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent) {
-                dm.setData("volume", (Settings.volume() == 1) ? 0 : 1);
-                mute.setStyle(skin.get((Settings.volume() == 1) ? "volume-on" : "volume-off", ImageButton.ImageButtonStyle.class));
+                settings.setVolume((settings.getVolume() == 1) ? 0 : 1);
+                mute.setStyle(skin.get((settings.getVolume() == 1) ? "volume-on" : "volume-off", ImageButton.ImageButtonStyle.class));
             }
             return false;
         });
@@ -112,7 +113,7 @@ public class MenuState extends State {
 
         addActor(table);
 
-        background.getCamera().position.set(Settings.WIDTH / 2, Settings.HEIGHT / 2, 0);
+        background.getCamera().position.set(Constants.WIDTH / 2, Constants.HEIGHT / 2, 0);
         Gdx.input.setInputProcessor(this);
     }
 

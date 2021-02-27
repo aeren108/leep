@@ -2,7 +2,6 @@ package aeren.leep.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -13,16 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import aeren.leep.Assets;
 import aeren.leep.DataManager;
-import aeren.leep.Settings;
+import aeren.leep.Constants;
 import aeren.leep.input.GestureHandler;
 import aeren.leep.level.Level;
 import aeren.leep.level.LevelDataFactory;
-import aeren.leep.level.LevelDataParser;
 import aeren.leep.level.ScoreListener;
 import aeren.leep.states.fragments.PauseFragment;
 
@@ -40,8 +37,8 @@ public class GameState extends State implements ScoreListener {
 
     //TODO: Constructor with the Level parameter
     public GameState() {
-        super(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
-        ui = new Stage(new ExtendViewport(Settings.UI_WIDTH, Settings.UI_HEIGHT));
+        super(new ExtendViewport(Constants.WIDTH, Constants.HEIGHT));
+        ui = new Stage(new ExtendViewport(Constants.UI_WIDTH, Constants.UI_HEIGHT));
     }
 
     @Override
@@ -73,7 +70,7 @@ public class GameState extends State implements ScoreListener {
         ui.addActor(table);
         addActor(level);
 
-        getCamera().position.set(Settings.WIDTH / 2, Settings.HEIGHT / 2, 0);
+        getCamera().position.set(Constants.WIDTH / 2, Constants.HEIGHT / 2, 0);
 
         multiplexer = new InputMultiplexer(gestureHandler, ui);
         Gdx.input.setInputProcessor(multiplexer);

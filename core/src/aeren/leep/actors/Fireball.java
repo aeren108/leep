@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import aeren.leep.Assets;
-import aeren.leep.Settings;
+import aeren.leep.Constants;
 
 public class Fireball extends Actor {
     private FireballType type;
@@ -56,7 +56,7 @@ public class Fireball extends Actor {
 
         bounds.setPosition(getX() + type.getXOffset(), getY() + type.getYOffset());
 
-        if (getX() > Settings.WIDTH || getY() + 24 < 0)
+        if (getX() > Constants.WIDTH || getY() + 24 < 0)
             alive = false;
 
         super.act(delta);

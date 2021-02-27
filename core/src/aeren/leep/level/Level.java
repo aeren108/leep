@@ -14,6 +14,7 @@ import java.util.List;
 
 import aeren.leep.Assets;
 import aeren.leep.DataManager;
+import aeren.leep.Constants;
 import aeren.leep.Settings;
 import aeren.leep.Utils;
 import aeren.leep.actors.Fireball;
@@ -27,6 +28,7 @@ import aeren.leep.states.StateManager;
 import aeren.leep.states.fragments.GameOverFragment;
 
 public class Level extends Group implements Disposable {
+    private Settings settings;
     private GameState state;
 
     private Assets assets;
@@ -68,6 +70,7 @@ public class Level extends Group implements Disposable {
         player = new Player();
         fruit = new Fruit();
 
+        settings = Settings.getInstance();
         assets = Assets.getInstance();
         charManager = CharacterManager.getInstance();
         dm = DataManager.getInstance();
@@ -85,7 +88,7 @@ public class Level extends Group implements Disposable {
         fireballPool = new FireballPool();
 
         data.music.setLooping(true);
-        data.music.setVolume(.25f * Settings.volume());
+        data.music.setVolume(.25f * settings.getVolume());
         data.music.play();
         player.movementDelay = data.playerMovementDelay;
 
@@ -125,7 +128,7 @@ public class Level extends Group implements Disposable {
                 if (f.getBounds().overlaps(player.getBounds())) {
                     if (score > best) isNewBest = true;
 
-                    pickup.play(.35f * Settings.volume());
+                    pickup.play(.35f * settings.getVolume());
                     placeFruit();
                     setScore(++score);
                 }
@@ -137,7 +140,7 @@ public class Level extends Group implements Disposable {
                     activeFireballs.remove(f);
                     fireballPool.free(f);
 
-                    hurt.play(.5f * Settings.volume());
+                    hurt.play(.5f * settings.getVolume());
                     gameOver();
 
                     return;
@@ -155,7 +158,7 @@ public class Level extends Group implements Disposable {
 
         for (int id : data.deadlyTiles) {
             if (tileId == id) {
-                fall.play(Settings.volume());
+                fall.play(settings.getVolume());
                 gameOver();
 
                 return;
@@ -303,7 +306,7 @@ public class Level extends Group implements Disposable {
 
         player.clearActions();
         activeFireballs.clear();
-        data.music.setVolume(.25f * Settings.volume());
+        data.music.setVolume(.25f * settings.getVolume());
 
         data.fireballSpeedTemp = data.fireballSpeed;
         data.fireballCooldownTemp = data.fireballCooldown;

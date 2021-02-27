@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import aeren.leep.Assets;
 import aeren.leep.DataManager;
-import aeren.leep.Settings;
+import aeren.leep.Constants;
 import aeren.leep.Utils;
 import aeren.leep.character.CharacterManager;
 import aeren.leep.character.Character;
@@ -50,8 +50,8 @@ public class CharacterState extends State {
     private float elapsed = 0;
 
     public CharacterState() {
-        super(new ExtendViewport(Settings.UI_WIDTH, Settings.UI_HEIGHT));
-        background = new Stage(new ExtendViewport(Settings.WIDTH, Settings.HEIGHT));
+        super(new ExtendViewport(Constants.UI_WIDTH, Constants.UI_HEIGHT));
+        background = new Stage(new ExtendViewport(Constants.WIDTH, Constants.HEIGHT));
     }
 
     @Override
@@ -68,11 +68,11 @@ public class CharacterState extends State {
         layers = new int[] {map.getLayers().getIndex("character")};
 
         selector = new CharacterSelector(skin, cm.getCharacters());
-        selector.setPosition(-selector.getPrefWidth() / 2, Settings.UI_HEIGHT / 2 - selector.getHeight() - 64);
+        selector.setPosition(-selector.getPrefWidth() / 2, Constants.UI_HEIGHT / 2 - selector.getHeight() - 64);
 
         select = new TextButton("SELECT", skin);
         select.setSize(296, 90);
-        select.setPosition(-select.getWidth() / 2, -Settings.UI_HEIGHT / 2 + 64);
+        select.setPosition(-select.getWidth() / 2, -Constants.UI_HEIGHT / 2 + 64);
         select.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent) {
                 cm.setCurrentCharacter(selector.getCharacter());
@@ -82,7 +82,7 @@ public class CharacterState extends State {
         });
 
         next = new ImageButton(skin, "next");
-        next.setPosition(select.getX() + select.getWidth() + 32, -Settings.UI_HEIGHT / 2  + 64);
+        next.setPosition(select.getX() + select.getWidth() + 32, -Constants.UI_HEIGHT / 2  + 64);
         next.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent) {
                 selector.next();
@@ -93,7 +93,7 @@ public class CharacterState extends State {
         });
 
         prev = new ImageButton(skin, "prev");
-        prev.setPosition(select.getX() - next.getWidth() - 32, -Settings.UI_HEIGHT / 2 + 64);
+        prev.setPosition(select.getX() - next.getWidth() - 32, -Constants.UI_HEIGHT / 2 + 64);
         prev.addListener((Event event) -> {
             if (event instanceof ChangeListener.ChangeEvent) {
                 selector.prev();
@@ -108,7 +108,7 @@ public class CharacterState extends State {
         addActor(prev);
         addActor(next);
 
-        background.getCamera().position.set(Settings.WIDTH / 2, Settings.HEIGHT / 2, 0);
+        background.getCamera().position.set(Constants.WIDTH / 2, Constants.HEIGHT / 2, 0);
         updateCharacter(selector.getCharacter());
 
         Gdx.input.setInputProcessor(this);

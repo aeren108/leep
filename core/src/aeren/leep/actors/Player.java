@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import aeren.leep.Assets;
+import aeren.leep.Constants;
 import aeren.leep.Settings;
 import aeren.leep.Utils;
 import aeren.leep.character.Character;
@@ -19,6 +20,7 @@ import aeren.leep.character.CharacterManager;
 import aeren.leep.input.SwipeListener;
 
 public class Player extends Actor implements SwipeListener, CharacterListener {
+    private Settings settings;
     private Rectangle bounds;
 
     private Sound swipe;
@@ -32,6 +34,7 @@ public class Player extends Actor implements SwipeListener, CharacterListener {
     public float movementDelay = 0.03f;
 
     public Player() {
+        settings = Settings.getInstance();
         bounds = new Rectangle();
 
         swipe = Assets.getInstance().get("sfx/swipe.wav", Sound.class);
@@ -67,7 +70,7 @@ public class Player extends Actor implements SwipeListener, CharacterListener {
             return;
 
         dir.y = -dir.y;
-        swipe.play(Settings.volume());
+        swipe.play(settings.getVolume());
 
         if (dir.y + dir.x < 0 && dir.y - dir.x < 0) {
             addAction(Actions.moveBy(0, -16, movementDelay));

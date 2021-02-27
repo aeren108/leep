@@ -2,13 +2,13 @@ package aeren.leep.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import aeren.leep.Assets;
+import aeren.leep.Constants;
 import aeren.leep.Settings;
 
 public class SplashState extends State {
@@ -18,13 +18,15 @@ public class SplashState extends State {
     private float timer = 0;
 
     public SplashState() {
-        super(new ExtendViewport(Settings.UI_WIDTH, Settings.UI_HEIGHT));
+        super(new ExtendViewport(Constants.UI_WIDTH, Constants.UI_HEIGHT));
     }
 
     @Override
     public void show() {
         assets = Assets.getInstance();
         assets.loadAll();
+
+        Settings.getInstance().update();
 
         Label.LabelStyle style = new Label.LabelStyle();
         style.font = assets.get("fonts/inkythin.fnt", BitmapFont.class);

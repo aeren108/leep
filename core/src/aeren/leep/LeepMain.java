@@ -40,6 +40,12 @@ public class LeepMain extends Game {
     }
 
     @Override
+    public void pause() {
+        dm.flush();
+        super.pause();
+    }
+
+    @Override
     public void dispose() {
         assets.dispose();
         super.dispose();

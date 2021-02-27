@@ -1,14 +1,31 @@
 package aeren.leep;
 
 public class Settings {
-    //Aspect ratio = 16:9
-    public static final float WIDTH = 144;
-    public static final float HEIGHT = 256;
+    private static Settings instance;
 
-    public static final float UI_WIDTH = WIDTH * 4;
-    public static final float UI_HEIGHT = HEIGHT * 4;
+    private int volume = 1;
 
-    public static int volume() {
-        return DataManager.getInstance().getInt("volume");
+    private Settings() {
+
+    }
+
+    public static Settings getInstance() {
+        if (instance == null)
+            instance = new Settings();
+
+        return instance;
+    }
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public void setVolume(int volume) {
+        this.volume = volume;
+        DataManager.getInstance().setData("volume", volume);
+    }
+
+    public void update() {
+        volume = DataManager.getInstance().getInt("volume");
     }
 }

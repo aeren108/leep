@@ -2,13 +2,13 @@ package aeren.leep.actors;
 
 import com.badlogic.gdx.math.Vector2;
 
-import aeren.leep.Settings;
+import aeren.leep.Constants;
 
 public enum FireballType {
     VERTICAL(Fireball.VEL_DOWN, 0, 4, 4, 0, -16) {
         @Override
         public Vector2 setLinage(int linage) {
-            return new Vector2(linage * 16, Settings.HEIGHT);
+            return new Vector2(linage * 16, Constants.HEIGHT);
         }
     },
     HORIZONTAL(Fireball.VEL_RIGHT,1, 3, 4, 16, 0) {
