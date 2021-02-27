@@ -13,7 +13,7 @@ import aeren.leep.Constants;
 
 public class Fireball extends Actor {
     private FireballType type;
-    private Texture alert;
+    private TextureRegion alert;
     private TextureRegion[][] frames;
     private Animation<TextureRegion> anim;
 
@@ -33,7 +33,7 @@ public class Fireball extends Actor {
 
     public Fireball(FireballType type) {
         frames = TextureRegion.split(Assets.getInstance().get("sprites/fireball.png", Texture.class), 16, 16);
-        alert = Assets.getInstance().get("sprites/alert.png", Texture.class);
+        alert = TextureRegion.split(Assets.getInstance().get("sprites/alert.png", Texture.class), 16, 16)[0][type.getAlertIndex()];
         bounds = new Rectangle(0, 0, 9, 9);
 
         setType(type);

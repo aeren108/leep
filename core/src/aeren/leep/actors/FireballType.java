@@ -5,13 +5,13 @@ import com.badlogic.gdx.math.Vector2;
 import aeren.leep.Constants;
 
 public enum FireballType {
-    VERTICAL(Fireball.VEL_DOWN, 0, 4, 4, 0, -16) {
+    VERTICAL(Fireball.VEL_DOWN, 0, 4, 4, 0, 0, -16) {
         @Override
         public Vector2 setLinage(int linage) {
             return new Vector2(linage * 16, Constants.HEIGHT);
         }
     },
-    HORIZONTAL(Fireball.VEL_RIGHT,1, 3, 4, 16, 0) {
+    HORIZONTAL(Fireball.VEL_RIGHT,1, 3, 4, 1, 16, 0) {
         @Override
         public Vector2 setLinage(int linage) {
             return new Vector2(-16, linage * 16);
@@ -21,13 +21,14 @@ public enum FireballType {
     private final Vector2 velocity;
     private final int animIndex;
     private final int xOffset, yOffset;
-    private final int alertXOffset, alertYOffset;
+    private final int alertIndex, alertXOffset, alertYOffset;
 
-    FireballType(Vector2 velocity, int animIndex, int xOffset, int yOffset, int alertXOffset, int alertYOffset) {
+    FireballType(Vector2 velocity, int animIndex, int xOffset, int yOffset, int alertIndex, int alertXOffset, int alertYOffset) {
         this.velocity = velocity;
         this.animIndex = animIndex;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
+        this.alertIndex = alertIndex;
         this.alertXOffset = alertXOffset;
         this.alertYOffset = alertYOffset;
     }
@@ -48,6 +49,10 @@ public enum FireballType {
 
     public int getYOffset() {
         return yOffset;
+    }
+
+    public int getAlertIndex() {
+        return alertIndex;
     }
 
     public int getAlertXOffset() {
