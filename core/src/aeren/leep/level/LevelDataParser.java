@@ -20,6 +20,7 @@ public class LevelDataParser {
         JsonReader reader = new JsonReader();
         JsonValue json = reader.parse(Gdx.files.internal(path));
         JsonValue fireball = json.get("fireball");
+        JsonValue laser = json.get("laser");
         JsonValue player = json.get("player");
 
         data.levelName = json.getString("levelName");
@@ -28,6 +29,7 @@ public class LevelDataParser {
         data.deadlyTiles = json.get("deadlyTiles").asIntArray();
         data.availableTiles = json.get("availableTiles").asIntArray();
         data.autoTiles = json.get("autoTiles").asIntArray();
+
         data.fireballCooldown = fireball.getFloat("cooldown");
         data.fireballSpeed = fireball.getFloat("speed");
         data.fireballMaxSpeed = fireball.getFloat("maxSpeed");
@@ -39,6 +41,14 @@ public class LevelDataParser {
 
         data.fireballSpeedTemp = data.fireballSpeed;
         data.fireballCooldownTemp = data.fireballCooldown;
+
+        data.laserActiveDuration = laser.getFloat("activeDuration");
+        data.laserDeactiveDuration = laser.getFloat("deactiveDuration");
+        data.laserCooldown = laser.getFloat("cooldown");
+        data.laserCooldownDec = laser.getFloat("cooldownDec");
+        data.laserMinCooldown = laser.getFloat("minCooldown");
+
+        data.laserCooldownTemp = data.laserCooldown;
 
         data.playerMovementDelay = player.getFloat("movementDelay");
         data.playerMovementDelayDec = player.getFloat("movementDelayDec");

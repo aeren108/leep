@@ -23,8 +23,8 @@ public class Fireball extends Actor {
     private float elapsed = 0;
     private float alertTimer = 0;
     private float alertThreshold = 0.5f;
-    private boolean alerted = false;
-    public boolean alive = true;
+    private boolean isAlerted = false;
+    public boolean isAlive = true;
 
     public static final Vector2 VEL_UP = new Vector2(0f, 1f);
     public static final Vector2 VEL_DOWN = new Vector2(0f, -1f);
@@ -43,11 +43,11 @@ public class Fireball extends Actor {
     public void act(float delta) {
         elapsed += delta;
 
-        if (!alerted) {
+        if (!isAlerted) {
             alertTimer += delta;
 
             if (alertTimer >= alertThreshold) {
-                alerted = true;
+                isAlerted = true;
                 alertTimer = 0;
             }
         } else {
@@ -57,7 +57,7 @@ public class Fireball extends Actor {
         bounds.setPosition(getX() + type.getXOffset(), getY() + type.getYOffset());
 
         if (getX() > Constants.WIDTH || getY() + 24 < 0)
-            alive = false;
+            isAlive = false;
 
         super.act(delta);
     }
@@ -66,7 +66,7 @@ public class Fireball extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        if (!alerted) {
+        if (!isAlerted) {
             batch.draw(alert, getX() + type.getAlertXOffset(), getY() + type.getAlertYOffset());
         } else {
             batch.draw(anim.getKeyFrame(elapsed, true), getX(), getY());
@@ -79,8 +79,8 @@ public class Fireball extends Actor {
     }
 
     public void reset() {
-        alive = true;
-        alerted = false;
+        isAlive = true;
+        isAlerted = false;
         velocity = type.getVelocity();
     }
 

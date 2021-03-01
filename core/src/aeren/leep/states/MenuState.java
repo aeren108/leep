@@ -103,12 +103,12 @@ public class MenuState extends State {
         });
 
         Table col = new Table();
-        col.add(chars).minWidth(184).minHeight(104).spaceRight(16);
+        col.add(chars).minWidth(232).minHeight(104).spaceRight(16);
         col.add(mute).minWidth(104).minHeight(104);
 
-        table.align(Align.center).padTop(-256);
-        table.add(title).padBottom(48).padLeft(8).row();
-        table.add(play).minWidth(304).minHeight(104).spaceTop(8).row();
+        table.align(Align.center).padTop(-288);
+        table.add(title).padBottom(64).padLeft(8).row();
+        table.add(play).minWidth(352).minHeight(104).spaceTop(8).row();
         table.add(col).spaceTop(16);
 
         addActor(table);

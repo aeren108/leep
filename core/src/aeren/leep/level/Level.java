@@ -14,13 +14,14 @@ import java.util.List;
 
 import aeren.leep.Assets;
 import aeren.leep.DataManager;
-import aeren.leep.Constants;
 import aeren.leep.Settings;
 import aeren.leep.Utils;
 import aeren.leep.actors.Fireball;
 import aeren.leep.actors.FireballPool;
 import aeren.leep.actors.FireballType;
 import aeren.leep.actors.Fruit;
+import aeren.leep.actors.Laser;
+import aeren.leep.actors.LaserType;
 import aeren.leep.actors.Player;
 import aeren.leep.character.CharacterManager;
 import aeren.leep.states.GameState;
@@ -54,6 +55,11 @@ public class Level extends Group implements Disposable {
     private List<Fireball> activeFireballs;
     private FireballPool fireballPool;
     private float fireballTimer = 0;
+
+    private List<Laser> activeLasers;
+    private float laserTimer = 0;
+    private int laserTypeIndex = 0;
+
     private float difficultyTimer = 0;
 
     private int score = 0;
@@ -87,6 +93,8 @@ public class Level extends Group implements Disposable {
         activeFireballs = new ArrayList<>();
         fireballPool = new FireballPool();
 
+        activeLasers = new ArrayList<>();
+
         data.music.setLooping(true);
         data.music.setVolume(.25f * settings.getVolume());
         data.music.play();
@@ -107,15 +115,18 @@ public class Level extends Group implements Disposable {
 
         if (!isGameOver && !isPlacingPlayer) {
             fireballTimer += delta;
+            laserTimer += delta;
             difficultyTimer += delta;
 
-            checkActorCollisions();
+            //checkActorCollisions();
             checkTileCollisions();
-            generateFireballs();
+            //generateFireballs();
+            generateLasers();
             handleDifficulty();
         }
 
         destroyFireballs();
+        destroyLasers();
 
         super.act(delta);
     }
@@ -136,14 +147,23 @@ public class Level extends Group implements Disposable {
                 Fireball f = (Fireball) a;
 
                 if (player.getBounds().overlaps(f.getBounds())) {
-                    removeActor(f);
-                    activeFireballs.remove(f);
-                    fireballPool.free(f);
+                    f.isAlive = false;
 
                     hurt.play(.5f * settings.getVolume());
                     gameOver();
 
-                    return;
+                    break;
+                }
+            } else if (a instanceof Laser) {
+                Laser l = (Laser) a;
+
+                if (l.isActive && player.getBounds().overlaps(l.getBounds())) {
+                    l.isAlive = false;
+
+                    //TODO: Play laser sound
+                    gameOver();
+
+                    break;
                 }
             }
         }
@@ -207,10 +227,37 @@ public class Level extends Group implements Disposable {
         for (int i = 0; i < activeFireballs.size(); i++) {
             Fireball f = activeFireballs.get(i);
 
-            if (!f.alive) {
+            if (!f.isAlive) {
                 removeActor(f);
                 activeFireballs.remove(f);
                 fireballPool.free(f);
+
+                i--;
+            }
+        }
+    }
+
+    private void generateLasers() {
+        if (laserTimer >= data.laserCooldownTemp) {
+            Laser l = new Laser(LaserType.values()[laserTypeIndex & 1], data.laserActiveDuration, data.laserDeactiveDuration);
+            l.setLinage(l.getType() == LaserType.VERTICAL ? (int)(mapBounds.x + Math.random() * (mapBounds.width - mapBounds.x)) :
+                    (int)(mapBounds.y + Math.random() * (mapBounds.height - mapBounds.y)));
+
+            activeLasers.add(l);
+            addActor(l);
+
+            laserTimer = 0;
+            laserTypeIndex++;
+        }
+    }
+
+    private void destroyLasers() {
+        for (int i = 0; i < activeLasers.size(); i++) {
+            Laser l = activeLasers.get(i);
+
+            if (!l.isAlive) {
+                activeLasers.remove(l);
+                removeActor(l);
 
                 i--;
             }
@@ -223,6 +270,9 @@ public class Level extends Group implements Disposable {
                 data.fireballSpeedTemp += data.fireballSpeedInc;
             if (data.fireballCooldownTemp > data.fireballMinCooldown)
                 data.fireballCooldownTemp -= data.fireballCooldownDec;
+
+            if (data.laserCooldownTemp > data.laserMinCooldown)
+                data.laserCooldownTemp -= data.laserCooldownDec;
 
             if (player.movementDelay > data.playerMinMovement)
                 player.movementDelay -= data.playerMovementDelayDec;
@@ -251,6 +301,8 @@ public class Level extends Group implements Disposable {
 
         if (score > best)
             setBest(score);
+
+        data.music.setVolume(0.15f * settings.getVolume());
 
         player.addAction(Actions.sequence( //flicker the player and show game over fragment
             Actions.repeat(2, Actions.sequence(Actions.fadeOut(0.15f), Actions.fadeIn(0.15f))),
@@ -310,8 +362,10 @@ public class Level extends Group implements Disposable {
 
         data.fireballSpeedTemp = data.fireballSpeed;
         data.fireballCooldownTemp = data.fireballCooldown;
+        data.laserCooldownTemp = data.laserCooldown;
 
         fireballTimer = 0;
+        laserTimer = 0;
         difficultyTimer = 0;
 
         placePlayer();

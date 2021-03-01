@@ -21,6 +21,7 @@
         "game": [
             {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/fireball.png"},
             {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/alert.png"},
+            {"type": "com.badlogic.gdx.graphics.Texture", "path": "sprites/laser.png"},
             {"type": "com.badlogic.gdx.audio.Music", "path": "sfx/level1_theme.ogg"},
             {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/pickup.wav"},
             {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/swipe.wav"},

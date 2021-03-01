@@ -19,14 +19,18 @@ public class LevelData implements Disposable {
 
     public Music music;
 
+    public float difficultyThreshold;
+
     public float fireballCooldown;
     public float fireballSpeed, fireballMaxSpeed, fireballSpeedTemp;
     public float fireballAlert, fireballMinCooldown, fireballCooldownTemp;
 
-    public float difficultyThreshold;
-
     public float fireballSpeedInc;
     public float fireballCooldownDec;
+
+    public float laserActiveDuration, laserDeactiveDuration;
+    public float laserCooldown, laserMinCooldown, laserCooldownTemp;
+    public float laserCooldownDec;
 
     public float playerMovementDelay, playerMovementDelayDec, playerMinMovement;
     public float playerMovementDelayTemp;

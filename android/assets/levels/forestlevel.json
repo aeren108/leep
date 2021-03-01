@@ -8,7 +8,7 @@
   "birthRate": 0.8,
   "birthThreshold": 4,
   "deathThreshold": 4,
-  "maxStep": 4,
+  "maxStep": 3,
 
   "player": {
     "movementDelay": 0.05,
@@ -24,10 +24,17 @@
     "alert": 0.5,
 
     "speedInc": 0.05,
-    "cooldownDec": 0.1
+    "cooldownDec": 0.05
   },
 
-  "laser": {},
+  "laser": {
+    "activeDuration": 0.75,
+    "deactiveDuration": 1.0,
+    "cooldown": 7.5,
+    "minCooldown": 3.0,
+
+    "cooldownDec": 0.5
+  },
 
   "patterns": [
     {
