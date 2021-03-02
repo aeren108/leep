@@ -28,10 +28,10 @@
   },
 
   "laser": {
-    "activeDuration": 0.75,
+    "activeDuration": 1.0,
     "deactiveDuration": 1.0,
-    "cooldown": 7.5,
-    "minCooldown": 3.0,
+    "cooldown": 10.0,
+    "minCooldown": 7.5,
 
     "cooldownDec": 0.5
   },

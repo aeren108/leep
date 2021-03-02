@@ -25,6 +25,8 @@
             {"type": "com.badlogic.gdx.audio.Music", "path": "sfx/level1_theme.ogg"},
             {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/pickup.wav"},
             {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/swipe.wav"},
+            {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/buzz.wav"},
+            {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/shock.wav"},
             {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/hurt.wav"},
             {"type": "com.badlogic.gdx.audio.Sound", "path": "sfx/fall.wav"},
             {"type": "com.badlogic.gdx.maps.tiled.TiledMap", "path": "levels/forestlevel.tmx"}

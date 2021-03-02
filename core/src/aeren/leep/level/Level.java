@@ -46,6 +46,7 @@ public class Level extends Group implements Disposable {
 
     private Sound pickup;
     private Sound hurt;
+    private Sound shock;
     private Sound fall;
 
     private boolean isPaused = false;
@@ -56,7 +57,7 @@ public class Level extends Group implements Disposable {
     private FireballPool fireballPool;
     private float fireballTimer = 0;
 
-    private List<Laser> activeLasers;
+    private Laser laser;
     private float laserTimer = 0;
     private int laserTypeIndex = 0;
 
@@ -84,6 +85,7 @@ public class Level extends Group implements Disposable {
 
         pickup = assets.get("sfx/pickup.wav", Sound.class);
         hurt = assets.get("sfx/hurt.wav", Sound.class);
+        shock = assets.get("sfx/shock.wav", Sound.class);
         fall = assets.getInstance().get("sfx/fall.wav", Sound.class);
         best = dm.getHighscore(data.levelName);
 
@@ -93,7 +95,7 @@ public class Level extends Group implements Disposable {
         activeFireballs = new ArrayList<>();
         fireballPool = new FireballPool();
 
-        activeLasers = new ArrayList<>();
+        laser = new Laser(LaserType.VERTICAL, data.laserActiveDuration, data.laserDeactiveDuration);
 
         data.music.setLooping(true);
         data.music.setVolume(.25f * settings.getVolume());
@@ -118,9 +120,9 @@ public class Level extends Group implements Disposable {
             laserTimer += delta;
             difficultyTimer += delta;
 
-            //checkActorCollisions();
+            checkActorCollisions();
             checkTileCollisions();
-            //generateFireballs();
+            generateFireballs();
             generateLasers();
             handleDifficulty();
         }
@@ -157,10 +159,10 @@ public class Level extends Group implements Disposable {
             } else if (a instanceof Laser) {
                 Laser l = (Laser) a;
 
-                if (l.isActive && player.getBounds().overlaps(l.getBounds())) {
-                    l.isAlive = false;
+                if (l.isActive() && player.getBounds().overlaps(l.getBounds())) {
+                    l.setAlive(false);
 
-                    //TODO: Play laser sound
+                    shock.play(settings.getVolume());
                     gameOver();
 
                     break;
@@ -239,12 +241,11 @@ public class Level extends Group implements Disposable {
 
     private void generateLasers() {
         if (laserTimer >= data.laserCooldownTemp) {
-            Laser l = new Laser(LaserType.values()[laserTypeIndex & 1], data.laserActiveDuration, data.laserDeactiveDuration);
-            l.setLinage(l.getType() == LaserType.VERTICAL ? (int)(mapBounds.x + Math.random() * (mapBounds.width - mapBounds.x)) :
+            laser.setType(LaserType.values()[laserTypeIndex & 1]);
+            laser.setLinage(laser.getType() == LaserType.VERTICAL ? (int)(mapBounds.x + Math.random() * (mapBounds.width - mapBounds.x)) :
                     (int)(mapBounds.y + Math.random() * (mapBounds.height - mapBounds.y)));
 
-            activeLasers.add(l);
-            addActor(l);
+            addActor(laser);
 
             laserTimer = 0;
             laserTypeIndex++;
@@ -252,15 +253,9 @@ public class Level extends Group implements Disposable {
     }
 
     private void destroyLasers() {
-        for (int i = 0; i < activeLasers.size(); i++) {
-            Laser l = activeLasers.get(i);
-
-            if (!l.isAlive) {
-                activeLasers.remove(l);
-                removeActor(l);
-
-                i--;
-            }
+        if (!laser.isAlive()) {
+            removeActor(laser);
+            laser.reset();
         }
     }
 
